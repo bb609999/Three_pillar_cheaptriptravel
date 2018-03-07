@@ -36,11 +36,11 @@ public class ScheduleListActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefresh;
 
-    private Schedule[] schedules = {new Schedule("Ap360", R.drawable.ap360), new Schedule("Bitch", R.drawable.bitch),
-            new Schedule("Blee", R.drawable.blee), new Schedule("Bubub", R.drawable.bubub),
-            new Schedule("Clearbay", R.drawable.clearbay), new Schedule("Disney", R.drawable.disney),
-            new Schedule("Ffprak", R.drawable.ffprak), new Schedule("GoledenFlower", R.drawable.goledenflower),
-            new Schedule("Horse", R.drawable.horse), new Schedule("Queenpark", R.drawable.queenpark)};
+    private Schedule[] schedules = {new Schedule("Schedule1", R.drawable.ap360), new Schedule("Schedule2", R.drawable.bitch),
+            new Schedule("Schedule3", R.drawable.blee), new Schedule("Schedule4", R.drawable.bubub),
+            new Schedule("Schedule5", R.drawable.clearbay), new Schedule("Schedule6", R.drawable.disney),
+            new Schedule("Schedule7", R.drawable.ffprak), new Schedule("Schedule8", R.drawable.goledenflower),
+            new Schedule("Schedule9", R.drawable.horse), new Schedule("Schedule10", R.drawable.queenpark)};
 
     private List<Schedule> scheduleList = new ArrayList<>();
 
