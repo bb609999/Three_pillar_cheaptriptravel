@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.ScheduleDisplayActivity;
+import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -42,8 +43,12 @@ public class PlaceSearchActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 if(place_Name!=" "){
+
+                    Event event = new Event(place_Name,"not-defined yet",1.5,3.5,"not-defined yet");
+                    event.save();
+
                     Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
-                    add_intent.putExtra("PlaceName",place_Name);
+                    //add_intent.putExtra("PlaceName",place_Name);
                     finish();
                     startActivity(add_intent);
                 }

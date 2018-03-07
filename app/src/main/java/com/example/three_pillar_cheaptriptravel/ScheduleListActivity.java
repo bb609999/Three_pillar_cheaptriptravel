@@ -50,6 +50,11 @@ public class ScheduleListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_list);
+
+        //CreateDataBase of Event
+        Connector.getDatabase();
+
+
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //DrawerLayout
@@ -123,7 +128,6 @@ public class ScheduleListActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.f1:
-                Connector.getDatabase();
                 break;
             case R.id.f2:
                 Event event = new Event("OUHK","school",3.5,3.5,"visit school");

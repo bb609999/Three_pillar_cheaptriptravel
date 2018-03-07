@@ -7,7 +7,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.alamkanak.weekview.WeekViewEvent;
+import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
+
+import org.litepal.crud.DataSupport;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,12 +32,20 @@ public class ScheduleDisplayActivity extends ScheduleDisplay{
         }
 
         //Add event into Schedule
-        Intent intent = getIntent();
+        /*Intent intent = getIntent();
         String placeName = intent.getStringExtra("PlaceName");
 
         if(placeName!=null) {
             placeNameList.add(placeName);
+        }*/
+
+        List<Event> events = DataSupport.findAll(Event.class);
+
+        for(Event event:events){
+            placeNameList.add(event.getPlaceName());
         }
+
+
 
 
     }
