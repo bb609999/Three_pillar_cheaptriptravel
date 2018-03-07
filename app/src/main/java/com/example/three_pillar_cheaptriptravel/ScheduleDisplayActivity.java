@@ -38,7 +38,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay{
         if(placeName!=null) {
             placeNameList.add(placeName);
         }*/
-
+        //Query of event table
         List<Event> events = DataSupport.findAll(Event.class);
 
         for(Event event:events){

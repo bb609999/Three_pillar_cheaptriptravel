@@ -27,7 +27,9 @@ public class PlaceSearchActivity extends AppCompatActivity{
     private String TAG = "LocationSearch";
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 5;
 
-    private String place_Name = " ";
+    private com.example.three_pillar_cheaptriptravel.object.Place place_selected
+            = new com.example.three_pillar_cheaptriptravel.object.Place();
+
 
 
 
@@ -42,9 +44,9 @@ public class PlaceSearchActivity extends AppCompatActivity{
         btn_add_to_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(place_Name!=" "){
+                if(place_selected.getPlaceName()!=null){
 
-                    Event event = new Event(place_Name,"not-defined yet",1.5,3.5,"not-defined yet");
+                    Event event = new Event(place_selected.getPlaceName(),"not-defined yet",1.5,3.5,"not-defined yet");
                     event.save();
 
                     Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
@@ -80,7 +82,13 @@ public class PlaceSearchActivity extends AppCompatActivity{
                 // TODO: Get info about the selected place.
                 Log.i(TAG, "Place1: " + place.getName());//get place details here
                 Log.i(TAG, "onPlaceSelected: "+place.toString());
-                place_Name = place.getName().toString();
+                Log.i(TAG, "onPlaceSelected: "+place.getLatLng());
+
+                place_selected.setPlaceName(place.getName().toString());
+                place_selected.setLat(place.getLatLng().latitude);
+                place_selected.setLng(place.getLatLng().longitude);
+
+                place_selected.save();
 
             }
 

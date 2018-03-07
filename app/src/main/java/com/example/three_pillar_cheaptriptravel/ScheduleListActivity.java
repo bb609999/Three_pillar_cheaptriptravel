@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.object.ScheduleAdapter;
 
@@ -128,6 +129,12 @@ public class ScheduleListActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.f1:
+                List<Place> Places = DataSupport.findAll(Place.class);
+
+                for(Place one_Place: Places ) {
+                    Log.d("00002", " " + one_Place.getPlaceName()+one_Place.getLat()+one_Place.getLng());
+                }
+
                 break;
             case R.id.f2:
                 Event event = new Event("OUHK","school",3.5,3.5,"visit school");
