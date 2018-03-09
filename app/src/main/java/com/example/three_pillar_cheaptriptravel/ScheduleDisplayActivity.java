@@ -1,8 +1,11 @@
 package com.example.three_pillar_cheaptriptravel;
 
+import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -227,12 +230,21 @@ public class ScheduleDisplayActivity extends ScheduleDisplay{
         startTime.set(Calendar.YEAR, newYear);
         endTime = (Calendar) startTime.clone();
         endTime.set(Calendar.DAY_OF_MONTH, 11);
-        event = new WeekViewEvent(8, getEventTitle(startTime), null, startTime, endTime);
         event.setColor(getResources().getColor(R.color.event_color_01));
         events.add(event);*/
 
         return events;
     }
 
+    @Override
+    public void onEventClick(WeekViewEvent event, RectF eventRect) {
+        super.onEventClick(event, eventRect);
+
+        EventDialog eventDialog = new EventDialog();
+
+        eventDialog.show(getSupportFragmentManager()," EventDialog");
+
+
+    }
 }
 
