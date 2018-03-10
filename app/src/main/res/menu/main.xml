@@ -8,6 +8,11 @@
         android:title="Add"
         app:showAsAction="always"/>
 
+    <item android:id="@+id/action_calculate_path"
+        android:icon="@drawable/nav_location"
+        android:title="Cal"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/action_today"
         android:title="@string/action_today"
         android:orderInCategory="100"

@@ -81,6 +81,7 @@ public class EventDialog extends DialogFragment {
                                         event.setEndTime(i+(i1/60.0));
                                         event.updateAll("id = ?", ""+id);
 
+
                                     }
                                 },12,0,true);
 
@@ -102,6 +103,8 @@ public class EventDialog extends DialogFragment {
                                 },12,0,true);
 
                                 timePickerDialog.show();
+
+
 
 
 

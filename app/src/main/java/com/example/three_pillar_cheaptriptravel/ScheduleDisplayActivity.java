@@ -5,21 +5,31 @@ import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekViewEvent;
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
+import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDialog.EventDialogListener{
 
     private List<Event> eventList = DataSupport.findAll(Event.class);
+    private List<Place> placeList = DataSupport.findAll(Place.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +63,67 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 finish();
                 startActivity(search_intent);
                 break;
+            case R.id.action_calculate_path:
+
+
+
+                String address = "https://bb609999.herokuapp.com/api?loc=";
+
+                for(Place place:placeList){
+                    for(Event event:eventList){
+                        Log.d("00005", "onOptionsItemSelected: "+place.getPlaceName());
+                        Log.d("00005", "onOptionsItemSelected: "+event.getPlaceName());
+                        if(place.getPlaceName().equals(event.getPlaceName())){
+                            address += ""+place.getLat()+","+place.getLng()+"|";
+                        }
+                    }
+                }
+
+                    address = address.substring(0,address.length()-1);
+
+                Log.d("00005", "onOptionsItemSelected: "+address);
+
+
+                //String address = "https://bb609999.herokuapp.com/api?loc=22.316279,114.180408%7C22.312441," +
+                //        "114.225046%7C22.310602,114.187868%7C22.308235,114.185765%7C22.320165,114.208168";
+                HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+
+                    }
+
+                    @Override
+                    public void onResponse (Call call, Response response) throws IOException {
+                        final String responseData = response.body().string();
+                        Log.d("00003", "onResponse: " + responseData);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                //To a String array
+                                String newResponseData = responseData.replace("[","");
+                                newResponseData = newResponseData.replace("]","");
+                                newResponseData = newResponseData.replace("\"","");
+
+                                String[]splited = newResponseData.split(",");
+                                String[]joined = new String[splited.length/2];
+
+                                for(int i=0;i<splited.length/2;i++){
+                                    joined[i] = splited[0+2*i]+","+splited[1+2*i];
+                                }
+
+                                Toast.makeText(ScheduleDisplayActivity.this, ""+ Arrays.toString(joined), Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(ScheduleDisplayActivity.this,ShortestPath_Map_Activity.class);
+                                intent.putExtra("places",joined);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                });
+
+                break;
+
             default:
         }
         return true;
@@ -60,7 +131,9 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
 
 
-    @Override
+
+
+        @Override
     public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
         // Populate the week view with some events.
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
