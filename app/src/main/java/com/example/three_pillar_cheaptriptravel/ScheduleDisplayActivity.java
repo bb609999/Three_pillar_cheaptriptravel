@@ -1,11 +1,9 @@
 package com.example.three_pillar_cheaptriptravel;
 
-import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
@@ -19,9 +17,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class ScheduleDisplayActivity extends ScheduleDisplay{
+public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDialog.EventDialogListener{
 
-    List<String> placeNameList = new ArrayList<>();
+    private List<Event> eventList = DataSupport.findAll(Event.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,19 +32,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay{
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        //Add event into Schedule
-        /*Intent intent = getIntent();
-        String placeName = intent.getStringExtra("PlaceName");
 
-        if(placeName!=null) {
-            placeNameList.add(placeName);
-        }*/
-        //Query of event table
-        List<Event> events = DataSupport.findAll(Event.class);
-
-        for(Event event:events){
-            placeNameList.add(event.getPlaceName());
-        }
 
 
 
@@ -80,30 +66,42 @@ public class ScheduleDisplayActivity extends ScheduleDisplay{
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
         Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
+        startTime.set(Calendar.HOUR_OF_DAY, 12);
         startTime.set(Calendar.MINUTE, 0);
         startTime.set(Calendar.MONTH, newMonth - 1);
         startTime.set(Calendar.YEAR, newYear);
         Calendar endTime = (Calendar) startTime.clone();
         endTime.add(Calendar.HOUR, 1);
         endTime.set(Calendar.MONTH, newMonth - 1);
-        WeekViewEvent event = new WeekViewEvent(1, getEventTitle(startTime), startTime, endTime);
+        WeekViewEvent event = new WeekViewEvent(100, getEventTitle(startTime), startTime, endTime);
         event.setColor(getResources().getColor(R.color.event_color_01));
         events.add(event);
 
-        for(String placeName: placeNameList) {
+
+
+        for(Event an_event:eventList) {
+
+            int start_hour = (int)an_event.getStartTime();
+
+            int start_minute = (int) Math.round((an_event.getStartTime()-start_hour)*60.0);
+
+            int end_hour = (int)an_event.getEndTime();
+
+            int end_minute = (int) Math.round((an_event.getEndTime()-end_hour)*60.0);
+
+
             startTime = Calendar.getInstance();
-            startTime.set(Calendar.HOUR_OF_DAY, 1);
-            startTime.set(Calendar.MINUTE, 0);
+            startTime.set(Calendar.HOUR_OF_DAY, start_hour);
+            startTime.set(Calendar.MINUTE, start_minute);
             startTime.set(Calendar.MONTH, newMonth - 1);
             startTime.set(Calendar.YEAR, newYear);
             endTime = (Calendar) startTime.clone();
-            endTime.set(Calendar.HOUR_OF_DAY, 3);
-            endTime.set(Calendar.MINUTE, 0);
+            endTime.set(Calendar.HOUR_OF_DAY, end_hour);
+            endTime.set(Calendar.MINUTE, end_minute);
             endTime.set(Calendar.MONTH, newMonth - 1);
-            event = new WeekViewEvent(2, getEventTitle(startTime), startTime, endTime);
+            event = new WeekViewEvent(an_event.getId(), getEventTitle(startTime), startTime, endTime);
             event.setColor(getResources().getColor(R.color.event_color_02));
-            event.setName(placeName);
+            event.setName(an_event.getPlaceName()+"\n"+start_hour+":"+start_minute+" to "+end_hour+":"+end_minute);
             events.add(event);
         }
 
@@ -236,15 +234,36 @@ public class ScheduleDisplayActivity extends ScheduleDisplay{
         return events;
     }
 
+
+
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         super.onEventClick(event, eventRect);
 
-        EventDialog eventDialog = new EventDialog();
+        EventDialog eventDialog = new EventDialog().newInstance(event.getId());
 
-        eventDialog.show(getSupportFragmentManager()," EventDialog");
 
+
+        eventDialog.show(getSupportFragmentManager(), " EventDialog");
+    }
+
+    @Override
+    public void onItemClick(android.support.v4.app.DialogFragment dialog, int which) {
+        switch (which){
+            case 2:
+
+                //restart Activity after Delete
+
+                Intent intent = new Intent(ScheduleDisplayActivity.this,ScheduleDisplayActivity.class);
+                finish();
+                startActivity(intent);
+
+
+            default:
+
+        }
 
     }
+
 }
 

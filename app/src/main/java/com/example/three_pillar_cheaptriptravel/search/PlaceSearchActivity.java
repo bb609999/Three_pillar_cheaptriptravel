@@ -1,11 +1,15 @@
 package com.example.three_pillar_cheaptriptravel.search;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.ScheduleDisplayActivity;
@@ -40,22 +44,92 @@ public class PlaceSearchActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_search);
 
+
+
+        //Choose Time of Event
+        final EditText startTime = (EditText)findViewById(R.id.start_time);
+        startTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(PlaceSearchActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+                        //format 8:8 to 08:08
+                        String hour = i<10 ? "0"+String.valueOf(i): String.valueOf(i);
+                        String minute = i1<10 ? "0"+String.valueOf(i1): String.valueOf(i1);
+
+                        startTime.setText(hour+":"+minute);
+                    }
+                },12,0,true);
+
+                timePickerDialog.show();
+            }
+        });
+
+        final EditText endTime = (EditText)findViewById(R.id.end_time);
+        endTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(PlaceSearchActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+                        //format 8:8 to 08:08
+                        String hour = i<10 ? "0"+String.valueOf(i): String.valueOf(i);
+                        String minute = i1<10 ? "0"+String.valueOf(i1): String.valueOf(i1);
+
+                        endTime.setText(hour+":"+minute);
+                    }
+                },13,0,true);
+
+                timePickerDialog.show();
+            }
+        });
+
+        //Add Event to Schedule
         Button btn_add_to_schedule = (Button) findViewById(R.id.add_to_schedule);
         btn_add_to_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(place_selected.getPlaceName()!=null){
 
-                    Event event = new Event(place_selected.getPlaceName(),"not-defined yet",1.5,3.5,"not-defined yet");
-                    event.save();
+                    //get time from edit text field
+                    String startTime_raw = startTime.getText().toString();
+                    String[] startTime_separated = startTime_raw.split(":");
+                    int startTime_hour = Integer.valueOf(startTime_separated[0]);
+                    int startTime_minute = Integer.valueOf(startTime_separated[1]);
 
-                    Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
-                    //add_intent.putExtra("PlaceName",place_Name);
-                    finish();
-                    startActivity(add_intent);
+                    double startTime_formatted = startTime_hour+(startTime_minute/60.0);
+
+
+
+                    String endTime_raw = endTime.getText().toString();
+                    String[] endTime_separated = endTime_raw.split(":");
+                    int endTime_hour = Integer.valueOf(endTime_separated[0]);
+                    int endTime_minute = Integer.valueOf(endTime_separated[1]);
+
+                    double endTime_formatted = endTime_hour+(endTime_minute/60.0);
+
+                    //ensure time is correct
+                    if(startTime_formatted>=endTime_formatted){
+                        Toast.makeText(PlaceSearchActivity.this, "Your start time is larger than end time", Toast.LENGTH_SHORT).show();
+                    }else {
+
+                        Event event = new Event(place_selected.getPlaceName(), "not-defined yet", startTime_formatted, endTime_formatted, "not-defined yet");
+                        event.save();
+
+                        Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
+                        //add_intent.putExtra("PlaceName",place_Name);
+                        finish();
+                        startActivity(add_intent);
+                    }
                 }
             }
         });
+
+
+
 
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)

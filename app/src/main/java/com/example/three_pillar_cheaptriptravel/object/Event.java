@@ -10,6 +10,8 @@ import java.io.Serializable;
 
 public class Event extends DataSupport implements Serializable{
 
+    private int id;
+
     private String placeName;
 
     private String type;
@@ -22,6 +24,9 @@ public class Event extends DataSupport implements Serializable{
 
     private int Schedule_id;
 
+    public Event() {
+    }
+
     public Event(String placeName, String type, double startTime, double endTime, String description) {
         this.placeName = placeName;
         this.type = type;
@@ -32,6 +37,22 @@ public class Event extends DataSupport implements Serializable{
 
     public String getPlaceName() {
         return placeName;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getSchedule_id() {
+        return Schedule_id;
+    }
+
+    public void setSchedule_id(int schedule_id) {
+        Schedule_id = schedule_id;
     }
 
     public void setPlaceName(String placeName) {

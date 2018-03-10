@@ -146,7 +146,8 @@ public class ScheduleListActivity extends AppCompatActivity {
                 List<Event> Events = DataSupport.findAll(Event.class);
 
                 for(Event one_event: Events ) {
-                    Log.d("00002", " " + one_event.getPlaceName()+one_event.getDescription() );
+                    Log.d("00002", " " + one_event.getId()+one_event.getPlaceName()+one_event.getDescription()
+                    +one_event.getStartTime()+one_event.getEndTime()+one_event.getSchedule_id());
                 }
 
 
