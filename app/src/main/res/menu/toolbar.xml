@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/create_schedele"
+        android:icon="@drawable/ic_playlist_add_black_24dp"
+        android:title="create schedele"
+        app:showAsAction="always"/>
+
+    <item
         android:id="@+id/f1"
         android:icon="@drawable/ic_done"
         android:title="F1"

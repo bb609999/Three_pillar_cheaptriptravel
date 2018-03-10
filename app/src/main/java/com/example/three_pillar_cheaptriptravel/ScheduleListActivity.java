@@ -1,5 +1,6 @@
 package com.example.three_pillar_cheaptriptravel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -27,9 +28,7 @@ import com.example.three_pillar_cheaptriptravel.object.ScheduleAdapter;
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ScheduleListActivity extends AppCompatActivity {
 
@@ -37,13 +36,7 @@ public class ScheduleListActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefresh;
 
-    private Schedule[] schedules = {new Schedule("Schedule1", R.drawable.ap360), new Schedule("Schedule2", R.drawable.bitch),
-            new Schedule("Schedule3", R.drawable.blee), new Schedule("Schedule4", R.drawable.bubub),
-            new Schedule("Schedule5", R.drawable.clearbay), new Schedule("Schedule6", R.drawable.disney),
-            new Schedule("Schedule7", R.drawable.ffprak), new Schedule("Schedule8", R.drawable.goledenflower),
-            new Schedule("Schedule9", R.drawable.horse), new Schedule("Schedule10", R.drawable.queenpark)};
-
-    private List<Schedule> scheduleList = new ArrayList<>();
+    private List<Schedule> Schedules = DataSupport.findAll(Schedule.class);
 
     private ScheduleAdapter adapter;
 
@@ -94,11 +87,11 @@ public class ScheduleListActivity extends AppCompatActivity {
         });
 
         //CardView
-        initSchedules();
+        //initSchedules();
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ScheduleAdapter(scheduleList);
+        adapter = new ScheduleAdapter(Schedules);
         recyclerView.setAdapter(adapter);
 
         //swipe
@@ -128,6 +121,24 @@ public class ScheduleListActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
+            case R.id.create_schedele:
+                Schedule schedule = new Schedule();
+                schedule.setName("Schedule");
+                schedule.setImageId(R.drawable.ap360);
+                schedule.save();
+
+
+                for(Schedule one_Schedule: Schedules ) {
+                    Log.d("00002", " " + one_Schedule.getId()+" "+one_Schedule.getName()+one_Schedule.getImageId());
+                }
+
+                Intent refresh_intent = new Intent(ScheduleListActivity.this,ScheduleListActivity.class);
+                finish();
+                startActivity(refresh_intent);
+
+
+                break;
+
             case R.id.f1:
                 List<Place> Places = DataSupport.findAll(Place.class);
 
@@ -158,16 +169,6 @@ public class ScheduleListActivity extends AppCompatActivity {
         return true;
     }
 
-    //CardView
-    private void initSchedules(){
-        scheduleList.clear();
-        for(int i =0 ;i<50;i++) {
-            Random random = new Random();
-            int index = random.nextInt(schedules.length);
-            scheduleList.add(schedules[index]);
-        }
-    }
-
     //swipe refresh
     private void refrestSchedules(){
         new Thread(new Runnable() {
@@ -181,9 +182,14 @@ public class ScheduleListActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initSchedules();
-                        adapter.notifyDataSetChanged();
+                       // Schedules.clear();
+                        //Schedules = DataSupport.findAll(Schedule.class);
+
+                        //Log.d("133333", "run: "+Schedules.size());
+
+                        //adapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
+
                     }
                 });
             }

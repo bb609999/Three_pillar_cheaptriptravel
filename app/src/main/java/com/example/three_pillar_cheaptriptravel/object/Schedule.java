@@ -3,8 +3,6 @@ package com.example.three_pillar_cheaptriptravel.object;
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Administrator on 7/3/2018.
@@ -12,26 +10,23 @@ import java.util.List;
 
 public class Schedule extends DataSupport implements Serializable {
 
+    private int id;
+
     private String name;
 
     private int imageId;
 
-
-    private List<Event> eventList = new ArrayList<>();
-
-    public List<Event> getEventList() {
-        return eventList;
+    public Schedule() {
     }
 
-    public Schedule(String name, int imageId, List<Event> eventList) {
-        this.name = name;
-        this.imageId = imageId;
-        this.eventList = eventList;
+    public int getId() {
+        return id;
     }
 
-    public void setEventList(List<Event> eventList) {
-        this.eventList = eventList;
+    public void setId(int id) {
+        this.id = id;
     }
+    
 
     public Schedule(String name, int imageId) {
         this.name = name;

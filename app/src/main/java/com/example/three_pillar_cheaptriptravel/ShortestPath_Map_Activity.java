@@ -1,16 +1,26 @@
 package com.example.three_pillar_cheaptriptravel;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.ui.IconGenerator;
+
+import org.litepal.crud.DataSupport;
+
+import java.util.List;
 
 public class ShortestPath_Map_Activity extends AppCompatActivity implements
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraIdleListener,
@@ -22,6 +32,9 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
     private GoogleMap mMap;
 
     private LatLng[] latLngs;
+
+    private List<Event> eventList = DataSupport.findAll(Event.class);
+    private List<Place> placeList = DataSupport.findAll(Place.class);
 
 
     @Override
@@ -62,11 +75,32 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
         mMap.setOnCameraIdleListener(this);
 
         mMap.addPolyline(new PolylineOptions()
-               .add(latLngs));
+               .add(latLngs)
+                .width(5)
+        );
 
         if(latLngs.length!=0) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs[0], 13));
         }
+
+        for(int i=0;i<latLngs.length;i++) {
+
+
+             Place place =  DataSupport.where("lat=?",""+latLngs[i].latitude).findFirst(Place.class);
+
+            IconGenerator iconGenerator = new IconGenerator(ShortestPath_Map_Activity.this);
+            Bitmap bitmap =  iconGenerator.makeIcon(place.getPlaceName());
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLngs[i])
+                    .title(place.getPlaceName())
+                    .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+
+
+
+            );
+        }
+
     }
 
     @Override
