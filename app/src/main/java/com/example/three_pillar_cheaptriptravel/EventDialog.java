@@ -70,18 +70,41 @@ public class EventDialog extends DialogFragment {
                                 int hour = date.getHours();
                                 int minute = date.getMinutes();
 
+                                //EndTime
+                                TimePickerDialog timePickerDialog2 = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                                    @Override
+                                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                                        Long id = getArguments().getLong("id");
+                                        Event event = new Event();
+
+
+                                        event.setEndTime(i+(i1/60.0));
+                                        event.updateAll("id = ?", ""+id);
+
+                                    }
+                                },12,0,true);
+
+                                timePickerDialog2.show();
+
+
+                                //Start Time
                                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
                                         Long id = getArguments().getLong("id");
                                         Event event = new Event();
-                                        event.setStartTime(i);
+
+
+                                        event.setStartTime(i+(i1/60.0));
                                         event.updateAll("id = ?", ""+id);
 
                                     }
-                                },0,0,true);
+                                },12,0,true);
 
                                 timePickerDialog.show();
+
+
+
                                 break;
 
 
@@ -104,6 +127,8 @@ public class EventDialog extends DialogFragment {
                 });
         return builder.create();
     }
+
+
 
 
 }
