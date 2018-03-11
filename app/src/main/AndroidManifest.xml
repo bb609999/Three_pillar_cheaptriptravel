@@ -29,7 +29,12 @@
         <activity
             android:name=".search.PlaceSearchActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".ShortestPath_Map_Activity"></activity>
+        <activity android:name=".ShortestPath_Map_Activity" />
+        <activity
+            android:name=".Story.StoriesActivity"
+            android:label="@string/title_activity_stories"
+            android:theme="@style/AppTheme" />
+        <activity android:name=".Story.StoriesProgressViewActivity"></activity>
     </application>
 
 </manifest>

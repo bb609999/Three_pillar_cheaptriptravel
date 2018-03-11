@@ -44,5 +44,8 @@ dependencies {
 
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
 
+    compile 'com.github.shts:StoriesProgressView:2.0.0'
+
+    compile 'com.getbase:floatingactionbutton:1.9.0'
 
 }

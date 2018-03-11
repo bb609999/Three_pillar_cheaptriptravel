@@ -2,11 +2,13 @@
 <litepal>
 <dbname value="CheapTripTravel"></dbname>
 
-<version value="3"></version>
+<version value="4"></version>
 
 <list>
     <mapping class ="com.example.three_pillar_cheaptriptravel.object.Event"></mapping>
     <mapping class ="com.example.three_pillar_cheaptriptravel.object.Place"></mapping>
     <mapping class ="com.example.three_pillar_cheaptriptravel.object.Schedule"></mapping>
+    <mapping class ="com.example.three_pillar_cheaptriptravel.object.Story"></mapping>
+
 </list>
 </litepal>

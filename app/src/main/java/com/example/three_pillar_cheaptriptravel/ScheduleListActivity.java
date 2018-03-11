@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.three_pillar_cheaptriptravel.Story.StoriesActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
@@ -120,6 +121,10 @@ public class ScheduleListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
+                break;
+            case R.id.t1:
+                Intent intent = new Intent(ScheduleListActivity.this, StoriesActivity.class);
+                startActivity(intent);
                 break;
             case R.id.create_schedele:
                 Schedule schedule = new Schedule();
