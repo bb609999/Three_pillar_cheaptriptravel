@@ -28,12 +28,23 @@ import okhttp3.Response;
 
 public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDialog.EventDialogListener{
 
-    private List<Event> eventList = DataSupport.findAll(Event.class);
+    //private List<Event> eventList = DataSupport.findAll(Event.class);
     private List<Place> placeList = DataSupport.findAll(Place.class);
-
+    private List<Event> eventList;
+    private int schedule_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        schedule_id = intent.getIntExtra("schedule_id",-1);
+        Log.d("0000", "onCreate: "+schedule_id);
+        eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
+        Log.d("0000", "onCreate: "+eventList.size());
+
+
+
+
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,6 +71,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 break;
             case R.id.action_add_event:
                 Intent search_intent = new Intent(ScheduleDisplayActivity.this, PlaceSearchActivity.class);
+                search_intent.putExtra("schedule_id",schedule_id);
                 finish();
                 startActivity(search_intent);
                 break;

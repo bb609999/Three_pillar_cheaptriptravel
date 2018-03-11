@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
                 Intent intent = new Intent(mContext, ScheduleDisplayActivity.class);
                 // intent.putExtra(scheduleActivity.schedule_NAME, schedule.getName());
                 // intent.putExtra(scheduleActivity.schedule_IMAGE_ID, schedule.getImageId());
+                intent.putExtra("schedule_id",schedule.getId());
+                Log.d(TAG, "onClick: "+schedule.getId());
                 mContext.startActivity(intent);
             }
         });

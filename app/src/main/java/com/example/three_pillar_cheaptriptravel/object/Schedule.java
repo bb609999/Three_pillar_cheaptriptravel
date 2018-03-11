@@ -26,7 +26,7 @@ public class Schedule extends DataSupport implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
-    
+
 
     public Schedule(String name, int imageId) {
         this.name = name;

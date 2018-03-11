@@ -117,10 +117,18 @@ public class PlaceSearchActivity extends AppCompatActivity{
                     }else {
 
                         Event event = new Event(place_selected.getPlaceName(), "not-defined yet", startTime_formatted, endTime_formatted, "not-defined yet");
+
+                        Intent intent = getIntent();
+                        int schedule_id = intent.getIntExtra("schedule_id",-1);
+                        Log.d(TAG, "onClick: "+schedule_id);
+
+                        event.setSchedule_id(schedule_id);
                         event.save();
 
                         Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
                         //add_intent.putExtra("PlaceName",place_Name);
+                        add_intent.putExtra("schedule_id",schedule_id);
+                        Log.d(TAG, "onClick: PUT"+schedule_id);
                         finish();
                         startActivity(add_intent);
                     }
