@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.Story.StoriesActivity;
+import com.example.three_pillar_cheaptriptravel.dialog.CreateScheduleDialog;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
@@ -127,19 +128,17 @@ public class ScheduleListActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.create_schedele:
-                Schedule schedule = new Schedule();
-                schedule.setName("Schedule");
-                schedule.setImageId(R.drawable.ap360);
-                schedule.save();
-
 
                 for(Schedule one_Schedule: Schedules ) {
                     Log.d("00002", " " + one_Schedule.getId()+" "+one_Schedule.getName()+one_Schedule.getImageId());
                 }
 
-                Intent refresh_intent = new Intent(ScheduleListActivity.this,ScheduleListActivity.class);
-                finish();
-                startActivity(refresh_intent);
+                CreateScheduleDialog createScheduleDialog = new CreateScheduleDialog();
+                createScheduleDialog.show(getSupportFragmentManager(), " CreateScheduleDialog");
+
+                //Intent refresh_intent = new Intent(ScheduleListActivity.this,ScheduleListActivity.class);
+                //finish();
+                //startActivity(refresh_intent);
 
 
                 break;
