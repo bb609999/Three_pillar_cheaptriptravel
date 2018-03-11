@@ -48,7 +48,7 @@ public class CreateScheduleDialog extends DialogFragment {
 
                         Schedule schedule = new Schedule();
                         schedule.setName(schedule_name);
-                        schedule.setImageId(R.drawable.ap360);
+                        schedule.setImageId(R.drawable.hk);
                         schedule.save();
 
                         CreateScheduleDialog.this.getActivity().finish();
