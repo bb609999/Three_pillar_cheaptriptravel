@@ -48,4 +48,6 @@ dependencies {
 
     compile 'com.getbase:floatingactionbutton:1.9.0'
 
+    compile 'com.zfdang.multiple-images-selector:multiple-images-selector:1.1.3'
+
 }
