@@ -51,6 +51,8 @@ public abstract class ScheduleDisplay extends AppCompatActivity implements WeekV
         // Set up a date time interpreter to interpret how the date and time will be formatted in
         // the week view. This is optional.
         setupDateTimeInterpreter(false);
+
+        mWeekView.goToHour(9);
     }
 
 
@@ -149,6 +151,7 @@ public abstract class ScheduleDisplay extends AppCompatActivity implements WeekV
     @Override
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
         Toast.makeText(this, "Long pressed event: " + event.getName(), Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -159,4 +162,5 @@ public abstract class ScheduleDisplay extends AppCompatActivity implements WeekV
     public WeekView getWeekView() {
         return mWeekView;
     }
+
 }

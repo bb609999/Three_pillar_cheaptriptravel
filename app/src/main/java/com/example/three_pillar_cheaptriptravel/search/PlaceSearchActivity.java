@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TimePicker;
@@ -37,6 +39,8 @@ public class PlaceSearchActivity extends AppCompatActivity{
     private com.example.three_pillar_cheaptriptravel.object.Place place_selected
             = new com.example.three_pillar_cheaptriptravel.object.Place();
 
+    private WebView webView;
+
 
 
 
@@ -46,6 +50,13 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_search);
+
+        webView = (WebView) findViewById(R.id.web_view);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setWebViewClient(new WebViewClient());
+        webView.loadUrl("https://www.google.com.hk/search?q=hong+kong&source=lnms&tbm=isch&" +
+                "sa=X&ved=0ahUKEwjH7YCElufZAhXFHJQKHScGCIoQ_AUICigB&biw=1536&bih=734");
+        webView.scrollBy(0,500);
 
 
 
@@ -151,13 +162,12 @@ public class PlaceSearchActivity extends AppCompatActivity{
 * set a filter returning only results with a precise address.
 */
         AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
-                .setTypeFilter(AutocompleteFilter.TYPE_FILTER_ADDRESS)
                 .build();
 
-        autocompleteFragment.setBoundsBias(new LatLngBounds(
+       autocompleteFragment.setBoundsBias(new LatLngBounds(
                 new LatLng(22.179338, 113.820305),
-                new LatLng(22.547751, 114.413402)
-        ));
+               new LatLng(22.547751, 114.413402)
+       ));
         autocompleteFragment.setFilter(typeFilter);
 
 
@@ -176,6 +186,12 @@ public class PlaceSearchActivity extends AppCompatActivity{
                 Log.d(TAG, "onPlaceSelected: "+round6(place.getLatLng().latitude));
 
                 place_selected.save();
+
+
+                webView.loadUrl("https://www.google.com.hk/search?q="+place.getName()+"&source=lnms" +
+                        "&tbm=isch&sa=X&ved=0ahUKEwjH7YCElufZAhXFHJQKHScGCIoQ_AUICigB&biw=1536&bih=734");
+
+
 
             }
 

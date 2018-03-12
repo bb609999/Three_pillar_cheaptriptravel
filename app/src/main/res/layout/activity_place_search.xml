@@ -13,6 +13,14 @@
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             />
 
+    <WebView
+        android:id="@+id/web_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6">
+
+    </WebView>
+
     <TextView
         android:text="Start Time"
         android:layout_width="match_parent"
