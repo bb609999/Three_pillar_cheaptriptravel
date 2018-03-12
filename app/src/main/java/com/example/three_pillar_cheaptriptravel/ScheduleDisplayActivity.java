@@ -29,6 +29,9 @@ import okhttp3.Response;
 public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDialog.EventDialogListener{
 
     //private List<Event> eventList = DataSupport.findAll(Event.class);
+
+    public final static String TAG = "ScheduleDisplayActivity";
+
     private List<Place> placeList = DataSupport.findAll(Place.class);
     private List<Event> eventList;
     private int schedule_id;
@@ -38,9 +41,10 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
         Intent intent = getIntent();
         schedule_id = intent.getIntExtra("schedule_id",-1);
-        Log.d("0000", "onCreate: "+schedule_id);
+        Log.d(TAG, "onCreate: "+"schedule_id = "+schedule_id);
+
         eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
-        Log.d("0000", "onCreate: "+eventList.size());
+        Log.d(TAG, "onCreate: "+"eventList.size = "+eventList.size());
 
 
 
@@ -53,13 +57,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
-
-
-
-
     }
-
 
 
     @Override
@@ -76,9 +74,6 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 startActivity(search_intent);
                 break;
             case R.id.action_calculate_path:
-
-
-
                 String address = "https://bb609999.herokuapp.com/api?loc=";
 
                 for(Place place:placeList){
@@ -94,6 +89,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                     address = address.substring(0,address.length()-1);
 
                 Log.d("00005", "onOptionsItemSelected: "+address);
+                Toast.makeText(this, address, Toast.LENGTH_SHORT).show();
 
 
                 //String address = "https://bb609999.herokuapp.com/api?loc=22.316279,114.180408%7C22.312441," +
@@ -105,7 +101,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                     }
 
                     @Override
-                    public void onResponse (Call call, Response response) throws IOException {
+                    public void onResponse (Call call, final Response response) throws IOException {
                         final String responseData = response.body().string();
                         Log.d("00003", "onResponse: " + responseData);
 
@@ -113,21 +109,29 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                             @Override
                             public void run() {
 
-                                //To a String array
-                                String newResponseData = responseData.replace("[","");
-                                newResponseData = newResponseData.replace("]","");
-                                newResponseData = newResponseData.replace("\"","");
+                                //0 is BestPath ; 1 is TotalDuration in seconds , 2 is PathDurationList
+                                String[] splitToThree = responseData.split("\\|");
+                                Log.d(TAG, "run: TotalDuration = "+splitToThree[0]);
 
-                                String[]splited = newResponseData.split(",");
+
+                                String[]splited = splitToThree[0].split(",");
                                 String[]joined = new String[splited.length/2];
 
                                 for(int i=0;i<splited.length/2;i++){
                                     joined[i] = splited[0+2*i]+","+splited[1+2*i];
                                 }
 
+                                String[] DurationList = splitToThree[2].split(",");
+
+
+                                Log.d(TAG, "run: TotalDuration = "+splitToThree[1]);
+
                                 Toast.makeText(ScheduleDisplayActivity.this, ""+ Arrays.toString(joined), Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(ScheduleDisplayActivity.this,ShortestPath_Map_Activity.class);
                                 intent.putExtra("places",joined);
+                                intent.putExtra("TotalDuration",splitToThree[1]);
+                                intent.putExtra("DurationList",DurationList);
+
                                 startActivity(intent);
                             }
                         });
@@ -151,18 +155,8 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
         Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 12);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth - 1);
-        startTime.set(Calendar.YEAR, newYear);
         Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, 1);
-        endTime.set(Calendar.MONTH, newMonth - 1);
-        WeekViewEvent event = new WeekViewEvent(100, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_01));
-        events.add(event);
-
-
+        WeekViewEvent event;
 
         for(Event an_event:eventList) {
 
@@ -190,132 +184,6 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
             events.add(event);
         }
 
-       /* startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 4);
-        endTime.set(Calendar.MINUTE, 30);
-        endTime.set(Calendar.MONTH, newMonth-1);
-        event = new WeekViewEvent(10, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_02));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 4);
-        startTime.set(Calendar.MINUTE, 20);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.HOUR_OF_DAY, 5);
-        endTime.set(Calendar.MINUTE, 0);
-        event = new WeekViewEvent(10, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_03));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 5);
-        startTime.set(Calendar.MINUTE, 30);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 2);
-        endTime.set(Calendar.MONTH, newMonth-1);
-        event = new WeekViewEvent(2, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_02));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 5);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth - 1);
-        startTime.set(Calendar.YEAR, newYear);
-        startTime.add(Calendar.DATE, 1);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        endTime.set(Calendar.MONTH, newMonth - 1);
-        event = new WeekViewEvent(3, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_03));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 15);
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        event = new WeekViewEvent(4, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_04));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 1);
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_01));
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, startTime.getActualMaximum(Calendar.DAY_OF_MONTH));
-        startTime.set(Calendar.HOUR_OF_DAY, 15);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 3);
-        event = new WeekViewEvent(5, getEventTitle(startTime), startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_02));
-        events.add(event);
-
-        //AllDay event
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 0);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 23);
-        event = new WeekViewEvent(7, getEventTitle(startTime),null, startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_04));
-        events.add(event);
-        events.add(event);
-
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 8);
-        startTime.set(Calendar.HOUR_OF_DAY, 2);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.DAY_OF_MONTH, 10);
-        endTime.set(Calendar.HOUR_OF_DAY, 23);
-        event = new WeekViewEvent(8, getEventTitle(startTime),null, startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_03));
-        events.add(event);
-
-        // All day event until 00:00 next day
-        startTime = Calendar.getInstance();
-        startTime.set(Calendar.DAY_OF_MONTH, 10);
-        startTime.set(Calendar.HOUR_OF_DAY, 0);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.SECOND, 0);
-        startTime.set(Calendar.MILLISECOND, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        endTime = (Calendar) startTime.clone();
-        endTime.set(Calendar.DAY_OF_MONTH, 11);
-        event.setColor(getResources().getColor(R.color.event_color_01));
-        events.add(event);*/
-
         return events;
     }
 
@@ -335,19 +203,25 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
     @Override
     public void onItemClick(android.support.v4.app.DialogFragment dialog, int which) {
         switch (which){
+
+            case 0:
+                break;
+            case 1:
+                break;
             case 2:
-
                 //restart Activity after Delete
-
-                Intent intent = new Intent(ScheduleDisplayActivity.this,ScheduleDisplayActivity.class);
-                finish();
-                startActivity(intent);
-
-
+                refreshDisplay();
+                break;
             default:
-
         }
+    }
 
+
+    public void refreshDisplay(){
+        Intent intent = new Intent(ScheduleDisplayActivity.this,ScheduleDisplayActivity.class);
+        intent.putExtra("schedule_id",schedule_id);
+        finish();
+        startActivity(intent);
     }
 
 }

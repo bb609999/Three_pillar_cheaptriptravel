@@ -14,8 +14,6 @@ import com.example.three_pillar_cheaptriptravel.object.Event;
 
 import org.litepal.crud.DataSupport;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 2018/3/9.
  */
@@ -60,30 +58,36 @@ public class EventDialog extends DialogFragment {
 
         builder.setTitle("Event")
                 .setItems(new String[]{"Place Detail","Change Time","Delete Event"}, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
 
                         switch (which){
+
+                            //CHANGE TIME
                             case 1:
-                                Date date = new Date();
-                                int hour = date.getHours();
-                                int minute = date.getMinutes();
 
                                 //EndTime
                                 TimePickerDialog timePickerDialog2 = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
                                     @Override
                                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+                                        //Get Event ID amd update that event
                                         Long id = getArguments().getLong("id");
                                         Event event = new Event();
-
 
                                         event.setEndTime(i+(i1/60.0));
                                         event.updateAll("id = ?", ""+id);
 
+                                        Boolean finished = false;
+
+                                        if(finished) {
+                                            dialog.dismiss();
+                                        }
+
 
                                     }
-                                },12,0,true);
+                                },13,0,true);
 
                                 timePickerDialog2.show();
 
@@ -112,6 +116,7 @@ public class EventDialog extends DialogFragment {
 
 
                             case 2:
+
                                 Long id = getArguments().getLong("id");
                                 DataSupport.deleteAll(Event.class,"id=?",""+id);
                                 break;
