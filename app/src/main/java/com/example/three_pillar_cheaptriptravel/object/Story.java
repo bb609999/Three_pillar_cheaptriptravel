@@ -11,6 +11,17 @@ public class Story extends DataSupport {
 
     private String img;
 
+    private int id;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getComment() {
         return comment;
     }

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.example.three_pillar_cheaptriptravel"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -48,6 +48,5 @@ dependencies {
 
     compile 'com.getbase:floatingactionbutton:1.9.0'
 
-    compile 'com.zfdang.multiple-images-selector:multiple-images-selector:1.1.3'
 
 }
