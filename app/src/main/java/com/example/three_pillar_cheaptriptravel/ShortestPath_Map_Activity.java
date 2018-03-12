@@ -106,7 +106,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
              Place place =  DataSupport.where("lat=?",""+latLngs[i].latitude).findFirst(Place.class);
 
             IconGenerator iconGenerator = new IconGenerator(ShortestPath_Map_Activity.this);
-            Bitmap bitmap =  iconGenerator.makeIcon(place.getPlaceName());
+            Bitmap bitmap =  iconGenerator.makeIcon(place.getPlaceName()+" ");
 
             mMap.addMarker(new MarkerOptions()
                     .position(latLngs[i])

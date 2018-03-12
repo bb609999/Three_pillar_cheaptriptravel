@@ -25,6 +25,9 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class PlaceSearchActivity extends AppCompatActivity{
 
 
@@ -167,8 +170,10 @@ public class PlaceSearchActivity extends AppCompatActivity{
                 Log.i(TAG, "onPlaceSelected: "+place.getLatLng());
 
                 place_selected.setPlaceName(place.getName().toString());
-                place_selected.setLat(place.getLatLng().latitude);
-                place_selected.setLng(place.getLatLng().longitude);
+                place_selected.setLat(round6(place.getLatLng().latitude));
+                place_selected.setLng(round6(place.getLatLng().longitude));
+
+                Log.d(TAG, "onPlaceSelected: "+round6(place.getLatLng().latitude));
 
                 place_selected.save();
 
@@ -212,6 +217,10 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
             }
         }
+    }
+
+    public double  round6(Double val) {
+        return new BigDecimal(val.toString()).setScale(6, RoundingMode.HALF_UP).doubleValue();
     }
 
 
