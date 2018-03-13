@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.example.three_pillar_cheaptriptravel.Story.StoriesActivity;
 import com.example.three_pillar_cheaptriptravel.dialog.CreateScheduleDialog;
 import com.example.three_pillar_cheaptriptravel.object.Event;
-import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.object.ScheduleAdapter;
 
@@ -38,21 +37,27 @@ public class ScheduleListActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeRefresh;
 
-    private List<Schedule> Schedules = DataSupport.findAll(Schedule.class);
+    private List<Schedule> Schedules;
 
     private ScheduleAdapter adapter;
+
+    private final static String TAG = "ScheduleListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_schedule_list);
 
-        //CreateDataBase of Event
+        //CreateDataBase of Event if not exsit
         Connector.getDatabase();
 
+        //Query Schedule, return all schedule user create
+        Schedules = DataSupport.findAll(Schedule.class);
 
+        //Toolbar
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         //DrawerLayout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBar actionBar = getSupportActionBar();
@@ -88,8 +93,7 @@ public class ScheduleListActivity extends AppCompatActivity {
             }
         });
 
-        //CardView
-        //initSchedules();
+        //CardView Display of Schedule
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         GridLayoutManager layoutManager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(layoutManager);
@@ -128,44 +132,23 @@ public class ScheduleListActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.create_schedele:
-
-                for(Schedule one_Schedule: Schedules ) {
-                    Log.d("00002", " " + one_Schedule.getId()+" "+one_Schedule.getName()+one_Schedule.getImageId());
-                }
-
                 CreateScheduleDialog createScheduleDialog = new CreateScheduleDialog();
                 createScheduleDialog.show(getSupportFragmentManager(), " CreateScheduleDialog");
-
-                //Intent refresh_intent = new Intent(ScheduleListActivity.this,ScheduleListActivity.class);
-                //finish();
-                //startActivity(refresh_intent);
-
-
                 break;
-
             case R.id.f1:
-                List<Place> Places = DataSupport.findAll(Place.class);
-
-                for(Place one_Place: Places ) {
-                    Log.d("00002", " " + one_Place.getPlaceName()+one_Place.getLat()+one_Place.getLng());
-                }
-
                 break;
             case R.id.f2:
-                Event event = new Event("OUHK","school",3.5,3.5,"visit school");
-
-                event.save();
-
                 break;
             case R.id.settings:
                 List<Event> Events = DataSupport.findAll(Event.class);
 
                 for(Event one_event: Events ) {
-                    Log.d("00002", " " + one_event.getId()+one_event.getPlaceName()+one_event.getDescription()
+                    Log.d("TAG", "Event " + one_event.getId()+one_event.getPlaceName()+one_event.getDescription()
                     +one_event.getStartTime()+one_event.getEndTime()+one_event.getSchedule_id());
                 }
-
-
+                for(Schedule one_Schedule: Schedules ) {
+                    Log.d("TAG", "Place " + one_Schedule.getId()+" "+one_Schedule.getName()+one_Schedule.getImageId());
+                }
 
                 break;
             default:
@@ -186,12 +169,6 @@ public class ScheduleListActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       // Schedules.clear();
-                        //Schedules = DataSupport.findAll(Schedule.class);
-
-                        //Log.d("133333", "run: "+Schedules.size());
-
-                        //adapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
 
                     }

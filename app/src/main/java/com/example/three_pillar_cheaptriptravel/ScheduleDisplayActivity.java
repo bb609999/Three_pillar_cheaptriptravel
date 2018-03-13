@@ -28,26 +28,21 @@ import okhttp3.Response;
 
 public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDialog.EventDialogListener{
 
-    //private List<Event> eventList = DataSupport.findAll(Event.class);
 
     public final static String TAG = "ScheduleDisplayActivity";
 
-    private List<Place> placeList = DataSupport.findAll(Place.class);
+    private List<Place> placeList;
     private List<Event> eventList;
     private int schedule_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Get Event under specific schedule id
+        placeList = DataSupport.findAll(Place.class);
         Intent intent = getIntent();
         schedule_id = intent.getIntExtra("schedule_id",-1);
-        Log.d(TAG, "onCreate: "+"schedule_id = "+schedule_id);
-
         eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
-        Log.d(TAG, "onCreate: "+"eventList.size = "+eventList.size());
-
-
-
 
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,6 +54,16 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: ");
+        //Get Event under specific schedule id
+        placeList = DataSupport.findAll(Place.class);
+        Intent intent = getIntent();
+        schedule_id = intent.getIntExtra("schedule_id",-1);
+        eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -73,13 +78,12 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 finish();
                 startActivity(search_intent);
                 break;
+
             case R.id.action_calculate_path:
                 String address = "https://bb609999.herokuapp.com/api?loc=";
 
                 for(Place place:placeList){
                     for(Event event:eventList){
-                        Log.d("00005", "onOptionsItemSelected: "+place.getPlaceName());
-                        Log.d("00005", "onOptionsItemSelected: "+event.getPlaceName());
                         if(place.getPlaceName().equals(event.getPlaceName())){
                             address += ""+place.getLat()+","+place.getLng()+"|";
                         }
@@ -88,22 +92,18 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
                     address = address.substring(0,address.length()-1);
 
-                Log.d("00005", "onOptionsItemSelected: "+address);
-                Toast.makeText(this, address, Toast.LENGTH_SHORT).show();
 
+                Log.d("TAG", "onOptionsItemSelected: address"+address);
 
-                //String address = "https://bb609999.herokuapp.com/api?loc=22.316279,114.180408%7C22.312441," +
-                //        "114.225046%7C22.310602,114.187868%7C22.308235,114.185765%7C22.320165,114.208168";
                 HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-
                     }
 
                     @Override
                     public void onResponse (Call call, final Response response) throws IOException {
                         final String responseData = response.body().string();
-                        Log.d("00003", "onResponse: " + responseData);
+                        Log.d("TAG", "onResponse: " + responseData);
 
                         runOnUiThread(new Runnable() {
                             @Override
@@ -154,33 +154,38 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         // Populate the week view with some events.
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
-        Calendar startTime = Calendar.getInstance();
-        Calendar endTime = (Calendar) startTime.clone();
-        WeekViewEvent event;
 
+
+        int Color_count = 0;
         for(Event an_event:eventList) {
 
+            Calendar startTime = Calendar.getInstance();
+            Calendar endTime = Calendar.getInstance();
+            WeekViewEvent event;
+
             int start_hour = (int)an_event.getStartTime();
-
             int start_minute = (int) Math.round((an_event.getStartTime()-start_hour)*60.0);
-
             int end_hour = (int)an_event.getEndTime();
-
             int end_minute = (int) Math.round((an_event.getEndTime()-end_hour)*60.0);
 
 
-            startTime = Calendar.getInstance();
             startTime.set(Calendar.HOUR_OF_DAY, start_hour);
             startTime.set(Calendar.MINUTE, start_minute);
             startTime.set(Calendar.MONTH, newMonth - 1);
             startTime.set(Calendar.YEAR, newYear);
-            endTime = (Calendar) startTime.clone();
             endTime.set(Calendar.HOUR_OF_DAY, end_hour);
             endTime.set(Calendar.MINUTE, end_minute);
             endTime.set(Calendar.MONTH, newMonth - 1);
+            endTime.set(Calendar.YEAR, newYear);
+
             event = new WeekViewEvent(an_event.getId(), getEventTitle(startTime), startTime, endTime);
-            event.setColor(getResources().getColor(R.color.event_color_02));
-            event.setName(an_event.getPlaceName()+"\n"+start_hour+":"+start_minute+" to "+end_hour+":"+end_minute);
+
+            int[] colors = {R.color.event_color_01,R.color.event_color_02,R.color.event_color_03,R.color.event_color_04};
+
+            event.setColor(getResources().getColor(colors[Color_count++%4]));
+
+            event.setName(an_event.getPlaceName()+"\n"+
+                    formatTime(start_hour,start_minute)+" to "+formatTime(end_hour,end_minute));
             events.add(event);
         }
 
@@ -195,9 +200,8 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
         EventDialog eventDialog = new EventDialog().newInstance(event.getId());
 
-
-
         eventDialog.show(getSupportFragmentManager(), " EventDialog");
+
     }
 
     @Override
@@ -205,6 +209,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         switch (which){
 
             case 0:
+
                 break;
             case 1:
                 break;
@@ -222,6 +227,13 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         intent.putExtra("schedule_id",schedule_id);
         finish();
         startActivity(intent);
+    }
+
+    public String formatTime(int hour,int minute){
+        String hour_formatted =  hour <10 ? "0"+hour : ""+hour;
+        String minute_formatted =  minute <10 ? "0"+minute : ""+minute;
+
+        return hour_formatted+":"+minute_formatted;
     }
 
 }

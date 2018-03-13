@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -19,6 +20,9 @@ import org.litepal.crud.DataSupport;
  */
 
 public class EventDialog extends DialogFragment {
+
+    Activity activity;
+    Context context;
 
     public static EventDialog newInstance(long id) {
         EventDialog eventDialog = new EventDialog();
@@ -39,9 +43,11 @@ public class EventDialog extends DialogFragment {
 
     EventDialogListener mListener;
 
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        this.activity = activity;
         try{
             mListener = (EventDialogListener) activity;
         }catch (ClassCastException e){
@@ -50,11 +56,17 @@ public class EventDialog extends DialogFragment {
         }
     }
 
-
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+
 
         builder.setTitle("Event")
                 .setItems(new String[]{"Place Detail","Change Time","Delete Event"}, new DialogInterface.OnClickListener() {
@@ -79,16 +91,12 @@ public class EventDialog extends DialogFragment {
                                         event.setEndTime(i+(i1/60.0));
                                         event.updateAll("id = ?", ""+id);
 
-                                        Boolean finished = false;
-
-                                        if(finished) {
-                                            dialog.dismiss();
-                                        }
 
 
                                     }
                                 },13,0,true);
 
+                                timePickerDialog2.setTitle("End Time");
                                 timePickerDialog2.show();
 
 
@@ -106,6 +114,8 @@ public class EventDialog extends DialogFragment {
                                     }
                                 },12,0,true);
 
+
+                                timePickerDialog.setTitle("Start Time");
                                 timePickerDialog.show();
 
 
