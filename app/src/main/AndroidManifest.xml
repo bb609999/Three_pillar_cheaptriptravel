@@ -49,6 +49,18 @@
                 android:resource="@xml/file_paths"
                 />
         </provider>
+        <activity
+            android:name="com.album.ui.activity.AlbumActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="com.album.ui.activity.PreviewActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".Story.camera.SimpleCameraActivity" />
+
     </application>
 
 </manifest>

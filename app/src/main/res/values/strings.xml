@@ -9,4 +9,31 @@
     <string name="title_activity_asynchronous">Asynchronous Events</string>
     <string name="async_error">Could not download events from the internet</string>
     <string name="title_activity_stories">Stories</string>
+
+    <string name="flash_auto">Flash auto</string>
+    <string name="flash_off">Flash off</string>
+    <string name="flash_on">Flash on</string>
+    <string name="video_tips">Recoring Video</string>
+    <string name="album_video_title">select the video</string>
+    <string name="picture_taken">Picture taken</string>
+    <string name="aspect_ratio">Aspect ratio</string>
+    <string name="switch_camera">Switch camera</string>
+
+    <string name="record_fail">record fail</string>
+    <string name="time_too_short">time too short, please try again</string>
+    <string name="play_over">end</string>
+    <string name="play_error">Sorry, error occur</string>
+    <string name="stop_by_up">please leave on the button and stop</string>
+    <string name="speak_by_press">hold and speak</string>
+    <string name="start_record">start</string>
+    <string name="stop_record">stop</string>
+
+    <string name="album_name">Select Photo</string>
+    <string name="album_preview">Preview</string>
+    <string name="album_select">select</string>
+    <string name="album_all">All</string>
+    <string name="preview_title">Seclect</string>
+    <string name="preview_select">confirm</string>
+    <string name="album_image_camera_tv_tips">camera</string>
+    <string name="album_preview_count">0</string>
 </resources>

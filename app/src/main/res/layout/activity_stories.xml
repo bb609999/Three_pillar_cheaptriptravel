@@ -37,24 +37,30 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-
         app:fab_labelStyle="@style/menu_labels_style"
-
         >
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_camera"
+            android:id="@+id/change_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_icon="@drawable/ic_content_cut_black_24dp"
+            app:fab_colorPressed="#f1f1f1"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_icon="@drawable/ic_add_a_photo_black_24dp"
             app:fab_colorPressed="#f1f1f1"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/action_add_photo"
+            android:id="@+id/add_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fab_icon="@drawable/ic_add_to_photos_black_24dp"
             app:fab_colorPressed="#f1f1f1"/>
+
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/action_delete"
             android:layout_width="wrap_content"
