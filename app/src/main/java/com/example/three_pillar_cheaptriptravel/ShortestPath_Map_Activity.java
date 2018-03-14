@@ -70,14 +70,18 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
             public void onClick(View view) {
                 List<Event> eventList = DataSupport.where("schedule_id=?",""+schedule_id).find(Event.class);
 
-
+                Double time = 0.0;
                 for(int i =0;i<eventList.size();i++) {
                     Place place = DataSupport.where("lat=? AND lng=?",""+latLngs[i].latitude,
                             ""+latLngs[i].longitude).findFirst(Place.class);
                     Log.d("Place", "onClick: "+place.getPlaceName());
+
+                    double travel_time = i>0?Double.valueOf(DurationList[i-1])/3600:0;
+                    time += travel_time;
+
                     Event event = new Event();
-                    event.setStartTime(9+2*i);
-                    event.setEndTime(11+2*i);
+                    event.setStartTime(9+2*i+time);
+                    event.setEndTime(11+2*i+time);
                     event.updateAll("placeName=?",place.getPlaceName());
                 }
 
@@ -124,7 +128,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
         mMap.setOnMapLongClickListener(this);
         mMap.setOnCameraIdleListener(this);
 
-        mPolylines = new PolylineOptions().add(latLngs).width(5);
+        mPolylines = new PolylineOptions().add(latLngs).width(2);
 
         mMap.addPolyline(mPolylines);
 
