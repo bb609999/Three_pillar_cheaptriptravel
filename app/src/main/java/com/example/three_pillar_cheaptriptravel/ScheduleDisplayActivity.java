@@ -131,7 +131,9 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                                 intent.putExtra("places",joined);
                                 intent.putExtra("TotalDuration",splitToThree[1]);
                                 intent.putExtra("DurationList",DurationList);
+                                intent.putExtra("schedule_id",schedule_id);
 
+                                finish();
                                 startActivity(intent);
                             }
                         });

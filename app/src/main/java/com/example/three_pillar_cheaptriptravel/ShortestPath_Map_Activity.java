@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.three_pillar_cheaptriptravel.object.Event;
@@ -46,7 +48,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shortest_path__map_);
 
@@ -56,10 +58,33 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
 
         TotalDurationText = (TextView)findViewById(R.id.TotalDurationText);
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         String[] places = intent.getStringArrayExtra("places");
         String TotalDuration  = intent.getStringExtra("TotalDuration");
         DurationList = intent.getStringArrayExtra("DurationList");
+        final int schedule_id = intent.getIntExtra("schedule_id",-1);
+
+        Button apply_schedule = (Button)findViewById(R.id.apply_schedule);
+        apply_schedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                List<Event> eventList = DataSupport.where("schedule_id=?",""+schedule_id).find(Event.class);
+
+                for(int i=0;i<eventList.size();i++){
+                    Event event = new Event();
+                    event.setStartTime(9+2*i);
+                    event.setEndTime(11+2*i);
+                    event.update(eventList.get(i).getId());
+                }
+                Intent intent1 = new Intent(ShortestPath_Map_Activity.this,ScheduleDisplayActivity.class);
+                intent1.putExtra("schedule_id",schedule_id);
+                finish();
+                startActivity(intent1);
+
+            }
+        });
+
+
 
         for(String i:DurationList){
             Log.d("DurationList", "onCreate: "+ i);
