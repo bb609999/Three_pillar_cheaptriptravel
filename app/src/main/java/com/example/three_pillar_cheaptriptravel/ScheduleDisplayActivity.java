@@ -19,7 +19,6 @@ import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -103,40 +102,54 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                     @Override
                     public void onResponse (Call call, final Response response) throws IOException {
                         final String responseData = response.body().string();
-                        Log.d("TAG", "onResponse: " + responseData);
+                        Log.d("TAG", "onResponse: responseData: " + responseData);
 
+                        //If result return
+                        if(responseData.equals("No Result")) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(ScheduleDisplayActivity.this, "No Result", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }else
+                            {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
 
-                                //0 is BestPath ; 1 is TotalDuration in seconds , 2 is PathDurationList
-                                String[] splitToThree = responseData.split("\\|");
-                                Log.d(TAG, "run: TotalDuration = "+splitToThree[0]);
 
 
-                                String[]splited = splitToThree[0].split(",");
-                                String[]joined = new String[splited.length/2];
 
-                                for(int i=0;i<splited.length/2;i++){
-                                    joined[i] = splited[0+2*i]+","+splited[1+2*i];
+                                    //0 is BestPath ; 1 is TotalDuration in seconds , 2 is PathDurationList
+                                    String[] splitToThree = responseData.split("\\|");
+                                    Log.d(TAG, "run: TotalDuration = " + splitToThree[0]);
+
+
+                                    String[] splited = splitToThree[0].split(",");
+                                    String[] joined = new String[splited.length / 2];
+
+                                    for (int i = 0; i < splited.length / 2; i++) {
+                                        joined[i] = splited[0 + 2 * i] + "," + splited[1 + 2 * i];
+                                    }
+
+                                    String[] DurationList = splitToThree[2].split(",");
+
+
+                                    Log.d(TAG, "run: TotalDuration = " + splitToThree[1]);
+
+                                    Intent intent = new Intent(ScheduleDisplayActivity.this, ShortestPath_Map_Activity.class);
+                                    intent.putExtra("places", joined);
+                                    intent.putExtra("TotalDuration", splitToThree[1]);
+                                    intent.putExtra("DurationList", DurationList);
+                                    intent.putExtra("schedule_id", schedule_id);
+
+                                    finish();
+                                    startActivity(intent);
                                 }
 
-                                String[] DurationList = splitToThree[2].split(",");
-
-
-                                Log.d(TAG, "run: TotalDuration = "+splitToThree[1]);
-
-                                Toast.makeText(ScheduleDisplayActivity.this, ""+ Arrays.toString(joined), Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(ScheduleDisplayActivity.this,ShortestPath_Map_Activity.class);
-                                intent.putExtra("places",joined);
-                                intent.putExtra("TotalDuration",splitToThree[1]);
-                                intent.putExtra("DurationList",DurationList);
-                                intent.putExtra("schedule_id",schedule_id);
-
-                                finish();
-                                startActivity(intent);
-                            }
                         });
+                        }
                     }
                 });
 

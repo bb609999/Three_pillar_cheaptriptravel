@@ -70,12 +70,17 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
             public void onClick(View view) {
                 List<Event> eventList = DataSupport.where("schedule_id=?",""+schedule_id).find(Event.class);
 
-                for(int i=0;i<eventList.size();i++){
+
+                for(int i =0;i<eventList.size();i++) {
+                    Place place = DataSupport.where("lat=? AND lng=?",""+latLngs[i].latitude,
+                            ""+latLngs[i].longitude).findFirst(Place.class);
+                    Log.d("Place", "onClick: "+place.getPlaceName());
                     Event event = new Event();
                     event.setStartTime(9+2*i);
                     event.setEndTime(11+2*i);
-                    event.update(eventList.get(i).getId());
+                    event.updateAll("placeName=?",place.getPlaceName());
                 }
+
                 Intent intent1 = new Intent(ShortestPath_Map_Activity.this,ScheduleDisplayActivity.class);
                 intent1.putExtra("schedule_id",schedule_id);
                 finish();
