@@ -203,12 +203,24 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
            int DAY_OF_WEEK = startTime.get(Calendar.DAY_OF_WEEK);
 
+           String OpeningHour = OpeningHourList[DAY_OF_WEEK];
+
 
             event.setColor(getResources().getColor(colors[Color_count++%4]));
 
             String text = an_event.getPlaceName()+"\n"+
-                    formatTime(start_hour,start_minute)+" to "+formatTime(end_hour,end_minute)+
-                    "\n Opening Hour = "+OpeningHourList[DAY_OF_WEEK];
+                    formatTime(start_hour,start_minute)+"-"+formatTime(end_hour,end_minute)+
+                    "\n Opening Hour = "+OpeningHour;
+
+            if(start_hour<Integer.valueOf(OpeningHour.substring(1,3))||end_hour>Integer.valueOf(OpeningHour.substring(6,8))){
+                 text = "Exceed Open Hour\n" + text;
+            }
+
+            if (start_hour==Integer.valueOf(OpeningHour.substring(1,3))||end_hour==Integer.valueOf(OpeningHour.substring(6,8))){
+                if(start_minute<Integer.valueOf(OpeningHour.substring(3,5))||end_minute>Integer.valueOf(OpeningHour.substring(8,10))) {
+                    text = "Exceed Open Hour\n" + text;
+                }
+            }
 
             event.setName(text);
 
