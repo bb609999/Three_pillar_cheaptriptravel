@@ -171,7 +171,6 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
 
 
-        int Color_count = 0;
         for(Event an_event:eventList) {
 
             Calendar startTime = Calendar.getInstance();
@@ -206,19 +205,26 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
            String OpeningHour = OpeningHourList[DAY_OF_WEEK];
 
 
-            event.setColor(getResources().getColor(colors[Color_count++%4]));
+            event.setColor(getResources().getColor(R.color.event_color_black));
 
             String text = an_event.getPlaceName()+"\n"+
                     formatTime(start_hour,start_minute)+"-"+formatTime(end_hour,end_minute)+
                     "\n Opening Hour = "+OpeningHour;
 
-            if(start_hour<Integer.valueOf(OpeningHour.substring(1,3))||end_hour>Integer.valueOf(OpeningHour.substring(6,8))){
-                 text = "Exceed Open Hour\n" + text;
-            }
-
-            if (start_hour==Integer.valueOf(OpeningHour.substring(1,3))||end_hour==Integer.valueOf(OpeningHour.substring(6,8))){
-                if(start_minute<Integer.valueOf(OpeningHour.substring(3,5))||end_minute>Integer.valueOf(OpeningHour.substring(8,10))) {
+            //not null
+            if(OpeningHour!=null) {
+                if (start_hour < Integer.valueOf(OpeningHour.substring(1, 3)) || end_hour > Integer.valueOf(OpeningHour.substring(6, 8))) {
                     text = "Exceed Open Hour\n" + text;
+                    event.setColor(getResources().getColor(R.color.event_color_02));
+
+                }
+
+                if (start_hour == Integer.valueOf(OpeningHour.substring(1, 3)) || end_hour == Integer.valueOf(OpeningHour.substring(6, 8))) {
+                    if (start_minute < Integer.valueOf(OpeningHour.substring(3, 5)) || end_minute > Integer.valueOf(OpeningHour.substring(8, 10))) {
+                        text = "Exceed Open Hour\n" + text;
+                        event.setColor(getResources().getColor(R.color.event_color_02));
+
+                    }
                 }
             }
 
