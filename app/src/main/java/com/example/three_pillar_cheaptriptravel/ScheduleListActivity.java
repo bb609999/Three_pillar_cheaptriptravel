@@ -23,6 +23,7 @@ import android.widget.Toast;
 import com.example.three_pillar_cheaptriptravel.Story.StoriesActivity;
 import com.example.three_pillar_cheaptriptravel.dialog.CreateScheduleDialog;
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.object.ScheduleAdapter;
 
@@ -141,14 +142,20 @@ public class ScheduleListActivity extends AppCompatActivity {
                 break;
             case R.id.settings:
                 List<Event> Events = DataSupport.findAll(Event.class);
+                List<Place> Places = DataSupport.findAll(Place.class);
 
                 for(Event one_event: Events ) {
-                    Log.d("TAG", "Event " + one_event.getId()+one_event.getPlaceName()+one_event.getDescription()
-                    +one_event.getStartTime()+one_event.getEndTime()+one_event.getSchedule_id());
+                    Log.d(TAG, "onOptionsItemSelected: "+one_event.toString());
                 }
                 for(Schedule one_Schedule: Schedules ) {
-                    Log.d("TAG", "Place " + one_Schedule.getId()+" "+one_Schedule.getName()+one_Schedule.getImageId());
+                    Log.d("TAG", "Schedule " + one_Schedule.getId()+" "+one_Schedule.getName()+one_Schedule.getImageId());
                 }
+                for(Place one_Place: Places ) {
+                    Log.d(TAG, "onOptionsItemSelected: "+one_Place.toString());
+                }
+
+
+
 
                 break;
             default:

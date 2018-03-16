@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.ScheduleDisplayActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -27,8 +28,14 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import org.litepal.crud.DataSupport;
+
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class PlaceSearchActivity extends AppCompatActivity{
 
@@ -40,6 +47,8 @@ public class PlaceSearchActivity extends AppCompatActivity{
             = new com.example.three_pillar_cheaptriptravel.object.Place();
 
     private WebView webView;
+
+    private com.example.three_pillar_cheaptriptravel.object.Place place_exist;
 
 
 
@@ -137,6 +146,12 @@ public class PlaceSearchActivity extends AppCompatActivity{
                         Log.d(TAG, "onClick: "+schedule_id);
 
                         event.setSchedule_id(schedule_id);
+
+                        if(place_exist!=null){
+                            event.setPlace_id(place_exist.getId());
+                        }else {
+                            event.setPlace_id(place_selected.getId());
+                        }
                         event.save();
 
                         Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
@@ -179,13 +194,31 @@ public class PlaceSearchActivity extends AppCompatActivity{
                 Log.i(TAG, "onPlaceSelected: "+place.toString());
                 Log.i(TAG, "onPlaceSelected: "+place.getLatLng());
 
-                place_selected.setPlaceName(place.getName().toString());
-                place_selected.setLat(round6(place.getLatLng().latitude));
-                place_selected.setLng(round6(place.getLatLng().longitude));
+
+                String placeName = place.getName().toString();
+                double lat = round6(place.getLatLng().latitude);
+                double lng = round6(place.getLatLng().longitude);
+
+                place_selected.setPlaceName(placeName);
+                place_selected.setLat(lat);
+                place_selected.setLng(lng);
+
+
 
                 Log.d(TAG, "onPlaceSelected: "+round6(place.getLatLng().latitude));
 
-                place_selected.save();
+                //if exist, dont add anymore
+                 place_exist =
+                        DataSupport.where("placeName=? AND lat=? AND lng=?",placeName,""+lat,""+lng)
+                                .findFirst(com.example.three_pillar_cheaptriptravel.object.Place.class);
+
+                Log.d(TAG, "onPlaceSelected: "+(place_exist==null));
+
+                if(place_exist==null) {
+                    place_selected.save();
+
+                    updateOpeningHour(place_selected.getId(), placeName, lat, lng);
+                }
 
 
                 webView.loadUrl("https://www.google.com.hk/search?q="+place.getName()+"&source=lnms" +
@@ -237,6 +270,43 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
     public double  round6(Double val) {
         return new BigDecimal(val.toString()).setScale(6, RoundingMode.HALF_UP).doubleValue();
+    }
+
+    public void updateOpeningHour(final int place_id, String keyword, double lat, double lng){
+        String address = "https://bb609999.herokuapp.com/api/place/openinghour?keyword=" +
+                keyword.replace(" ","")+"&lat="+lat+"&lng="+lng;
+
+        Log.d(TAG, "setOpenningHour: "+address);
+
+        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String responseData = response.body().string();
+                //["1000-1900","1000-1800","1000-1800","1000-1800",null,"1000-1800","1000-1900"]
+                Log.d("TAG", "onResponse: responseData: " + responseData);
+
+
+                com.example.three_pillar_cheaptriptravel.object.Place place = new com.example.three_pillar_cheaptriptravel.object.Place();
+
+                if (responseData.length()>10) {
+                    String formatOpeningHour = responseData;
+                    formatOpeningHour = formatOpeningHour.substring(1, responseData.length() - 1);
+                    place.setOpeningHour(formatOpeningHour);
+                    Log.d(TAG, "onResponse: "+(responseData != "No Result"));
+
+
+                place.updateAll("id=?", "" + place_id);
+                    }
+
+
+
+
+            }
+        });
     }
 
 

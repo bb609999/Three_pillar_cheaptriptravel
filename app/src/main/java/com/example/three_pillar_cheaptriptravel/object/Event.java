@@ -100,4 +100,18 @@ public class Event extends DataSupport implements Serializable{
     public void setPlace_id(int place_id) {
         Place_id = place_id;
     }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", placeName='" + placeName + '\'' +
+                ", type='" + type + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", description='" + description + '\'' +
+                ", Schedule_id=" + Schedule_id +
+                ", Place_id=" + Place_id +
+                '}';
+    }
 }

@@ -8,6 +8,8 @@ import org.litepal.crud.DataSupport;
 
 public class Place extends DataSupport{
 
+    private int id;
+
     private String placeName;
 
     private String address;
@@ -17,6 +19,8 @@ public class Place extends DataSupport{
     private double lat;
 
     private double lng;
+
+    private String openingHour;
 
     private String description;
 
@@ -68,5 +72,35 @@ public class Place extends DataSupport{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getOpeningHour() {
+        return openingHour;
+    }
+
+    public void setOpeningHour(String openingHour) {
+        this.openingHour = openingHour;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "id=" + id +
+                ", placeName='" + placeName + '\'' +
+                ", address='" + address + '\'' +
+                ", imgLink='" + imgLink + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                ", openingHour='" + openingHour + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

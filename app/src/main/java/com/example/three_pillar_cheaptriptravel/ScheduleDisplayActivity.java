@@ -197,10 +197,21 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
             int[] colors = {R.color.event_color_01,R.color.event_color_02,R.color.event_color_03,R.color.event_color_04};
 
+            //Opening hour
+            Place place = DataSupport.where("id=?",""+an_event.getPlace_id()).findFirst(Place.class);
+           String[] OpeningHourList = (place.getOpeningHour()!=null)?place.getOpeningHour().split(","):new String[7];
+
+           int DAY_OF_WEEK = startTime.get(Calendar.DAY_OF_WEEK);
+
+
             event.setColor(getResources().getColor(colors[Color_count++%4]));
 
-            event.setName(an_event.getPlaceName()+"\n"+
-                    formatTime(start_hour,start_minute)+" to "+formatTime(end_hour,end_minute));
+            String text = an_event.getPlaceName()+"\n"+
+                    formatTime(start_hour,start_minute)+" to "+formatTime(end_hour,end_minute)+
+                    "\n Opening Hour = "+OpeningHourList[DAY_OF_WEEK];
+
+            event.setName(text);
+
             events.add(event);
         }
 
