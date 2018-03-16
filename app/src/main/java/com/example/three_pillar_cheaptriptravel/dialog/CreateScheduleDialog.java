@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.three_pillar_cheaptriptravel.R;
@@ -41,14 +42,21 @@ public class CreateScheduleDialog extends DialogFragment {
                         // sign in the user ...
                         EditText editText = (EditText)
                                 CreateScheduleDialog.this.getDialog().findViewById(R.id.schedule_name_create);
-
                         String schedule_name = editText.getText().toString();
+
+                        DatePicker datePicker = (DatePicker)
+                                CreateScheduleDialog.this.getDialog().findViewById(R.id.schedule_date);
+
+                        String date = datePicker.getYear()+"-"+(datePicker.getMonth()+1)+"-"+datePicker.getDayOfMonth();
+
+                        Log.d("datepicker", "onClick: "+date);
 
                         Log.d("schedule_name", "onClick: "+schedule_name);
 
                         Schedule schedule = new Schedule();
                         schedule.setName(schedule_name);
                         schedule.setImageId(R.drawable.hk);
+                        schedule.setDate(date);
                         schedule.save();
 
                         CreateScheduleDialog.this.getActivity().finish();

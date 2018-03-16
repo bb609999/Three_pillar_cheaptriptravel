@@ -21,4 +21,13 @@
         android:layout_marginBottom="4dp"
         android:hint="Schedule Name" />
 
+    <DatePicker
+        android:id="@+id/schedule_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:datePickerMode="calendar"
+       >
+
+    </DatePicker>
+
 </LinearLayout>

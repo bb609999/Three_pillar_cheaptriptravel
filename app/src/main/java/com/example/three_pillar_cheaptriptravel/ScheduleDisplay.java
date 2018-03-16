@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
-import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 
@@ -17,8 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public abstract class ScheduleDisplay extends AppCompatActivity implements WeekView.EventClickListener,
-        MonthLoader.MonthChangeListener, WeekView.EventLongPressListener,
+public abstract class ScheduleDisplay extends AppCompatActivity implements WeekView.EventClickListener, WeekView.EventLongPressListener,
         WeekView.EmptyViewLongPressListener {
     private static final int TYPE_DAY_VIEW = 1;
     private static final int TYPE_THREE_DAY_VIEW = 2;
@@ -40,7 +38,7 @@ public abstract class ScheduleDisplay extends AppCompatActivity implements WeekV
 
         // The week view has infinite scrolling horizontally. We have to provide the events of a
         // month every time the month changes on the week view.
-        mWeekView.setMonthChangeListener(this);
+       // mWeekView.setMonthChangeListener(this);
 
         // Set long press listener for events.
         mWeekView.setEventLongPressListener(this);

@@ -16,6 +16,8 @@ public class Schedule extends DataSupport implements Serializable {
 
     private int imageId;
 
+    private String date;
+
     public Schedule() {
     }
 
@@ -47,6 +49,14 @@ public class Schedule extends DataSupport implements Serializable {
 
     public void setImageId(int imageId) {
         this.imageId = imageId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
 
