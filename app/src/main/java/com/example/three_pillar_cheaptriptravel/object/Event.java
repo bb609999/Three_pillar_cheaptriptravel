@@ -24,6 +24,8 @@ public class Event extends DataSupport implements Serializable{
 
     private int Schedule_id;
 
+    private int Place_id;
+
     public Event() {
     }
 
@@ -89,5 +91,13 @@ public class Event extends DataSupport implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getPlace_id() {
+        return Place_id;
+    }
+
+    public void setPlace_id(int place_id) {
+        Place_id = place_id;
     }
 }
