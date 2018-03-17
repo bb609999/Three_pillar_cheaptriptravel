@@ -1,5 +1,6 @@
 package com.example.three_pillar_cheaptriptravel;
 
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekViewEvent;
@@ -110,13 +112,56 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         switch (which) {
 
             case 0:
+
                 break;
             case 1:
+                final Long id = dialog.getArguments().getLong("id");
+                Log.d(TAG, "onItemClick: id"+id);
+
+                //EndTime
+                TimePickerDialog EndTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+
+                        //Get Event ID amd update that event
+                        Event event = new Event();
+
+                        event.setEndTime(i+(i1/60.0));
+                        event.updateAll("id = ?", ""+id);
+                        refreshDisplay();
+                    }
+                },13,0,true);
+
+                EndTimePicker.setTitle("End Time");
+                EndTimePicker.show();
+
+
+                //Start Time
+                TimePickerDialog StartTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                        Event event = new Event();
+
+                        event.setStartTime(i+(i1/60.0));
+                        event.updateAll("id = ?", ""+id);
+
+                    }
+                },12,0,true);
+
+
+                StartTimePicker.setTitle("Start Time");
+                StartTimePicker.show();
+
+
+
                 break;
             case 2:
                 //restart Activity after Delete
                 refreshDisplay();
                 break;
+            case 3:
+                break;
+
             default:
         }
     }
@@ -216,15 +261,16 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
 
     public void goToScheduleDate(){
+
+        //GO TO Schedule's day 去創建活動的第一日
         startFrom = Calendar.getInstance();
-
-        String[] date = schedule.getDate().split("-");
-
-        startFrom.set(Calendar.DAY_OF_MONTH,Integer.valueOf(date[2]));
+        String[] date = schedule.getDate().split("/");
+        startFrom.set(Calendar.DAY_OF_MONTH,Integer.valueOf(date[0]));
         startFrom.set(Calendar.MONTH,Integer.valueOf(date[1])-1);
-        startFrom.set(Calendar.YEAR,Integer.valueOf(date[0]));
-
+        startFrom.set(Calendar.YEAR,Integer.valueOf(date[2]));
         getWeekView().goToDate(startFrom);
+
+
         WeekViewLoader loader = new WeekViewLoader() {
             int i =1;
             @Override
@@ -241,34 +287,38 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
 
                 for(Event an_event:eventList) {
+                    //Event date and time
+                    Calendar event_date = Calendar.getInstance();
+                    String[] date = schedule.getDate().split("/");
+                    event_date.set(Calendar.DAY_OF_MONTH,Integer.valueOf(date[0]));
+                    event_date.set(Calendar.MONTH,Integer.valueOf(date[1])-1);
+                    event_date.set(Calendar.YEAR,Integer.valueOf(date[2]));
 
-                    Calendar startTime = (Calendar)startFrom.clone();
-                    Calendar endTime = (Calendar)startFrom.clone();
-                    WeekViewEvent event;
+                    Calendar startTime = (Calendar)event_date.clone();
+                    Calendar endTime = (Calendar)event_date.clone();
 
                     int start_hour = (int)an_event.getStartTime();
                     int start_minute = (int) Math.round((an_event.getStartTime()-start_hour)*60.0);
                     int end_hour = (int)an_event.getEndTime();
                     int end_minute = (int) Math.round((an_event.getEndTime()-end_hour)*60.0);
 
-
                     startTime.set(Calendar.HOUR_OF_DAY, start_hour);
                     startTime.set(Calendar.MINUTE, start_minute);
                     endTime.set(Calendar.HOUR_OF_DAY, end_hour);
                     endTime.set(Calendar.MINUTE, end_minute);
 
+                    //Set WeekViewEvent with event_id /
+                    WeekViewEvent event;
                     event = new WeekViewEvent(an_event.getId(), getEventTitle(startTime), startTime, endTime);
 
-                    int[] colors = {R.color.event_color_01,R.color.event_color_02,R.color.event_color_03,R.color.event_color_04};
-
-                    //Opening hour
+                    //Opening hour of event place
                     Place place = DataSupport.where("id=?",""+an_event.getPlace_id()).findFirst(Place.class);
-                    String[] OpeningHourList = (place.getOpeningHour()!=null)?place.getOpeningHour().split(","):new String[7];
+                    String[] OpeningHourList = (place.getOpeningHour()!=null)
+                            ?place.getOpeningHour().split(","):new String[7];
 
+                    //Opening hour = "1000-1800"
                     int DAY_OF_WEEK = startTime.get(Calendar.DAY_OF_WEEK);
-
                     String OpeningHour = OpeningHourList[DAY_OF_WEEK-1];
-
 
                     event.setColor(getResources().getColor(R.color.event_color_black));
 
@@ -276,14 +326,12 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                             formatTime(start_hour,start_minute)+"-"+formatTime(end_hour,end_minute)+
                             "\n Opening Hour = "+OpeningHour;
 
-                    //not null
+                    //not null + Exceed Time Limit
                     if(OpeningHour!=null) {
                         if (start_hour < Integer.valueOf(OpeningHour.substring(1, 3)) || end_hour > Integer.valueOf(OpeningHour.substring(6, 8))) {
                             text = "Exceed Open Hour\n" + text;
                             event.setColor(getResources().getColor(R.color.event_color_02));
-
                         }
-
                         if (start_hour == Integer.valueOf(OpeningHour.substring(1, 3)) || end_hour == Integer.valueOf(OpeningHour.substring(6, 8))) {
                             if (start_minute < Integer.valueOf(OpeningHour.substring(3, 5)) || end_minute > Integer.valueOf(OpeningHour.substring(8, 10))) {
                                 text = "Exceed Open Hour\n" + text;

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.ScheduleDisplayActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -43,6 +44,7 @@ public class PlaceSearchActivity extends AppCompatActivity{
     private String TAG = "LocationSearch";
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 5;
 
+    private Schedule schedule;
     private com.example.three_pillar_cheaptriptravel.object.Place place_selected
             = new com.example.three_pillar_cheaptriptravel.object.Place();
 
@@ -56,6 +58,7 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_search);
@@ -147,6 +150,10 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
                         event.setSchedule_id(schedule_id);
 
+                        schedule = DataSupport.where("id=?",""+schedule_id).findFirst(Schedule.class);
+
+                        event.setDate(schedule.getDate());
+
                         if(place_exist!=null){
                             event.setPlace_id(place_exist.getId());
                         }else {
@@ -155,9 +162,9 @@ public class PlaceSearchActivity extends AppCompatActivity{
                         event.save();
 
                         Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
-                        //add_intent.putExtra("PlaceName",place_Name);
                         add_intent.putExtra("schedule_id",schedule_id);
-                        Log.d(TAG, "onClick: PUT"+schedule_id);
+
+
                         finish();
                         startActivity(add_intent);
                     }

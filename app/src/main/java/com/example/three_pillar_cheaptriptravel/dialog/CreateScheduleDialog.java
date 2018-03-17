@@ -47,7 +47,7 @@ public class CreateScheduleDialog extends DialogFragment {
                         DatePicker datePicker = (DatePicker)
                                 CreateScheduleDialog.this.getDialog().findViewById(R.id.schedule_date);
 
-                        String date = datePicker.getYear()+"-"+(datePicker.getMonth()+1)+"-"+datePicker.getDayOfMonth();
+                        String date = datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
 
                         Log.d("datepicker", "onClick: "+date);
 

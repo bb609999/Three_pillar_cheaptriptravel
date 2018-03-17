@@ -12,6 +12,7 @@ import android.widget.Button;
 import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.ScheduleDisplayActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
@@ -71,6 +72,10 @@ public class HotelSearchActivity extends AppCompatActivity {
                     event.setType("hotel");
                     event.setStartTime(0);
                     event.setEndTime(9.5);
+
+                    Schedule schedule = DataSupport.where("id=?",""+schedule_id).findFirst(Schedule.class);
+
+                    event.setDate(schedule.getDate());
 
                     if(place_exist!=null){
                         event.setPlace_id(place_exist.getId());
