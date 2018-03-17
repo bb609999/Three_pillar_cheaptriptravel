@@ -6,12 +6,14 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.place.PlaceDetailActivity;
 
 import org.litepal.crud.DataSupport;
 
@@ -23,6 +25,7 @@ public class EventDialog extends DialogFragment {
 
     Activity activity;
     Context context;
+    long event_id;
 
     public static EventDialog newInstance(long id) {
         EventDialog eventDialog = new EventDialog();
@@ -76,6 +79,17 @@ public class EventDialog extends DialogFragment {
 
                         switch (which){
 
+                            case 0:
+                                Intent place_detail = new Intent(EventDialog.this.getActivity(), PlaceDetailActivity.class);
+                                Long id = getArguments().getLong("id");
+                                Event event = DataSupport.where("id = ?", ""+id).findFirst(Event.class);
+                                int place_id = event.getPlace_id();
+                                place_detail.putExtra("place_id",place_id);
+
+                                startActivity(place_detail);
+
+                                break;
+
                             //CHANGE TIME
                             case 1:
 
@@ -127,8 +141,8 @@ public class EventDialog extends DialogFragment {
 
                             case 2:
 
-                                Long id = getArguments().getLong("id");
-                                DataSupport.deleteAll(Event.class,"id=?",""+id);
+                                event_id = getArguments().getLong("id");
+                                DataSupport.deleteAll(Event.class,"id=?",""+event_id);
                                 break;
                             default:
 

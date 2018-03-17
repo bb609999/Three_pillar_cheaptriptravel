@@ -61,7 +61,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Story.camera.SimpleCameraActivity" />
-        <activity android:name=".search.HotelSearchActivity"></activity>
+        <activity android:name=".search.HotelSearchActivity" />
+        <activity android:name=".place.PlaceDetailActivity"
+            android:theme="@style/PlaceActivityTheme"></activity>
     </application>
 
 </manifest>
