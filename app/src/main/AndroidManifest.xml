@@ -8,13 +8,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:testOnly="false"
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:testOnly="false"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -38,7 +38,8 @@
             android:name=".Story.StoriesActivity"
             android:label="@string/title_activity_stories"
             android:theme="@style/AppTheme" />
-        <activity android:name=".Story.StoriesProgressViewActivity"></activity>
+        <activity android:name=".Story.StoriesProgressViewActivity" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.three_pillar_cheaptriptravel.fileprovider"
@@ -46,9 +47,9 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"
-                />
+                android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name="com.album.ui.activity.AlbumActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -60,7 +61,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".Story.camera.SimpleCameraActivity" />
-
+        <activity android:name=".search.HotelSearchActivity"></activity>
     </application>
 
 </manifest>

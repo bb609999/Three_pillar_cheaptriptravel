@@ -2,7 +2,7 @@
 <litepal>
 <dbname value="CheapTripTravel"></dbname>
 
-<version value="10"></version>
+<version value="12"></version>
 
 <list>
     <mapping class ="com.example.three_pillar_cheaptriptravel.object.Event"></mapping>

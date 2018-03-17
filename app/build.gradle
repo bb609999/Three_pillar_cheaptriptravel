@@ -30,7 +30,7 @@ dependencies {
 
     compile 'com.github.alamkanak:android-week-view:1.2.6'
 
-    implementation  'com.android.support:design:26.1.0'
+    implementation 'com.android.support:design:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
 

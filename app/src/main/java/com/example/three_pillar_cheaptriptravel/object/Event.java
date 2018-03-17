@@ -22,6 +22,8 @@ public class Event extends DataSupport implements Serializable{
 
     private String description;
 
+    private String daysFromStart;
+
     private int Schedule_id;
 
     private int Place_id;
@@ -99,6 +101,14 @@ public class Event extends DataSupport implements Serializable{
 
     public void setPlace_id(int place_id) {
         Place_id = place_id;
+    }
+
+    public String getDaysFromStart() {
+        return daysFromStart;
+    }
+
+    public void setDaysFromStart(String daysFromStart) {
+        this.daysFromStart = daysFromStart;
     }
 
     @Override
