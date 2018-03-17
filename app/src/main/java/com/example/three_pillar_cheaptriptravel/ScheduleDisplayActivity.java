@@ -267,7 +267,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
                     int DAY_OF_WEEK = startTime.get(Calendar.DAY_OF_WEEK);
 
-                    String OpeningHour = OpeningHourList[DAY_OF_WEEK];
+                    String OpeningHour = OpeningHourList[DAY_OF_WEEK-1];
 
 
                     event.setColor(getResources().getColor(R.color.event_color_black));
