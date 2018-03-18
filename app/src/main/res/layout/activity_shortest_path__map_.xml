@@ -1,6 +1,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/change_order"
+            android:text="SWAP"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/event_recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="15">
+
+</android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_weight="5"
+    android:layout_width="0dp"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -18,10 +49,8 @@
             android:text="APPLY"
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
+
     </LinearLayout>
-
-
-
 
     <fragment
         android:id="@+id/map"
@@ -32,8 +61,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="3"
         android:orientation="vertical">
+
+
 
         <TextView
             android:id="@+id/tap_text"
@@ -48,5 +80,9 @@
             android:layout_height="wrap_content" />
 
 
+
+
     </LinearLayout>
+</LinearLayout>
+
 </LinearLayout>

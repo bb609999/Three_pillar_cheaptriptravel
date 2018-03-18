@@ -4,11 +4,17 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.three_pillar_cheaptriptravel.drag.EditItemTouchHelperCallback;
+import com.example.three_pillar_cheaptriptravel.drag.ItemAdapter;
+import com.example.three_pillar_cheaptriptravel.drag.OnStartDragListener;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,9 +32,9 @@ import org.litepal.crud.DataSupport;
 
 import java.util.List;
 
-public class ShortestPath_Map_Activity extends AppCompatActivity implements
+public class ShortestPath_Map_Activity extends AppCompatActivity implements OnStartDragListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraIdleListener,
-        OnMapReadyCallback {
+        OnMapReadyCallback{
 
     //Google Map
     private TextView mTapTextView;
@@ -43,8 +49,11 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
 
     private String[] DurationList;
 
-    private List<Event> eventList = DataSupport.findAll(Event.class);
-    private List<Place> placeList = DataSupport.findAll(Place.class);
+    private List<Event> eventList;
+    private List<Place> placeList;
+
+    private ItemTouchHelper mItemTouchHelper;
+
 
 
     @Override
@@ -63,6 +72,38 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
         String TotalDuration  = intent.getStringExtra("TotalDuration");
         DurationList = intent.getStringArrayExtra("DurationList");
         final int schedule_id = intent.getIntExtra("schedule_id",-1);
+
+
+        eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
+        RecyclerView mRecyclerView = (RecyclerView)findViewById(R.id.event_recycler_view);
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        ItemAdapter mAdapter = new ItemAdapter(this, eventList, this);
+        ItemTouchHelper.Callback callback =
+                new EditItemTouchHelperCallback(mAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        Button change_order = (Button)findViewById(R.id.change_order);
+        change_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                for(int i=0;i<eventList.size();i++) {
+                    Event event = new Event();
+                    event.setStartTime(9 + 2 * i);
+                    event.setEndTime(11 + 2 * i);
+                    event.update(eventList.get(i).getId());
+                }
+
+            }
+        });
+
 
         Button apply_schedule = (Button)findViewById(R.id.apply_schedule);
         apply_schedule.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +160,10 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
     }
 
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
+    }
 
     //Google Map
     @Override
