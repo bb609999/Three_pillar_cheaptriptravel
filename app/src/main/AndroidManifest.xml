@@ -34,11 +34,7 @@
             android:name=".search.PlaceSearchActivity"
             android:launchMode="singleTask" />
         <activity android:name=".ShortestPath_Map_Activity" />
-        <activity
-            android:name=".Story.StoriesActivity"
-            android:label="@string/title_activity_stories"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".Story.StoriesProgressViewActivity" />
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -50,20 +46,17 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity
-            android:name="com.album.ui.activity.AlbumActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name="com.album.ui.activity.PreviewActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name="com.yalantis.ucrop.UCropActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".Story.camera.SimpleCameraActivity" />
+
         <activity android:name=".search.HotelSearchActivity" />
-        <activity android:name=".place.PlaceDetailActivity"
-            android:theme="@style/PlaceActivityTheme"></activity>
+        <activity
+            android:name=".place.PlaceDetailActivity"
+            android:theme="@style/PlaceActivityTheme" />
+        <activity android:name=".Story.DiaryListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity android:name=".Story.DiaryAddActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
     </application>
 
 </manifest>

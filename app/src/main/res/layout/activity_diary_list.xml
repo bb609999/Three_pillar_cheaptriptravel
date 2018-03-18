@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/MatchMatch.Vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="com.example.three_pillar_cheaptriptravel.Story.DiaryListActivity"
+        >
+
+        <LinearLayout
+            style="@style/MatchWrap.Vertical"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/tv_moment_list_add"
+                style="@style/MatchWrapTv"
+                android:text="Add to Gallery" />
+
+            <TextView
+                android:id="@+id/tv_moment_list_del_all"
+                style="@style/MatchWrapTv"
+                android:text="Del All" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_moment_list_moments"
+            style="@style/MatchMatch" />
+
+</LinearLayout>

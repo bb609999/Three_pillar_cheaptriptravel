@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.alamkanak.weekview.WeekViewEvent;
 import com.alamkanak.weekview.WeekViewLoader;
+import com.example.three_pillar_cheaptriptravel.Story.DiaryListActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
@@ -97,12 +98,15 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         return true;
     }
 
-
+    //new
+    public long event_id;
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         super.onEventClick(event, eventRect);
 
-        EventDialog eventDialog = new EventDialog().newInstance(event.getId());
+        //new
+        event_id=event.getId();
+        EventDialog eventDialog = new EventDialog().newInstance(event_id);
         eventDialog.show(getSupportFragmentManager(), " EventDialog");
 
     }
@@ -161,7 +165,14 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 break;
             case 3:
                 break;
-
+            case 4:
+                Intent intent = new Intent(ScheduleDisplayActivity.this, DiaryListActivity.class);
+                intent.putExtra("schedule_id",schedule_id);
+                intent.putExtra("event_id",(int)event_id);
+                Log.d("eric_image: ", String.valueOf(schedule_id));
+                finish();
+                startActivity(intent);
+                break;
             default:
         }
     }
