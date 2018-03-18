@@ -134,6 +134,8 @@ public class HotelSearchActivity extends AppCompatActivity {
                     place_selected.setPlaceName(placeName);
                     place_selected.setLat(lat);
                     place_selected.setLng(lng);
+                    place_selected.setAddress(""+place.getAddress());
+
                 if(place_exist==null) {
                     place_selected.save();
 

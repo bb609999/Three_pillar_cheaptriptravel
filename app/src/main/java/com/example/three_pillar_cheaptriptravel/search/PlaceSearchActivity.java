@@ -209,6 +209,7 @@ public class PlaceSearchActivity extends AppCompatActivity{
                 place_selected.setPlaceName(placeName);
                 place_selected.setLat(lat);
                 place_selected.setLng(lng);
+                place_selected.setAddress(""+place.getAddress());
 
 
 
