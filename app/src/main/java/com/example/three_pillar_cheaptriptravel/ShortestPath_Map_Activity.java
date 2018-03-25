@@ -11,12 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.drag.EditItemTouchHelperCallback;
 import com.example.three_pillar_cheaptriptravel.drag.ItemAdapter;
 import com.example.three_pillar_cheaptriptravel.drag.OnStartDragListener;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
+import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,7 +32,11 @@ import com.google.maps.android.ui.IconGenerator;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Response;
 
 public class ShortestPath_Map_Activity extends AppCompatActivity implements OnStartDragListener,
         GoogleMap.OnMapClickListener, GoogleMap.OnMapLongClickListener, GoogleMap.OnCameraIdleListener,
@@ -54,6 +60,8 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
     private ItemTouchHelper mItemTouchHelper;
 
+    private int schedule_id;
+
 
 
     @Override
@@ -71,10 +79,10 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
         String[] places = intent.getStringArrayExtra("places");
         String TotalDuration  = intent.getStringExtra("TotalDuration");
         DurationList = intent.getStringArrayExtra("DurationList");
-        final int schedule_id = intent.getIntExtra("schedule_id",-1);
+        schedule_id = intent.getIntExtra("schedule_id",-1);
 
 
-        eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
+        eventList = DataSupport.order("startTime asc").where("Schedule_id=?",""+schedule_id).find(Event.class);
         RecyclerView mRecyclerView = (RecyclerView)findViewById(R.id.event_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -96,10 +104,12 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
                 for(int i=0;i<eventList.size();i++) {
                     Event event = new Event();
-                    event.setStartTime(9 + 2 * i);
-                    event.setEndTime(11 + 2 * i);
+                    event.setStartTime(9 + 2 * i+(0.5*i));
+                    event.setEndTime(11 + 2 * i+(0.5*i));
                     event.update(eventList.get(i).getId());
                 }
+               // goToScheduleDisplay();
+                simulateRoute();
 
             }
         });
@@ -126,10 +136,8 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
                     event.updateAll("placeName=?",place.getPlaceName());
                 }
 
-                Intent intent1 = new Intent(ShortestPath_Map_Activity.this,ScheduleDisplayActivity.class);
-                intent1.putExtra("schedule_id",schedule_id);
-                finish();
-                startActivity(intent1);
+                goToScheduleDisplay();
+
 
             }
         });
@@ -178,7 +186,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
         mMap.addPolyline(mPolylines);
 
         if(latLngs.length!=0) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs[0], 13));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs[0], 12));
         }
 
         for(int i=0;i<latLngs.length;i++) {
@@ -248,6 +256,121 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
         return new LatLng(Math.toDegrees(lat3),Math.toDegrees(lon3));
     }
+
+    public void goToScheduleDisplay(){
+        Intent intent1 = new Intent(ShortestPath_Map_Activity.this,ScheduleDisplayActivity.class);
+        intent1.putExtra("schedule_id",schedule_id);
+        finish();
+        startActivity(intent1);
+    }
+
+    public void simulateRoute(){
+        String locations="";
+        for(Event event:eventList){
+            Place place = DataSupport.where("id=?",""+event.getPlace_id()).findFirst(Place.class);
+            locations += place.getLat()+","+place.getLng()+"|";
+        }
+            locations = locations.substring(0,locations.length()-1);
+
+        simpleroute(locations);
+    }
+
+    public void simpleroute(String locations){
+
+        String address = "https://bb609999.herokuapp.com/api/place/simpleroute?loc="+locations;
+
+        Log.d("address", "simpleroute: "+address);
+
+        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback()
+
+        {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                final String responseData = response.body().string();
+                Log.d("TAG", "onResponse: responseData: " + responseData);
+
+                final String duration = responseData.substring(1,responseData.length()-1);
+                final String[] durationList = duration.split(",");
+
+                //If result return
+                if (responseData.equals("No Result")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ShortestPath_Map_Activity.this, "No Result", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mMap.clear();
+                            for(int i=0;i<eventList.size();i++){
+                                Place place = DataSupport.where("id=?",""+eventList.get(i).getPlace_id()).findFirst(Place.class);
+                                markerMake(place);
+
+                                if(i<eventList.size()-1){
+                                    Place nextplace = DataSupport.where("id=?",""+eventList.get(i+1).getPlace_id()).findFirst(Place.class);
+                                    durationMake(place.getLat(),place.getLng(),nextplace.getLat(),nextplace.getLng(), durationList[i]);
+                                }
+
+                            }
+                            polylineMake(eventList);
+                            int TotalDuration =0;
+                            for(int i=0;i<durationList.length;i++){
+                                TotalDuration+=Integer.valueOf(durationList[i])/60*1.5;
+                            }
+
+
+                            TotalDurationText.setText("Total Time Used: "+TotalDuration+"mins");
+
+                        }
+
+                    });
+                }
+            }
+        });
+    }
+
+    public void markerMake(Place place){
+        IconGenerator iconGenerator = new IconGenerator(ShortestPath_Map_Activity.this);
+        Bitmap bitmap =  iconGenerator.makeIcon(place.getPlaceName()+" ");
+
+        mMap.addMarker(new MarkerOptions()
+                .position(place.getLatLng())
+               // .title(place.getPlaceName())
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+
+        );
+    }
+
+    public void polylineMake(List<Event> eventList){
+
+        LatLng[] latLngs = new LatLng[eventList.size()];
+        for(int i=0;i<eventList.size();i++){
+            Place place = DataSupport.where("id=?",""+eventList.get(i).getPlace_id()).findFirst(Place.class);
+            latLngs[i]= place.getLatLng();
+        }
+
+        mPolylines = new PolylineOptions().add(latLngs).width(2);
+
+        mMap.addPolyline(mPolylines);
+
+    }
+
+    public void durationMake(double lat1,double lon1,double lat2,double lon2,String Duration){
+        IconGenerator iconGenerator = new IconGenerator(ShortestPath_Map_Activity.this);
+        Bitmap bitmap2 =  iconGenerator.makeIcon(Integer.valueOf(Duration)/60*1.5 +" mins");
+        mMap.addMarker(new MarkerOptions()
+                .position(midPoint(lat1,lon1,lat2,lon2))
+                .icon(BitmapDescriptorFactory.fromBitmap(bitmap2))
+        );
+    }
+
 
 
 }

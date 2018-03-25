@@ -1,5 +1,7 @@
 package com.example.three_pillar_cheaptriptravel.object;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.litepal.crud.DataSupport;
 
 /**
@@ -102,5 +104,9 @@ public class Place extends DataSupport{
                 ", openingHour='" + openingHour + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public LatLng getLatLng(){
+        return new LatLng(lat,lng);
     }
 }
