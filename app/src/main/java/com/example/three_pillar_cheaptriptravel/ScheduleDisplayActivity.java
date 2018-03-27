@@ -21,6 +21,7 @@ import com.example.three_pillar_cheaptriptravel.search.HotelSearchActivity;
 import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
 import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 
+import org.json.JSONArray;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -39,9 +40,8 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
     private List<Place> placeList;
     private List<Event> eventList;
     private int schedule_id;
-
-    Schedule schedule;
-    Calendar startFrom;
+    private Schedule schedule;
+    private Calendar startFrom;
 
 
 
@@ -324,12 +324,17 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
                     //Opening hour of event place
                     Place place = DataSupport.where("id=?",""+an_event.getPlace_id()).findFirst(Place.class);
-                    String[] OpeningHourList = (place.getOpeningHour()!=null)
-                            ?place.getOpeningHour().split(","):new String[7];
 
-                    //Opening hour = "1000-1800"
-                    int DAY_OF_WEEK = startTime.get(Calendar.DAY_OF_WEEK);
-                    String OpeningHour = OpeningHourList[DAY_OF_WEEK-1];
+                    try {
+                        String OpeningHour;
+
+                        if(place.getOpeningHour()!=null) {
+                            JSONArray openingHour = new JSONArray(place.getOpeningHour());
+                            int DAY_OF_WEEK = startTime.get(Calendar.DAY_OF_WEEK);
+                            OpeningHour = openingHour.getString(DAY_OF_WEEK - 1) ;
+                        }else{
+                            OpeningHour = "No Information" ;
+                        }
 
                     event.setColor(getResources().getColor(R.color.event_color_black));
 
@@ -337,22 +342,26 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                             formatTime(start_hour,start_minute)+"-"+formatTime(end_hour,end_minute)+
                             "\n Opening Hour = "+OpeningHour;
 
-                    //not null + Exceed Time Limit
-                    if(OpeningHour!=null) {
-                        if (start_hour < Integer.valueOf(OpeningHour.substring(1, 3)) || end_hour > Integer.valueOf(OpeningHour.substring(6, 8))) {
+                    //not null + Exceed Time Limit   0123-5678
+                    if(OpeningHour!="No Information") {
+                        if (start_hour < Integer.valueOf(OpeningHour.substring(0, 2)) || end_hour > Integer.valueOf(OpeningHour.substring(5, 7))) {
                             text = "Exceed Open Hour\n" + text;
                             event.setColor(getResources().getColor(R.color.event_color_02));
                         }
-                        if (start_hour == Integer.valueOf(OpeningHour.substring(1, 3)) || end_hour == Integer.valueOf(OpeningHour.substring(6, 8))) {
-                            if (start_minute < Integer.valueOf(OpeningHour.substring(3, 5)) || end_minute > Integer.valueOf(OpeningHour.substring(8, 10))) {
+                        if (start_hour == Integer.valueOf(OpeningHour.substring(0, 2)) || end_hour == Integer.valueOf(OpeningHour.substring(5, 7))) {
+                            if (start_minute < Integer.valueOf(OpeningHour.substring(2, 4)) || end_minute > Integer.valueOf(OpeningHour.substring(7, 9))) {
                                 text = "Exceed Open Hour\n" + text;
                                 event.setColor(getResources().getColor(R.color.event_color_02));
 
                             }
                         }
                     }
-                    event.setName(text);
+
+                  event.setName(text);
                     events.add(event);
+                    }catch (Exception e){
+
+                    }
 
                 }
 

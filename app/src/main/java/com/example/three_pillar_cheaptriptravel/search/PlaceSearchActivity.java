@@ -29,6 +29,9 @@ import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -294,21 +297,23 @@ public class PlaceSearchActivity extends AppCompatActivity{
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String responseData = response.body().string();
-                //["1000-1900","1000-1800","1000-1800","1000-1800",null,"1000-1800","1000-1900"]
+
+                try {
+                    JSONObject JSON_Response = new JSONObject(responseData);
+                    JSONArray OpeningHour = JSON_Response.getJSONArray("OpeningHour");
+
                 Log.d("TAG", "onResponse: responseData: " + responseData);
 
+                com.example.three_pillar_cheaptriptravel.object.Place place =
+                        new com.example.three_pillar_cheaptriptravel.object.Place();
 
-                com.example.three_pillar_cheaptriptravel.object.Place place = new com.example.three_pillar_cheaptriptravel.object.Place();
-
-                if (responseData.length()>10) {
-                    String formatOpeningHour = responseData;
-                    formatOpeningHour = formatOpeningHour.substring(1, responseData.length() - 1);
-                    place.setOpeningHour(formatOpeningHour);
-                    Log.d(TAG, "onResponse: "+(responseData != "No Result"));
+                    place.setOpeningHour(OpeningHour.toString());
+                    place.updateAll("id=?", "" + place_id);
 
 
-                place.updateAll("id=?", "" + place_id);
-                    }
+                }catch (JSONException e){
+
+                }
 
 
 
