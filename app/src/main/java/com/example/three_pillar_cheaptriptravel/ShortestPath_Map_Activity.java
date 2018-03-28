@@ -30,6 +30,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.ui.IconGenerator;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -51,9 +53,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
     private TextView TotalDurationText;
 
-    private LatLng[] latLngs;
-
-    private String[] DurationList;
+    private String json_response;
 
     private List<Event> eventList;
     private List<Place> placeList;
@@ -61,6 +61,14 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     private ItemTouchHelper mItemTouchHelper;
 
     private int schedule_id;
+
+    private JSONArray route;
+    private JSONArray duration;
+    private LatLng[] latLngs;
+
+    private List<Event> default_eventList;
+
+    private  String TAG = "TEST";
 
 
 
@@ -76,10 +84,27 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
         TotalDurationText = (TextView)findViewById(R.id.TotalDurationText);
 
         final Intent intent = getIntent();
-        String[] places = intent.getStringArrayExtra("places");
-        String TotalDuration  = intent.getStringExtra("TotalDuration");
-        DurationList = intent.getStringArrayExtra("DurationList");
         schedule_id = intent.getIntExtra("schedule_id",-1);
+
+        String json_response = intent.getStringExtra("json_response");
+        try {
+            JSONObject jsonObject = new JSONObject(json_response);
+            route = jsonObject.getJSONArray("route");
+            duration = jsonObject.getJSONArray("duration");
+
+            latLngs = new LatLng[route.length()];
+            for(int i=0;i<route.length();i++){
+                Event event = DataSupport.where("id=?",""+(route.optInt(i)+1)).findFirst(Event.class);
+                //default_eventList.add(event);
+                Place place = DataSupport.where("id=?",""+event.getPlace_id()).findFirst(Place.class);
+                latLngs[i] = place.getLatLng();
+
+            }
+
+
+        }catch (Exception e){
+            Log.d(TAG, "onCreate: "+Log.getStackTraceString(e.getCause().getCause()));
+        }
 
 
         eventList = DataSupport.order("startTime asc").where("Schedule_id=?",""+schedule_id).find(Event.class);
@@ -115,11 +140,14 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
         });
 
 
-        Button apply_schedule = (Button)findViewById(R.id.apply_schedule);
+       Button apply_schedule = (Button)findViewById(R.id.apply_schedule);
         apply_schedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 List<Event> eventList = DataSupport.where("schedule_id=?",""+schedule_id).find(Event.class);
+                    Log.d(TAG, "onClick: "+eventList.size());
 
                 Double time = 0.0;
                 for(int i =0;i<eventList.size();i++) {
@@ -127,7 +155,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
                             ""+latLngs[i].longitude).findFirst(Place.class);
                     Log.d("Place", "onClick: "+place.getPlaceName());
 
-                    double travel_time = i>0?Double.valueOf(DurationList[i-1])/3600:0;
+                    double travel_time = i>0?duration.optInt(i-1)/3600.0:0;
                     time += travel_time;
 
                     Event event = new Event();
@@ -136,32 +164,19 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
                     event.updateAll("placeName=?",place.getPlaceName());
                 }
 
+
                 goToScheduleDisplay();
 
 
             }
         });
 
+       int TotalDuration = 0;
+       for(int i=0;i<duration.length();i++) {
+           TotalDuration +=duration.optInt(i);
+       }
 
-
-        for(String i:DurationList){
-            Log.d("DurationList", "onCreate: "+ i);
-
-        }
-
-
-        latLngs = new LatLng[places.length];
-        for(int i=0;i<places.length;i++) {
-            double Lat = Double.valueOf(places[i].split(",")[0]);
-            double Lng = Double.valueOf(places[i].split(",")[1]);
-            latLngs[i] = new LatLng(Lat,Lng);
-        }
-
-        TotalDurationText.setText("Total Time Used : "+Double.valueOf(TotalDuration)/60 + " minutes");
-
-
-
-//        Log.d("0004", "onCreate: "+ latLngs[0]);
+       TotalDurationText.setText("Total Time Used : "+Double.valueOf(TotalDuration)/60 + " minutes");
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -184,7 +199,6 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
         mPolylines = new PolylineOptions().add(latLngs).width(2);
 
         mMap.addPolyline(mPolylines);
-
         if(latLngs.length!=0) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs[0], 12));
         }
@@ -204,7 +218,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
 
             if(i<latLngs.length-1){
-                Bitmap bitmap2 =  iconGenerator.makeIcon(Integer.valueOf(DurationList[i])/60 +" mins");
+                Bitmap bitmap2 =  iconGenerator.makeIcon(duration.optInt(i)/60 +" mins");
                 mMap.addMarker(new MarkerOptions()
                         .position(midPoint(latLngs[i].latitude,latLngs[i].longitude,latLngs[i+1].latitude,latLngs[i+1].longitude))
                         .icon(BitmapDescriptorFactory.fromBitmap(bitmap2))

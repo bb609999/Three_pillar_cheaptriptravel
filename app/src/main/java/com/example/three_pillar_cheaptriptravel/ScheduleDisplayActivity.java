@@ -22,6 +22,7 @@ import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
 import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -236,32 +237,23 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                         @Override
                         public void run() {
 
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseData);
+                            JSONArray route = jsonObject.getJSONArray("route");
+                            JSONArray duration = jsonObject.getJSONArray("duration");
 
-                            //0 is BestPath ; 1 is TotalDuration in seconds , 2 is PathDurationList
-                            String[] splitToThree = responseData.split("\\|");
-                            Log.d(TAG, "run: TotalDuration = " + splitToThree[0]);
-
-
-                            String[] splited = splitToThree[0].split(",");
-                            String[] joined = new String[splited.length / 2];
-
-                            for (int i = 0; i < splited.length / 2; i++) {
-                                joined[i] = splited[0 + 2 * i] + "," + splited[1 + 2 * i];
-                            }
-
-                            String[] DurationList = splitToThree[2].split(",");
-
-
-                            Log.d(TAG, "run: TotalDuration = " + splitToThree[1]);
+                            Log.d(TAG, "run: TotalDuration = " + route.toString() + duration.toString());
 
                             Intent intent = new Intent(ScheduleDisplayActivity.this, ShortestPath_Map_Activity.class);
-                            intent.putExtra("places", joined);
-                            intent.putExtra("TotalDuration", splitToThree[1]);
-                            intent.putExtra("DurationList", DurationList);
+                            intent.putExtra("json_response", responseData);
                             intent.putExtra("schedule_id", schedule_id);
 
                             finish();
                             startActivity(intent);
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
                         }
 
                     });
