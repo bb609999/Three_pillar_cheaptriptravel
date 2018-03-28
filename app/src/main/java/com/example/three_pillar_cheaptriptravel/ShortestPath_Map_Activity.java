@@ -31,10 +31,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.ui.IconGenerator;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -53,9 +55,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
     private TextView TotalDurationText;
 
-    private String json_response;
-
-    private List<Event> eventList;
+    //private List<Event> eventList;
     private List<Place> placeList;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -66,7 +66,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     private JSONArray duration;
     private LatLng[] latLngs;
 
-    private List<Event> default_eventList;
+    private List<Event> eventList = new ArrayList<>();
 
     private  String TAG = "TEST";
 
@@ -95,19 +95,18 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
             latLngs = new LatLng[route.length()];
             for(int i=0;i<route.length();i++){
                 Event event = DataSupport.where("id=?",""+(route.optInt(i)+1)).findFirst(Event.class);
-                //default_eventList.add(event);
+                eventList.add(event);
                 Place place = DataSupport.where("id=?",""+event.getPlace_id()).findFirst(Place.class);
                 latLngs[i] = place.getLatLng();
 
             }
 
 
-        }catch (Exception e){
-            Log.d(TAG, "onCreate: "+Log.getStackTraceString(e.getCause().getCause()));
+        }catch (JSONException e){
         }
 
 
-        eventList = DataSupport.order("startTime asc").where("Schedule_id=?",""+schedule_id).find(Event.class);
+        //eventList = DataSupport.order("startTime asc").where("Schedule_id=?",""+schedule_id).find(Event.class);
         RecyclerView mRecyclerView = (RecyclerView)findViewById(R.id.event_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -176,7 +175,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
            TotalDuration +=duration.optInt(i);
        }
 
-       TotalDurationText.setText("Total Time Used : "+Double.valueOf(TotalDuration)/60 + " minutes");
+       TotalDurationText.setText("Total Time Used : "+TotalDuration/60 + " minutes");
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);

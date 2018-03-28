@@ -1,6 +1,7 @@
 package com.example.three_pillar_cheaptriptravel.drag;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.object.Event;
-import com.squareup.picasso.Picasso;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,12 +69,18 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
 
             final VHItem holder= (VHItem)viewHolder;
             ((VHItem) viewHolder).title.setText(mEventList.get(i).getPlaceName());
-            Picasso.with(mContext)
-                    .load("https://secure.parksandresorts.wdpromedia.com/resize/mwImage/1/630/354/75/" +
-                            "wdpromedia.disney.go.com/media/wdpro-assets/parks-and-tickets/entertainment/magic-kingdom/" +
-                            "move-it-shake-it-dance-play-it-street-party/move-it-shake-it-dance-play-it-00.jpg?22102014161654")
-                    .placeholder(R.drawable.ap360)
-                    .into(((VHItem) viewHolder).imageView);
+          //  Picasso.with(mContext)
+           //         .load("https://secure.parksandresorts.wdpromedia.com/resize/mwImage/1/630/354/75/" +
+            //                "wdpromedia.disney.go.com/media/wdpro-assets/parks-and-tickets/entertainment/magic-kingdom/" +
+             //               "move-it-shake-it-dance-play-it-street-party/move-it-shake-it-dance-play-it-00.jpg?22102014161654")
+             //      .placeholder(R.drawable.ap360)
+             //       .into(((VHItem) viewHolder).imageView);
+
+            IconGenerator iconGenerator = new IconGenerator(mContext);
+            Bitmap bitmap =  iconGenerator.makeIcon(""+i);
+            ((VHItem) viewHolder).imageView.setImageBitmap(bitmap);
+
+            ((VHItem) viewHolder).image_menu.setImageResource(R.drawable.ic_import_export_black_24dp);
 
             ((VHItem) viewHolder).image_menu.setOnTouchListener(new View.OnTouchListener() {
                 @Override

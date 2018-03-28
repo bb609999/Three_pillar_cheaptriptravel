@@ -6,6 +6,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +15,8 @@ import com.bumptech.glide.Glide;
 import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.litepal.crud.DataSupport;
 
 public class PlaceDetailActivity extends AppCompatActivity {
@@ -35,8 +38,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
                 findViewById(R.id.collapsing_toolbar);
 
         ImageView placeImageView = (ImageView) findViewById(R.id.place_image_view);
+        TextView placeAddress = (TextView) findViewById(R.id.place_address);
 
-        TextView place_address = (TextView) findViewById(R.id.place_address);
 
         place_openinghour = (TextView) findViewById(R.id.place_openinghour);
         setOpeninghour();
@@ -51,7 +54,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
         Glide.with(this).load("https://blog.holimood.com/wp-content/uploads/2016/08/20160320043728_kWrnD.jpg").into(placeImageView);
 
 
-        place_address.setText("Address : "+place.getAddress()+"\n");
+        placeAddress.setText(place.getAddress());
+
 
 
 
@@ -70,18 +74,21 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
     public void setOpeninghour(){
         if(place.getOpeningHour()!=null) {
-            String[] openHourList = place.getOpeningHour().split(",");
 
-            String place_openinghourText = "Opening Hours : \n" +
-                    "Sunday : \t\t" + openHourList[0] + "\n" +
-                    "Monday : \t\t" + openHourList[1] + "\n" +
-                    "Tuseday : \t\t" + openHourList[2] + "\n" +
-                    "Wednesday :" + openHourList[3] + "\n" +
-                    "Thursday :    \t" + openHourList[4] + "\n" +
-                    "Friday :       \t" + openHourList[5] + "\n" +
-                    "Saturday :   \t" + openHourList[6] + "\n";
+            try {
+                JSONArray openHourList = new JSONArray(place.getOpeningHour());
+                Log.d("Json", "setOpeninghour: "+openHourList.toString());
+                String place_openinghourText = "\nOpening Hours : \n" +
+                            "Sunday : \t\t" + openHourList.optString(0) + "\n" +
+                            "Monday : \t\t" + openHourList.optString(1) + "\n" +
+                            "Tuseday : \t\t" + openHourList.optString(2) + "\n" +
+                            "Wednesday :" + openHourList.optString(3) + "\n" +
+                            "Thursday :    \t" + openHourList.optString(4) + "\n" +
+                            "Friday :       \t" + openHourList.optString(5)+ "\n" +
+                            "Saturday :   \t" + openHourList.optString(6) + "\n";
 
-            place_openinghour.setText(place_openinghourText);
+                place_openinghour.setText(place_openinghourText);
+            }catch (JSONException e){}
         }
         else{
             String place_openinghourText = "No Imformation of Opening Hour";
