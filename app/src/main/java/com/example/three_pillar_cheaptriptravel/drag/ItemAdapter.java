@@ -77,7 +77,7 @@ public class ItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
              //       .into(((VHItem) viewHolder).imageView);
 
             IconGenerator iconGenerator = new IconGenerator(mContext);
-            Bitmap bitmap =  iconGenerator.makeIcon(""+i);
+            Bitmap bitmap =  iconGenerator.makeIcon(""+(i+1));
             ((VHItem) viewHolder).imageView.setImageBitmap(bitmap);
 
             ((VHItem) viewHolder).image_menu.setImageResource(R.drawable.ic_import_export_black_24dp);

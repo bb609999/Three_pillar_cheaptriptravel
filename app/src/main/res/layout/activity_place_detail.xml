@@ -68,21 +68,16 @@
                 android:layout_marginTop="35dp"
                 app:cardCornerRadius="4dp">
 
-                <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/place_openinghour_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_access_time_black_24dp"/>
 
                 <TextView
                     android:id="@+id/place_openinghour"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="5dp"
+                    android:drawableLeft="@drawable/ic_access_time_black_24dp"
+                    />
+
 
             </android.support.v7.widget.CardView>
 
@@ -96,22 +91,18 @@
                     android:layout_marginTop="35dp"
                     app:cardCornerRadius="4dp">
 
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                    <ImageView
-                        android:id="@+id/place_address_image"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_location_on_black_24dp"/>
+
+
 
                     <TextView
+                        android:layout_gravity="center_vertical"
                         android:id="@+id/place_address"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="5dp"
+                        android:drawableLeft="@drawable/ic_location_on_black_24dp"/>
 
-                    </LinearLayout>
+
 
                 </android.support.v7.widget.CardView>
 
