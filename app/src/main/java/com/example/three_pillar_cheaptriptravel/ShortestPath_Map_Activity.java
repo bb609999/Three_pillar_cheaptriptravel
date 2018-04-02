@@ -10,6 +10,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,8 +79,8 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
         setContentView(R.layout.activity_shortest_path__map_);
 
         //Google Map
-        mTapTextView = (TextView) findViewById(R.id.tap_text);
-        mCameraTextView = (TextView) findViewById(R.id.camera_text);
+        //mTapTextView = (TextView) findViewById(R.id.tap_text);
+        //mCameraTextView = (TextView) findViewById(R.id.camera_text);
 
         TotalDurationText = (TextView)findViewById(R.id.TotalDurationText);
 
@@ -120,7 +121,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
         mRecyclerView.setAdapter(mAdapter);
 
-        Button change_order = (Button)findViewById(R.id.change_order);
+        ImageButton change_order = (ImageButton)findViewById(R.id.change_order);
         change_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,6 +208,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
             IconGenerator iconGenerator = new IconGenerator(ShortestPath_Map_Activity.this);
             Bitmap bitmap =  iconGenerator.makeIcon(place.getPlaceName()+" ");
+            bitmap.getScaledHeight(10);
 
             mMap.addMarker(new MarkerOptions()
                     .position(latLngs[i])
@@ -239,19 +241,19 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
     @Override
     public void onMapClick(LatLng point) {
-        mTapTextView.setText("tapped, point=" + point);
+        //mTapTextView.setText("tapped, point=" + point);
 
 
     }
 
     @Override
     public void onMapLongClick(LatLng point) {
-        mTapTextView.setText("long pressed, point=" + point);
+       // mTapTextView.setText("long pressed, point=" + point);
     }
 
     @Override
     public void onCameraIdle() {
-        mCameraTextView.setText(mMap.getCameraPosition().toString());
+        //mCameraTextView.setText(mMap.getCameraPosition().toString());
     }
 
     public LatLng midPoint(double lat1,double lon1,double lat2,double lon2){

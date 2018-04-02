@@ -28,6 +28,8 @@ public class Event extends DataSupport implements Serializable{
 
     private int Place_id;
 
+    private int order;
+
     public Event() {
     }
 
@@ -111,6 +113,14 @@ public class Event extends DataSupport implements Serializable{
         this.date = date;
     }
 
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     @Override
     public String toString() {
         return "Event{" +
@@ -123,6 +133,7 @@ public class Event extends DataSupport implements Serializable{
                 ", date='" + date + '\'' +
                 ", Schedule_id=" + Schedule_id +
                 ", Place_id=" + Place_id +
+                ", order=" + order +
                 '}';
     }
 }

@@ -37,6 +37,7 @@ import org.litepal.crud.DataSupport;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.Response;
@@ -47,7 +48,7 @@ public class PlaceSearchActivity extends AppCompatActivity{
     private String TAG = "LocationSearch";
     private int PLACE_AUTOCOMPLETE_REQUEST_CODE = 5;
 
-    private Schedule schedule;
+    private int schedule_id;
     private com.example.three_pillar_cheaptriptravel.object.Place place_selected
             = new com.example.three_pillar_cheaptriptravel.object.Place();
 
@@ -61,6 +62,10 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Intent intent = getIntent();
+        schedule_id = intent.getIntExtra("schedule_id",-1);
+        Log.d(TAG, "onClick: "+schedule_id);
 
 
         super.onCreate(savedInstanceState);
@@ -147,13 +152,16 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
                         Event event = new Event(place_selected.getPlaceName(), "not-defined yet", startTime_formatted, endTime_formatted, "not-defined yet");
 
-                        Intent intent = getIntent();
-                        int schedule_id = intent.getIntExtra("schedule_id",-1);
-                        Log.d(TAG, "onClick: "+schedule_id);
-
                         event.setSchedule_id(schedule_id);
 
-                        schedule = DataSupport.where("id=?",""+schedule_id).findFirst(Schedule.class);
+                        Schedule schedule = DataSupport.where("id=?",""+schedule_id).findFirst(Schedule.class);
+
+                        List<Event> eventList = DataSupport.where("Schedule_id=?",""+schedule_id).order("order desc").find(Event.class);
+                        if(eventList.size()==0){
+                            event.setOrder(1);
+                        }else {
+                            event.setOrder(eventList.get(0).getOrder()+1);
+                        }
 
                         event.setDate(schedule.getDate());
 
@@ -162,6 +170,9 @@ public class PlaceSearchActivity extends AppCompatActivity{
                         }else {
                             event.setPlace_id(place_selected.getId());
                         }
+
+
+
                         event.save();
 
                         Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);

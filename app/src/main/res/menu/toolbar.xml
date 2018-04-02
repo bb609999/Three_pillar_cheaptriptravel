@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/create_schedele"
-        android:icon="@drawable/ic_playlist_add_black_24dp"
+        android:icon="@drawable/ic_library_add_black_24dp"
         android:title="create schedele"
         app:showAsAction="always"/>
 
@@ -14,13 +14,13 @@
         android:id="@+id/f1"
         android:icon="@drawable/ic_done"
         android:title="F1"
-        app:showAsAction="always"/>
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/f2"
         android:icon="@drawable/ic_done"
         android:title="F2"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/settings"
