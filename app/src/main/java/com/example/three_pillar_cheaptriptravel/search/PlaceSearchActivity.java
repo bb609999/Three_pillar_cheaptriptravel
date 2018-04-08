@@ -1,6 +1,7 @@
 package com.example.three_pillar_cheaptriptravel.search;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,6 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.R;
-import com.example.three_pillar_cheaptriptravel.ScheduleDisplayActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
@@ -56,9 +56,11 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
     private com.example.three_pillar_cheaptriptravel.object.Place place_exist;
 
-
-
-
+    public static Intent newIntent(Context packageContext, int schedule_id) {
+        Intent intent = new Intent(packageContext, PlaceSearchActivity.class);
+        intent.putExtra("schedule_id", schedule_id);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,12 +177,8 @@ public class PlaceSearchActivity extends AppCompatActivity{
 
                         event.save();
 
-                        Intent add_intent = new Intent(PlaceSearchActivity.this, ScheduleDisplayActivity.class);
-                        add_intent.putExtra("schedule_id",schedule_id);
-
-
+                        //startActivity(ScheduleDisplayActivity.newIntent(PlaceSearchActivity.this,schedule_id));
                         finish();
-                        startActivity(add_intent);
                     }
                 }
             }

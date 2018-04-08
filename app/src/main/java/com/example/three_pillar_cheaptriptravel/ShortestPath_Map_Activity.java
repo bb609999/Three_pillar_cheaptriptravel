@@ -1,5 +1,6 @@
 package com.example.three_pillar_cheaptriptravel;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -56,7 +57,6 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
     private TextView TotalDurationText;
 
-    //private List<Event> eventList;
     private List<Place> placeList;
 
     private ItemTouchHelper mItemTouchHelper;
@@ -68,8 +68,18 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     private LatLng[] latLngs;
 
     private List<Event> eventList = new ArrayList<>();
+    private List<Event> old_eventList = new ArrayList<>();
 
     private  String TAG = "TEST";
+
+
+    public static Intent newIntent(Context packageContext,int schedule_id, String json_response) {
+        Intent intent = new Intent(packageContext, ShortestPath_Map_Activity.class);
+        intent.putExtra("json_response", json_response);
+        intent.putExtra("schedule_id", schedule_id);
+
+        return intent;
+    }
 
 
 
@@ -77,6 +87,8 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shortest_path__map_);
+
+
 
         //Google Map
         //mTapTextView = (TextView) findViewById(R.id.tap_text);
@@ -86,8 +98,10 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
         final Intent intent = getIntent();
         schedule_id = intent.getIntExtra("schedule_id",-1);
+        old_eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
 
         String json_response = intent.getStringExtra("json_response");
+        Log.d(TAG, "onCreate:TEST "+json_response);
         try {
             JSONObject jsonObject = new JSONObject(json_response);
             route = jsonObject.getJSONArray("route");
@@ -95,8 +109,11 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
             latLngs = new LatLng[route.length()];
             for(int i=0;i<route.length();i++){
-                Event event = DataSupport.where("id=?",""+(route.optInt(i)+1)).findFirst(Event.class);
+
+
+                Event event = old_eventList.get(route.optInt(i));
                 eventList.add(event);
+                Log.d(TAG, "onCreate: TEST"+(event==null));
                 Place place = DataSupport.where("id=?",""+event.getPlace_id()).findFirst(Place.class);
                 latLngs[i] = place.getLatLng();
 

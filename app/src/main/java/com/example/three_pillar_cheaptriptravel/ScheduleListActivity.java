@@ -50,8 +50,9 @@ public class ScheduleListActivity extends AppCompatActivity {
         //CreateDataBase of Event if not exsit
         Connector.getDatabase();
 
-        //Query Schedule, return all schedule user create
-        Schedules = DataSupport.findAll(Schedule.class);
+        updateUI();
+
+
 
         //Toolbar
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
@@ -176,6 +177,21 @@ public class ScheduleListActivity extends AppCompatActivity {
                 });
             }
         }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        updateUI();
+    }
+
+    public void updateUI(){
+        //Query Schedule, return all schedule user create
+        Schedules = DataSupport.findAll(Schedule.class);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
 

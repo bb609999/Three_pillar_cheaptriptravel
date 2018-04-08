@@ -1,6 +1,7 @@
 package com.example.three_pillar_cheaptriptravel;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -17,12 +18,10 @@ import com.example.three_pillar_cheaptriptravel.Story.DiaryListActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
-import com.example.three_pillar_cheaptriptravel.search.HotelSearchActivity;
 import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
 import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -44,21 +43,17 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
     private Schedule schedule;
     private Calendar startFrom;
 
-
+    public static Intent newIntent(Context packageContext, int schedule_id) {
+        Intent intent = new Intent(packageContext, ScheduleDisplayActivity.class);
+        intent.putExtra("schedule_id", schedule_id);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Get Event under specific schedule id
-        placeList = DataSupport.findAll(Place.class);
-        Intent intent = getIntent();
-        schedule_id = intent.getIntExtra("schedule_id", -1);
-        eventList = DataSupport.where("Schedule_id=?", "" + schedule_id).find(Event.class);
-        schedule = DataSupport.where("id=?", "" + schedule_id).findFirst(Schedule.class);
-
-        //Create View and go to 9:00
-        goToScheduleDate();
+        updateUI();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -79,16 +74,14 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 finish();
                 break;
             case R.id.action_add_hotel:
-                Intent hotel_search_intent = new Intent(ScheduleDisplayActivity.this, HotelSearchActivity.class);
-                hotel_search_intent.putExtra("schedule_id", schedule_id);
-                finish();
-                startActivity(hotel_search_intent);
+               // Intent hotel_search_intent = new Intent(ScheduleDisplayActivity.this, HotelSearchActivity.class);
+               // hotel_search_intent.putExtra("schedule_id", schedule_id);
+               // finish();
+               // startActivity(hotel_search_intent);
                 break;
             case R.id.action_add_event:
-                Intent search_intent = new Intent(ScheduleDisplayActivity.this, PlaceSearchActivity.class);
-                search_intent.putExtra("schedule_id", schedule_id);
-                finish();
-                startActivity(search_intent);
+                startActivity(PlaceSearchActivity.newIntent(this,schedule_id));
+
                 break;
 
             case R.id.action_calculate_path:
@@ -133,7 +126,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
                         event.setEndTime(i+(i1/60.0));
                         event.updateAll("id = ?", ""+id);
-                        refreshDisplay();
+                        updateUI();
                     }
                 },13,0,true);
 
@@ -162,7 +155,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 break;
             case 2:
                 //restart Activity after Delete
-                refreshDisplay();
+                updateUI();
                 break;
             case 3:
                 break;
@@ -179,13 +172,6 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
     }
 
 
-    public void refreshDisplay() {
-        Intent intent = new Intent(ScheduleDisplayActivity.this, ScheduleDisplayActivity.class);
-        intent.putExtra("schedule_id", schedule_id);
-        finish();
-        startActivity(intent);
-    }
-
     public String formatTime(int hour, int minute) {
         String hour_formatted = hour < 10 ? "0" + hour : "" + hour;
         String minute_formatted = minute < 10 ? "0" + minute : "" + minute;
@@ -196,10 +182,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
     public void calculatePath() {
         String address = "https://bb609999.herokuapp.com/api?loc=";
 
-        for (
-                Place place : placeList)
-
-        {
+        for (Place place : placeList) {
             for (Event event : eventList) {
                 if (place.getPlaceName().equals(event.getPlaceName())) {
                     address += "" + place.getLat() + "," + place.getLng() + "|";
@@ -213,7 +196,6 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         Log.d("TAG", "onOptionsItemSelected: address" + address);
 
         HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback()
-
         {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -236,24 +218,8 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(responseData);
-                            JSONArray route = jsonObject.getJSONArray("route");
-                            JSONArray duration = jsonObject.getJSONArray("duration");
-
-                            Log.d(TAG, "run: TotalDuration = " + route.toString() + duration.toString());
-
-                            Intent intent = new Intent(ScheduleDisplayActivity.this, ShortestPath_Map_Activity.class);
-                            intent.putExtra("json_response", responseData);
-                            intent.putExtra("schedule_id", schedule_id);
-
-                            finish();
-                            startActivity(intent);
-                        }
-                        catch (Exception e){
-                            e.printStackTrace();
-                        }
+                            startActivity(ShortestPath_Map_Activity.newIntent
+                                    (ScheduleDisplayActivity.this,schedule_id,responseData));
                         }
 
                     });
@@ -367,7 +333,27 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
             }
         };
         getWeekView().setWeekViewLoader(loader);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
+        updateUI();
+    }
+
+    private void updateUI() {
+        //Get Event under specific schedule id
+        placeList = DataSupport.findAll(Place.class);
+        Intent intent = getIntent();
+        schedule_id = intent.getIntExtra("schedule_id", -1);
+        eventList = DataSupport.where("Schedule_id=?", "" + schedule_id).find(Event.class);
+        schedule = DataSupport.where("id=?", "" + schedule_id).findFirst(Schedule.class);
+
+        //Create View and go to 9:00
+        goToScheduleDate();
+        getWeekView().notifyDatasetChanged();
+       
     }
 
 }
