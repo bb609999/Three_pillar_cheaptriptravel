@@ -16,6 +16,7 @@ import com.alamkanak.weekview.WeekViewEvent;
 import com.alamkanak.weekview.WeekViewLoader;
 import com.example.three_pillar_cheaptriptravel.Story.DiaryListActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
+import com.example.three_pillar_cheaptriptravel.object.EventManager;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
@@ -78,6 +79,10 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                // hotel_search_intent.putExtra("schedule_id", schedule_id);
                // finish();
                // startActivity(hotel_search_intent);
+
+                EventManager.arrangeEvent(eventList);
+                updateUI();
+
                 break;
             case R.id.action_add_event:
                 startActivity(PlaceSearchActivity.newIntent(this,schedule_id));

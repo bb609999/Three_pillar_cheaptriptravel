@@ -114,7 +114,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
                 Event event = old_eventList.get(route.optInt(i));
                 eventList.add(event);
                 Log.d(TAG, "onCreate: TEST"+(event==null));
-                Place place = DataSupport.where("id=?",""+event.getPlace_id()).findFirst(Place.class);
+                Place place = event.getPlace();
                 latLngs[i] = place.getLatLng();
 
             }

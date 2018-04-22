@@ -136,4 +136,10 @@ public class Event extends DataSupport implements Serializable{
                 ", order=" + order +
                 '}';
     }
+
+    public Place getPlace(){
+        Place place = DataSupport.where("id=?",""+getPlace_id()).findFirst(Place.class);
+        return place;
+
+    }
 }

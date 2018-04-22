@@ -52,8 +52,6 @@ public class ScheduleListActivity extends AppCompatActivity {
 
         updateUI();
 
-
-
         //Toolbar
         Toolbar toolbar =(Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
