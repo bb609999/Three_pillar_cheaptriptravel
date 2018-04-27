@@ -2,6 +2,7 @@ package com.example.three_pillar_cheaptriptravel.object;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
 import org.litepal.crud.DataSupport;
 
 /**
@@ -119,11 +120,35 @@ public class Place extends DataSupport {
         return (dist);
     }
 
-    private static double rad2deg(double rad) {
+    public static double rad2deg(double rad) {
         return (rad * 180 / Math.PI);
     }
 
-    private static double deg2rad(double deg) {
+    public static double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
     }
+
+    public String getOneOpeningHour(int DayOfWeek) {
+        String OpeningHour = "";
+
+        try {
+
+            if (openingHour != null) {
+                JSONArray openingHourArray = new JSONArray(openingHour);
+                OpeningHour = openingHourArray.getString(DayOfWeek - 1);
+            } else {
+                OpeningHour = "No Information";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return OpeningHour;
+
+    }
+
+
+
+
+
 }

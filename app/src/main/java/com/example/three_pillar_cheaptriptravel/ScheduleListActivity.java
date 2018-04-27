@@ -1,5 +1,6 @@
 package com.example.three_pillar_cheaptriptravel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -70,7 +71,13 @@ public class ScheduleListActivity extends AppCompatActivity {
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                 mDrawerLayout.closeDrawers();
+
+                if(item.getItemId()==R.id.nav_friends){
+                    Intent intent = PlaceListActivity.newIntent(ScheduleListActivity.this);
+                    startActivity(intent);
+                }
                 return true;
             }
         });
@@ -130,6 +137,8 @@ public class ScheduleListActivity extends AppCompatActivity {
                 createScheduleDialog.show(getSupportFragmentManager(), " CreateScheduleDialog");
                 break;
             case R.id.f1:
+
+
                 break;
             case R.id.f2:
                 break;
@@ -191,6 +200,10 @@ public class ScheduleListActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
     }
+
+
+
+
 
 
 

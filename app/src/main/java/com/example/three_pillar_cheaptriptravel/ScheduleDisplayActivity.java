@@ -22,7 +22,6 @@ import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
 import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 
-import org.json.JSONArray;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
@@ -80,7 +79,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                // finish();
                // startActivity(hotel_search_intent);
 
-                EventManager.arrangeEvent(eventList);
+                EventManager.arrangeEvent(eventList,schedule_id);
                 updateUI();
 
                 break;
@@ -103,8 +102,12 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         super.onEventClick(event, eventRect);
 
+
+
         //new
         event_id=event.getId();
+
+
         EventDialog eventDialog = new EventDialog().newInstance(event_id);
         eventDialog.show(getSupportFragmentManager(), " EventDialog");
 
@@ -262,11 +265,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
                 for(Event an_event:eventList) {
                     //Event date and time
-                    Calendar event_date = Calendar.getInstance();
-                    String[] date = schedule.getDate().split("/");
-                    event_date.set(Calendar.DAY_OF_MONTH,Integer.valueOf(date[0]));
-                    event_date.set(Calendar.MONTH,Integer.valueOf(date[1])-1);
-                    event_date.set(Calendar.YEAR,Integer.valueOf(date[2]));
+                    Calendar event_date = an_event.getDateInCalendar();
 
                     Calendar startTime = (Calendar)event_date.clone();
                     Calendar endTime = (Calendar)event_date.clone();
@@ -288,16 +287,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                     //Opening hour of event place
                     Place place = DataSupport.where("id=?",""+an_event.getPlace_id()).findFirst(Place.class);
 
-                    try {
-                        String OpeningHour;
-
-                        if(place.getOpeningHour()!=null) {
-                            JSONArray openingHour = new JSONArray(place.getOpeningHour());
-                            int DAY_OF_WEEK = startTime.get(Calendar.DAY_OF_WEEK);
-                            OpeningHour = openingHour.getString(DAY_OF_WEEK - 1) ;
-                        }else{
-                            OpeningHour = "No Information" ;
-                        }
+                    String OpeningHour = place.getOneOpeningHour(startTime.get(Calendar.DAY_OF_WEEK));
 
                     event.setColor(getResources().getColor(R.color.event_color_black));
 
@@ -306,25 +296,14 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                             "\n Opening Hour = "+OpeningHour;
 
                     //not null + Exceed Time Limit   0123-5678
-                    if(OpeningHour!="No Information") {
-                        if (start_hour < Integer.valueOf(OpeningHour.substring(0, 2)) || end_hour > Integer.valueOf(OpeningHour.substring(5, 7))) {
-                            text = "Exceed Open Hour\n" + text;
-                            event.setColor(getResources().getColor(R.color.event_color_02));
-                        }
-                        if (start_hour == Integer.valueOf(OpeningHour.substring(0, 2)) || end_hour == Integer.valueOf(OpeningHour.substring(5, 7))) {
-                            if (start_minute < Integer.valueOf(OpeningHour.substring(2, 4)) || end_minute > Integer.valueOf(OpeningHour.substring(7, 9))) {
-                                text = "Exceed Open Hour\n" + text;
-                                event.setColor(getResources().getColor(R.color.event_color_02));
-
-                            }
-                        }
-                    }
+                   if(an_event.exceedOpeningHour(OpeningHour)){
+                       text = "Exceed Open Hour\n" + text;
+                       event.setColor(getResources().getColor(R.color.event_color_02));
+                   }
 
                   event.setName(text);
                     events.add(event);
-                    }catch (Exception e){
 
-                    }
 
                 }
 

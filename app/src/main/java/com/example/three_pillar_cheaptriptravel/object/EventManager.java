@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EventManager {
 
-    public static void arrangeEvent(List<Event> eventList){
+    public static void arrangeEvent(List<Event> eventList,int schedule_id){
 
         List<Double> DistanceList = new ArrayList<>();
 
@@ -30,7 +30,7 @@ public class EventManager {
             time_pointer = new_EndTime;
 
             if(i<eventList.size()-1){
-                time_pointer+=DistanceList.get(i)/7;
+                time_pointer+=DistanceList.get(i)/10;
             }
 
             eventList.get(i).setStartTime(new_startTime);
@@ -39,4 +39,10 @@ public class EventManager {
         }
 
     }
+
+
+
+
+
+
 }

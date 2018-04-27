@@ -35,7 +35,6 @@
             android:launchMode="singleTask" />
         <activity android:name=".ShortestPath_Map_Activity" />
 
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.three_pillar_cheaptriptravel.fileprovider"
@@ -46,17 +45,19 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-
         <activity android:name=".search.HotelSearchActivity" />
         <activity
             android:name=".place.PlaceDetailActivity"
             android:theme="@style/PlaceActivityTheme" />
-        <activity android:name=".Story.DiaryListActivity"
+        <activity
+            android:name=".Story.DiaryListActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".Story.DiaryAddActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".Story.DiaryAddActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize"></activity>
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".PlaceListActivity"></activity>
     </application>
 
 </manifest>

@@ -63,6 +63,8 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     implementation 'com.android.support:support-v4:26.1.0'
 
+    compile 'org.jsoup:jsoup:1.10.1'
+
     configurations.all {
         resolutionStrategy.eachDependency { DependencyResolveDetails details ->
             def requested = details.requested

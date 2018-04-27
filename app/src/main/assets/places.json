@@ -1,0 +1,22 @@
+{
+  "places":[
+    {
+      "place_id": 1,
+      "name": "Hong Kong Disneyland",
+      "address": "Lantau Island",
+      "imgLink": "https://assets.rappler.com/9FD0F5C7DC4B4B719F2885DAD4A3544C/img/CA8187DBA3124818B49FFB39DCD481CA/1_Hong_Kong_Disneyland__968Wx600H.jpg",
+      "lat": 22.312967,
+      "lnt": 114.041282,
+      "openingHour": [
+        "1030-2015",
+        "1030-2000",
+        "1030-2000",
+        "1030-2000",
+        "1030-2000",
+        "1030-2000",
+        "1030-2015"
+      ],
+      "description": {}
+    }
+  ]
+}
