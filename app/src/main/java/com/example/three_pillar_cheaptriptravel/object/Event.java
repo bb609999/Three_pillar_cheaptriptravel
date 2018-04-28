@@ -193,7 +193,7 @@ public class Event extends DataSupport implements Serializable{
         }
         Calendar c = Calendar.getInstance();
         c.setTime(date1);
-        c.add(Calendar.DATE, 1);  // number of days to add
+        c.add(Calendar.DATE, numOfDate);  // number of days to add
         date = new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
         this.save();
     }

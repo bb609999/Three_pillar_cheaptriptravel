@@ -58,5 +58,15 @@ public class Schedule extends DataSupport implements Serializable {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Override
+    public String toString() {
+        return "Schedule{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageId=" + imageId +
+                ", date='" + date + '\'' +
+                '}';
+    }
 }
 

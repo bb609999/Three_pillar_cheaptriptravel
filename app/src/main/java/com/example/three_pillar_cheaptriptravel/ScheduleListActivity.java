@@ -150,7 +150,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                     Log.d(TAG, "onOptionsItemSelected: "+one_event.toString());
                 }
                 for(Schedule one_Schedule: Schedules ) {
-                    Log.d("TAG", "Schedule " + one_Schedule.getId()+" "+one_Schedule.getName()+one_Schedule.getImageId());
+                    Log.d("TAG", "Schedule " + one_Schedule.toString());
                 }
                 for(Place one_Place: Places ) {
                     Log.d(TAG, "onOptionsItemSelected: "+one_Place.toString());

@@ -15,6 +15,10 @@ import com.example.three_pillar_cheaptriptravel.R;
 import com.example.three_pillar_cheaptriptravel.ScheduleListActivity;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by Administrator on 12/3/2018.
  */
@@ -47,16 +51,23 @@ public class CreateScheduleDialog extends DialogFragment {
                         DatePicker datePicker = (DatePicker)
                                 CreateScheduleDialog.this.getDialog().findViewById(R.id.schedule_date);
 
-                        String date = datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
+//                        String date = datePicker.getDayOfMonth()+"/"+(datePicker.getMonth()+1)+"/"+datePicker.getYear();
+//
+//                        Log.d("datepicker", "onClick: "+date);
+//
+//                        Log.d("schedule_name", "onClick: "+schedule_name);
 
-                        Log.d("datepicker", "onClick: "+date);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+                        Date date = calendar.getTime();
+                        SimpleDateFormat format1 = new SimpleDateFormat("dd/MM/yyyy");
+                        String date1 = format1.format(date);
 
-                        Log.d("schedule_name", "onClick: "+schedule_name);
 
                         Schedule schedule = new Schedule();
                         schedule.setName(schedule_name);
                         schedule.setImageId(R.drawable.hk);
-                        schedule.setDate(date);
+                        schedule.setDate(date1);
                         schedule.save();
 
                         CreateScheduleDialog.this.getActivity().finish();
