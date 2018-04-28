@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.Vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Story.DiaryGalleryActivity">
+
+    <LinearLayout
+        style="@style/MatchWrap.Vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/gallery_list_del_all"
+            style="@style/MatchWrapTv"
+            android:text="Del All" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/gallery_list_moments"
+        style="@style/MatchMatch" />
+</LinearLayout>
