@@ -70,6 +70,7 @@ public class CreateScheduleDialog extends DialogFragment {
                         schedule.setDate(date1);
                         schedule.save();
 
+
                         CreateScheduleDialog.this.getActivity().finish();
                         Intent intent = new Intent(CreateScheduleDialog.this.getActivity(),ScheduleListActivity.class);
                         startActivity(intent);
