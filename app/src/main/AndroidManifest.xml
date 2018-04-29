@@ -58,7 +58,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".PlaceListActivity" />
-        <activity android:name=".Story.DiaryGalleryActivity"></activity>
+        <activity android:name=".Story.DiaryGalleryActivity" />
+        <activity android:name=".Story.DiaryShowScheduleActivity"></activity>
     </application>
 
 </manifest>

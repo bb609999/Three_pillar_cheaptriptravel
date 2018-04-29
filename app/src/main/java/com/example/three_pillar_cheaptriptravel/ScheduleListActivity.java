@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.Story.DiaryGalleryActivity;
+import com.example.three_pillar_cheaptriptravel.Story.DiaryShowScheduleActivity;
 import com.example.three_pillar_cheaptriptravel.dialog.CreateScheduleDialog;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
@@ -80,7 +81,7 @@ public class ScheduleListActivity extends AppCompatActivity {
                     startActivity(intent);
                 }else if (item.getItemId()==R.id.nav_gallery){
                     //Toast.makeText(ScheduleListActivity.this, "check gallery", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ScheduleListActivity.this, DiaryGalleryActivity.class);
+                    Intent intent = new Intent(ScheduleListActivity.this, DiaryShowScheduleActivity.class);
                     startActivity(intent);
                 }
                 return true;

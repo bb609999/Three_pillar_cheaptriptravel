@@ -55,6 +55,7 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
     private List<String> text = new ArrayList<String>();
     private int schedule_id;
     private int event_id;
+    private String schedule_name;
     private List<String> findtext = new ArrayList<String>();
     private List<ArrayList<String>> findimages = new ArrayList<ArrayList<String>>();
     private List<Integer> activityids = new ArrayList<Integer>();
@@ -88,17 +89,18 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
         Log.d("Adapter1", mMomentRv.toString());
 
         Intent intent = getIntent();
-        schedule_id = intent.getIntExtra("schedule_id",-1);
-        Log.d(TAG, "diarylist_schedule_id: "+schedule_id);
+        schedule_id = intent.getIntExtra("schedule_idFromDSS",-1);
+        Log.d(TAG, "diaryG_schedule_id: "+schedule_id);
 
-        event_id = intent.getIntExtra("event_id", -1);
-        Log.d(TAG, "diarylist_event_id: "+event_id);
+
+        //schedule_name = intent.getStringExtra("schedule_idFromDSS");
+        //Log.d(TAG, "diaryG_schedule_name: "+schedule_name);
 
         FindDatainDB();
     }
 
     private void FindDatainDB() {
-        List<Stories> stories = DataSupport.findAll(Stories.class);
+        List<Stories> stories = DataSupport.where("schedule_id=? ", ""+schedule_id).find(Stories.class);
         List<Stories> moments = new ArrayList<>();
         for(Stories story:stories){
             findimages.add(story.getPhotos());
@@ -117,7 +119,7 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
         if(v.getId() == R.id.gallery_list_del_all){
             //delete photo
 
-            DataSupport.deleteAll(Stories.class);
+            DataSupport.deleteAll(Stories.class,"schedule_id=?", ""+schedule_id);
             images.clear();
             text.clear();
             activityids.clear();
@@ -209,7 +211,7 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
 
             images.clear();
             text.clear();
-            List<Stories> Stories = DataSupport.findAll(Stories.class);
+            List<Stories> Stories = DataSupport.where("schedule_id=?", ""+schedule_id).find(Stories.class);
             for(Stories story:Stories){
                 images.add(story.getPhotos());
                 text.add(story.getContent());
