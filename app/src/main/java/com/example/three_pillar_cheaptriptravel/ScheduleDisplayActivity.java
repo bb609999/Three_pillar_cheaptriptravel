@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.alamkanak.weekview.WeekViewLoader;
 import com.example.three_pillar_cheaptriptravel.Story.DiaryListActivity;
+import com.example.three_pillar_cheaptriptravel.dialog.DayToCalculateDialog;
+import com.example.three_pillar_cheaptriptravel.dialog.EventTimeArrangeDialog;
 import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.EventManager;
 import com.example.three_pillar_cheaptriptravel.object.Place;
@@ -58,6 +60,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         updateUI();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(schedule.getName());
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -77,8 +80,11 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 break;
 
             case R.id.action_mangage_time:
-                arrangeTimeAllDay();
-                updateUI();
+//                arrangeTimeAllDay();
+//                updateUI();
+                EventTimeArrangeDialog eventTimeArrangeDialog = EventTimeArrangeDialog.newInstance(schedule_id);
+                eventTimeArrangeDialog.show(getSupportFragmentManager(), " EventTimeArrangeDialog");
+
                 break;
 
             case R.id.action_cluster_event:
@@ -101,7 +107,10 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 break;
 
             case R.id.action_calculate_path:
-                calculatePath();
+                DayToCalculateDialog dayToCalculateDialog = DayToCalculateDialog.newInstance(schedule_id);
+                dayToCalculateDialog.show(getSupportFragmentManager(), " DayToCalculateDialog");
+
+//                calculatePath();
                 break;
             default:
         }
@@ -133,6 +142,15 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
                 break;
             case 1:
+
+
+
+                break;
+            case 2:
+                //restart Activity after Delete
+                updateUI();
+                break;
+            case 3:
                 final Long id = dialog.getArguments().getLong("id");
                 Log.d(TAG, "onItemClick: id"+id);
 
@@ -143,6 +161,8 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
 
                         //Get Event ID amd update that event
                         Event event = new Event();
+
+
 
                         event.setEndTime(i+(i1/60.0));
                         event.updateAll("id = ?", ""+id);
@@ -170,14 +190,6 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
                 StartTimePicker.setTitle("Start Time");
                 StartTimePicker.show();
 
-
-
-                break;
-            case 2:
-                //restart Activity after Delete
-                updateUI();
-                break;
-            case 3:
                 break;
             case 4:
                 Intent intent = new Intent(ScheduleDisplayActivity.this, DiaryListActivity.class);
@@ -202,13 +214,15 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
     public void calculatePath() {
         String address = "https://bb609999.herokuapp.com/api?loc=";
 
-        for (Place place : placeList) {
-            for (Event event : eventList) {
-                if (place.getPlaceName().equals(event.getPlaceName())) {
-                    address += "" + place.getLat() + "," + place.getLng() + "|";
-                }
-            }
+
+        Schedule schedule = Schedule.getSchedule(schedule_id);
+        List<Event> eventList = Event.getEventsByDate(schedule_id,dateString);
+
+        for(Event event:eventList) {
+            Place place = event.getPlace();
+            address += "" + place.getLat() + "," + place.getLng() + "|";
         }
+
 
         address = address.substring(0, address.length() - 1);
 

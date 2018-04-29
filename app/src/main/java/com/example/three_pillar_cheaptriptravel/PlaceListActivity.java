@@ -18,7 +18,7 @@ public class PlaceListActivity extends AppCompatActivity {
 
     private PlaceAdapter adapter;
 
-    private List<Place> Places ;
+    private List<Place> Places  ;
 
     public static Intent newIntent(Context packageContext){
         Intent intent = new Intent(packageContext,PlaceListActivity.class);

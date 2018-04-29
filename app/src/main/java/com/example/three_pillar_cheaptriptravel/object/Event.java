@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Administrator on 7/3/2018.
@@ -198,6 +199,13 @@ public class Event extends DataSupport implements Serializable{
         date = new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
         this.save();
     }
+    public static Event getEvent(int id){
+
+        Event event= DataSupport.find(Event.class,(long)id);
+
+        return event;
+    }
+
 
     public static List<Event> getEvents(int schedule_id){
 
@@ -209,6 +217,36 @@ public class Event extends DataSupport implements Serializable{
     public static List<Event> getEventsByDate(int schedule_id,String dateString){
         List<Event> eventList = DataSupport.where("Schedule_id=? AND date=?", "" + schedule_id,dateString).find(Event.class);
         return eventList;
+    }
+
+    public int getDays(){
+        Schedule schedule = Schedule.getSchedule(Schedule_id);
+        String date_start_String = schedule.getDate();
+        Date date_start = StringToDate(date_start_String);
+        Date date_end = StringToDate(date);
+
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+
+        c1.setTime(date_start);
+        c2.setTime(date_end);
+
+        long end = c2.getTimeInMillis();
+        long start = c1.getTimeInMillis();
+        return (int)(TimeUnit.MILLISECONDS.toDays(Math.abs(end - start)))+1;
+
+
+    }
+
+    public static Date StringToDate(String dateString){
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        try {
+            date = format.parse(dateString);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return date;
     }
 
 

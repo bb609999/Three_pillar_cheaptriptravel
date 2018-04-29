@@ -2,7 +2,10 @@ package com.example.three_pillar_cheaptriptravel.object;
 
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,6 +71,70 @@ public class EventManager {
             }
         }
     }
+
+    public static void arrangeTimeAllDay(int schedule_id){
+        //loop 10
+
+        Schedule schedule = Schedule.getSchedule(schedule_id);
+
+        for(int i=0;i<10;i++) {
+            Date date = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+            try {
+
+                date = format.parse(schedule.getDate());
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                c.add(Calendar.DATE, i);
+                date = c.getTime();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            String dateString = format.format(date);
+
+            List<Event> eventListWithSameDay =  Event.getEventsByDate(schedule_id,dateString);
+
+
+
+            EventManager.arrangeEvent(eventListWithSameDay);
+
+        }
+
+    }
+
+    public static void arrangeTimeOneDay(int schedule_id,int day) {
+        //loop 10
+
+        Schedule schedule = Schedule.getSchedule(schedule_id);
+
+
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        try {
+
+            date = format.parse(schedule.getDate());
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DATE, day - 1);
+            date = c.getTime();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        String dateString = format.format(date);
+
+        List<Event> eventListWithSameDay = Event.getEventsByDate(schedule_id, dateString);
+
+
+        EventManager.arrangeEvent(eventListWithSameDay);
+    }
+
+
+
+
 
 
 

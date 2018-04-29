@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.three_pillar_cheaptriptravel.Story.DiaryGalleryActivity;
 import com.example.three_pillar_cheaptriptravel.Story.DiaryShowScheduleActivity;
 import com.example.three_pillar_cheaptriptravel.dialog.CreateScheduleDialog;
 import com.example.three_pillar_cheaptriptravel.object.Event;
@@ -143,6 +142,8 @@ public class ScheduleListActivity extends AppCompatActivity {
                 createScheduleDialog.show(getSupportFragmentManager(), " CreateScheduleDialog");
                 break;
             case R.id.f1:
+                Schedule schedule = Schedule.getSchedule(1);
+                Log.d(TAG, "onOptionsItemSelected: "+schedule.getName());
 
 
                 break;

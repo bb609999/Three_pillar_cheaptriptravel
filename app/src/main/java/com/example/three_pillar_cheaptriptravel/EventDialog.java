@@ -70,7 +70,7 @@ public class EventDialog extends DialogFragment {
 
 
         builder.setTitle("Event")
-                .setItems(new String[]{"Place Detail","Change Time","Delete Event","Change Time", "Gallery"}, new DialogInterface.OnClickListener() {
+                .setItems(new String[]{"Place Detail","Change Date","Delete Event","Change Time", "Gallery"}, new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item

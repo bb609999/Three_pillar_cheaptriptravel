@@ -1,8 +1,13 @@
 package com.example.three_pillar_cheaptriptravel.object;
 
+import android.util.Log;
+
 import org.litepal.crud.DataSupport;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by Administrator on 7/3/2018.
@@ -72,6 +77,24 @@ public class Schedule extends DataSupport implements Serializable {
     public static Schedule getSchedule(int schedule_id){
         Schedule schedule = DataSupport.where("id=?", "" + schedule_id).findFirst(Schedule.class);
         return  schedule;
+    }
+
+    public int getMaxDays(){
+        List<Event> eventList = Event.getEvents(id);
+
+        Log.d("daylist","getMaxDays: "+eventList.size());
+
+        List<Integer> dayList = new ArrayList<>();
+        dayList.add(0);
+
+        for(Event event:eventList){
+            dayList.add(event.getDays());
+        }
+
+
+
+        return Collections.max(dayList);
+
     }
 
 

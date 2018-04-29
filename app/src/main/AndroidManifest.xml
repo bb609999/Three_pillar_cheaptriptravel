@@ -59,12 +59,10 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".PlaceListActivity" />
         <activity android:name=".Story.DiaryGalleryActivity" />
-<<<<<<< HEAD
-        <activity android:name=".dialog.EventClusterDialog" />
-        <activity android:name=".EventCluster"></activity>
-=======
-        <activity android:name=".Story.DiaryShowScheduleActivity"></activity>
->>>>>>> cfee7d8b7854c6397b86351396906cebbbf46445
+        <activity android:name=".EventCluster" />
+        <activity android:name=".Story.DiaryShowScheduleActivity" />
+        <activity android:name=".dialog.EventTimeArrangeDialog" />
+        <activity android:name=".dialog.DayToCalculateDialog"></activity>
     </application>
 
 </manifest>
