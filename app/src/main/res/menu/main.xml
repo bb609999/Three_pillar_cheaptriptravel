@@ -3,10 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MyActivity" >
 
-    <item android:id="@+id/action_add_hotel"
-        android:icon="@drawable/ic_hotel_black_24dp"
+    <item
+        android:id="@+id/action_cluster_event"
+        android:icon="@drawable/ic_cluster"
         android:title="Add"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_mangage_time"
+        android:icon="@drawable/ic_action_manage_time"
+        android:title="Add"
+        app:showAsAction="always" />
 
 
     <item android:id="@+id/action_add_event"
@@ -17,7 +24,7 @@
     <item android:id="@+id/action_calculate_path"
         android:icon="@drawable/nav_location"
         android:title="Cal"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_today"
         android:title="@string/action_today"

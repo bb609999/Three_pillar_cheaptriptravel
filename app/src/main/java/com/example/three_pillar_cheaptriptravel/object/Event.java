@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 7/3/2018.
@@ -198,6 +199,17 @@ public class Event extends DataSupport implements Serializable{
         this.save();
     }
 
+    public static List<Event> getEvents(int schedule_id){
+
+        List<Event> eventList = DataSupport.where("Schedule_id=?", "" + schedule_id).find(Event.class);
+
+        return eventList;
+    }
+
+    public static List<Event> getEventsByDate(int schedule_id,String dateString){
+        List<Event> eventList = DataSupport.where("Schedule_id=? AND date=?", "" + schedule_id,dateString).find(Event.class);
+        return eventList;
+    }
 
 
 

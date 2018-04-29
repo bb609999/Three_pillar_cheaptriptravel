@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,7 +16,6 @@ import com.alamkanak.weekview.WeekViewEvent;
 import com.alamkanak.weekview.WeekViewLoader;
 import com.example.three_pillar_cheaptriptravel.Story.DiaryListActivity;
 import com.example.three_pillar_cheaptriptravel.object.Event;
-import com.example.three_pillar_cheaptriptravel.object.EventLocationCluster;
 import com.example.three_pillar_cheaptriptravel.object.EventManager;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
@@ -27,7 +25,6 @@ import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -78,45 +75,23 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.action_add_hotel:
-               // Intent hotel_search_intent = new Intent(ScheduleDisplayActivity.this, HotelSearchActivity.class);
-               // hotel_search_intent.putExtra("schedule_id", schedule_id);
-               // finish();
-               // startActivity(hotel_search_intent);
 
-                //EventManager.arrangeEvent(eventList,schedule_id);
-                EventManager.arrangeEventByCluster(schedule,eventList,1250);
+            case R.id.action_mangage_time:
+                arrangeTimeAllDay();
+                updateUI();
+                break;
 
-                Log.d(TAG, "onOptionsItemSelected: "+schedule.getDate());
+            case R.id.action_cluster_event:
 
-
-
-               //loop 10
-               for(int i=0;i<10;i++) {
-                   Date date = new Date();
-                   SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
-                   try {
-
-                       date = format.parse(schedule.getDate());
-                       Calendar c = Calendar.getInstance();
-                       c.setTime(date);
-                       c.add(Calendar.DATE, i);
-                       date = c.getTime();
-                   }catch (Exception e){
-                       e.printStackTrace();
-                   }
-
-                   String dateString = format.format(date);
-
-                   List<Event> eventListWithSameDay =  DataSupport.where("Schedule_id=? AND date=?", "" + schedule_id,dateString).find(Event.class);
-                   Log.d(TAG, "onOptionsItemSelected: " + eventListWithSameDay.size());
+                Intent intent = EventCluster.newIntent(this,schedule_id);
+                startActivity(intent);
 
 
 
-                   EventManager.arrangeEvent(eventListWithSameDay);
+//                EventManager.arrangeEventByCluster(schedule,eventList,1250);
 
-               }
+
+
                 updateUI();
 
                 break;
@@ -368,13 +343,42 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         placeList = DataSupport.findAll(Place.class);
         Intent intent = getIntent();
         schedule_id = intent.getIntExtra("schedule_id", -1);
-        eventList = DataSupport.where("Schedule_id=?", "" + schedule_id).find(Event.class);
-        schedule = DataSupport.where("id=?", "" + schedule_id).findFirst(Schedule.class);
+        eventList = Event.getEvents(schedule_id);
+        schedule = Schedule.getSchedule(schedule_id);
 
         //Create View and go to 9:00
         goToScheduleDate();
         getWeekView().notifyDatasetChanged();
        
+    }
+
+    public void arrangeTimeAllDay(){
+        //loop 10
+        for(int i=0;i<10;i++) {
+            Date date = new Date();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+            try {
+
+                date = format.parse(schedule.getDate());
+                Calendar c = Calendar.getInstance();
+                c.setTime(date);
+                c.add(Calendar.DATE, i);
+                date = c.getTime();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            String dateString = format.format(date);
+
+            List<Event> eventListWithSameDay =  Event.getEventsByDate(schedule_id,dateString);
+            Log.d(TAG, "onOptionsItemSelected: " + eventListWithSameDay.size());
+
+
+
+            EventManager.arrangeEvent(eventListWithSameDay);
+
+        }
     }
 
 }

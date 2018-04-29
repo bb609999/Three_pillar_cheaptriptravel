@@ -68,5 +68,12 @@ public class Schedule extends DataSupport implements Serializable {
                 ", date='" + date + '\'' +
                 '}';
     }
+
+    public static Schedule getSchedule(int schedule_id){
+        Schedule schedule = DataSupport.where("id=?", "" + schedule_id).findFirst(Schedule.class);
+        return  schedule;
+    }
+
+
 }
 
