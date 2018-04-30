@@ -1,6 +1,7 @@
 package com.example.three_pillar_cheaptriptravel.dialog;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -10,32 +11,41 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.R;
-import com.example.three_pillar_cheaptriptravel.ScheduleDisplayActivity;
-import com.example.three_pillar_cheaptriptravel.ShortestPath_Map_Activity;
 import com.example.three_pillar_cheaptriptravel.object.DateFormat;
 import com.example.three_pillar_cheaptriptravel.object.Event;
-import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
-import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 public class DayToCalculateDialog extends DialogFragment {
 
         private int schedule_id;
         private List<String> data = new ArrayList<>();
         private Spinner spinner;
+        private Context mContext;
+        private Callbacks mCallbacks;
 
-        public interface NoticeDialogListener {
+    public interface Callbacks {
+        void calculatePath(int schedule_id,String dateString);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    public interface NoticeDialogListener {
             public void onDialogPositiveClick(DialogFragment dialog);
             public void onDialogNegativeClick(DialogFragment dialog);
         }
@@ -84,6 +94,7 @@ public class DayToCalculateDialog extends DialogFragment {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerAdapter);
         spinnerAdapter.notifyDataSetChanged();
+//        mContext = getActivity();
 
 
 
@@ -96,6 +107,12 @@ public class DayToCalculateDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         int days = spinner.getSelectedItemPosition();
+                        Date start_date = Event.StringToDate(schedule.getDate());
+                        String now_date = DateFormat.DateToString(DateFormat.changeDate(start_date,days));
+
+
+//                        calculatePath(schedule_id,now_date);
+                        mCallbacks.calculatePath(schedule_id,now_date);
 
 
 
@@ -110,55 +127,4 @@ public class DayToCalculateDialog extends DialogFragment {
         return builder.create();
     }
 
-
-
-    public void calculatePath(final int schedule_id, String dateString) {
-        String address = "https://bb609999.herokuapp.com/api?loc=";
-
-        Schedule schedule = Schedule.getSchedule(schedule_id);
-        List<Event> eventList = Event.getEventsByDate(schedule_id,dateString);
-
-        for(Event event:eventList) {
-            Place place = event.getPlace();
-            address += "" + place.getLat() + "," + place.getLng() + "|";
-        }
-
-
-        address = address.substring(0, address.length() - 1);
-
-
-        Log.d("TAG", "onOptionsItemSelected: address" + address);
-
-        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback()
-        {
-            @Override
-            public void onFailure(Call call, IOException e) {
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                final String responseData = response.body().string();
-                Log.d("TAG", "onResponse: responseData: " + responseData);
-
-                //If result return
-                if (responseData.equals("No Result")) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(), "No Result", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(ShortestPath_Map_Activity.newIntent
-                                    (getActivity(),schedule_id,responseData));
-                        }
-
-                    });
-                }
-            }
-        });
-    }
 }

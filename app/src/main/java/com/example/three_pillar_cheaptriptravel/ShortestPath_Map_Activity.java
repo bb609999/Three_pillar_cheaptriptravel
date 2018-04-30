@@ -66,6 +66,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     private JSONArray route;
     private JSONArray duration;
     private LatLng[] latLngs;
+    private String dateString;
 
     private List<Event> eventList = new ArrayList<>();
     private List<Event> old_eventList = new ArrayList<>();
@@ -73,10 +74,11 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     private  String TAG = "TEST";
 
 
-    public static Intent newIntent(Context packageContext,int schedule_id, String json_response) {
+    public static Intent newIntent(Context packageContext,int schedule_id,String dateSring, String json_response) {
         Intent intent = new Intent(packageContext, ShortestPath_Map_Activity.class);
         intent.putExtra("json_response", json_response);
         intent.putExtra("schedule_id", schedule_id);
+        intent.putExtra("dateString",dateSring);
 
         return intent;
     }
@@ -98,7 +100,9 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
         final Intent intent = getIntent();
         schedule_id = intent.getIntExtra("schedule_id",-1);
-        old_eventList = DataSupport.where("Schedule_id=?",""+schedule_id).find(Event.class);
+        dateString = intent.getStringExtra("dateString");
+
+        old_eventList = Event.getEventsByDate(schedule_id,dateString);
 
         String json_response = intent.getStringExtra("json_response");
         Log.d(TAG, "onCreate:TEST "+json_response);
@@ -163,13 +167,12 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
             public void onClick(View view) {
 
 
-                List<Event> eventList = DataSupport.where("schedule_id=?",""+schedule_id).find(Event.class);
+                List<Event> eventList = Event.getEventsByDate(schedule_id,dateString);
                     Log.d(TAG, "onClick: "+eventList.size());
 
                 Double time = 0.0;
                 for(int i =0;i<eventList.size();i++) {
-                    Place place = DataSupport.where("lat=? AND lng=?",""+latLngs[i].latitude,
-                            ""+latLngs[i].longitude).findFirst(Place.class);
+                    Place place = eventList.get(i).getPlace();
                     Log.d("Place", "onClick: "+place.getPlaceName());
 
                     double travel_time = i>0?duration.optInt(i-1)/3600.0:0;

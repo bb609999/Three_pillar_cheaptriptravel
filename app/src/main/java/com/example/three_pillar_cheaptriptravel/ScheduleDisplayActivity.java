@@ -36,7 +36,8 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDialog.EventDialogListener {
+public class ScheduleDisplayActivity extends ScheduleDisplay
+        implements  EventDialog.EventDialogListener, DayToCalculateDialog.Callbacks{
 
 
     public final static String TAG = "ScheduleDisplayActivity";
@@ -109,6 +110,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
             case R.id.action_calculate_path:
                 DayToCalculateDialog dayToCalculateDialog = DayToCalculateDialog.newInstance(schedule_id);
                 dayToCalculateDialog.show(getSupportFragmentManager(), " DayToCalculateDialog");
+
 
 //                calculatePath();
                 break;
@@ -211,56 +213,56 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         return hour_formatted + ":" + minute_formatted;
     }
 
-    public void calculatePath() {
-        String address = "https://bb609999.herokuapp.com/api?loc=";
-
-
-        Schedule schedule = Schedule.getSchedule(schedule_id);
-        List<Event> eventList = Event.getEventsByDate(schedule_id,dateString);
-
-        for(Event event:eventList) {
-            Place place = event.getPlace();
-            address += "" + place.getLat() + "," + place.getLng() + "|";
-        }
-
-
-        address = address.substring(0, address.length() - 1);
-
-
-        Log.d("TAG", "onOptionsItemSelected: address" + address);
-
-        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback()
-        {
-            @Override
-            public void onFailure(Call call, IOException e) {
-            }
-
-            @Override
-            public void onResponse(Call call, final Response response) throws IOException {
-                final String responseData = response.body().string();
-                Log.d("TAG", "onResponse: responseData: " + responseData);
-
-                //If result return
-                if (responseData.equals("No Result")) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(ScheduleDisplayActivity.this, "No Result", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(ShortestPath_Map_Activity.newIntent
-                                    (ScheduleDisplayActivity.this,schedule_id,responseData));
-                        }
-
-                    });
-                }
-            }
-        });
-    }
+//    public void calculatePath() {
+//        String address = "https://bb609999.herokuapp.com/api?loc=";
+//
+//
+//        Schedule schedule = Schedule.getSchedule(schedule_id);
+//        List<Event> eventList = Event.getEventsByDate(schedule_id,dateString);
+//
+//        for(Event event:eventList) {
+//            Place place = event.getPlace();
+//            address += "" + place.getLat() + "," + place.getLng() + "|";
+//        }
+//
+//
+//        address = address.substring(0, address.length() - 1);
+//
+//
+//        Log.d("TAG", "onOptionsItemSelected: address" + address);
+//
+//        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback()
+//        {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, final Response response) throws IOException {
+//                final String responseData = response.body().string();
+//                Log.d("TAG", "onResponse: responseData: " + responseData);
+//
+//                //If result return
+//                if (responseData.equals("No Result")) {
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(ScheduleDisplayActivity.this, "No Result", Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//                } else {
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            startActivity(ShortestPath_Map_Activity.newIntent
+//                                    (ScheduleDisplayActivity.this,schedule_id,responseData));
+//                        }
+//
+//                    });
+//                }
+//            }
+//        });
+//    }
 
 
     public void goToScheduleDate(){
@@ -395,5 +397,56 @@ public class ScheduleDisplayActivity extends ScheduleDisplay implements  EventDi
         }
     }
 
+    @Override
+    public void calculatePath(final int schedule_id, final String dateString) {
+                String address = "https://bb609999.herokuapp.com/api?loc=";
+
+
+        Schedule schedule = Schedule.getSchedule(schedule_id);
+        List<Event> eventList = Event.getEventsByDate(schedule_id,dateString);
+
+        for(Event event:eventList) {
+            Place place = event.getPlace();
+            address += "" + place.getLat() + "," + place.getLng() + "|";
+        }
+
+
+        address = address.substring(0, address.length() - 1);
+
+
+        Log.d("TAG", "onOptionsItemSelected: address" + address);
+
+        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback()
+        {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+                final String responseData = response.body().string();
+                Log.d("TAG", "onResponse: responseData: " + responseData);
+
+                //If result return
+                if (responseData.equals("No Result")) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(ScheduleDisplayActivity.this, "No Result", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(ShortestPath_Map_Activity.newIntent
+                                    (ScheduleDisplayActivity.this,schedule_id,dateString,responseData));
+                        }
+
+                    });
+                }
+            }
+        });
+    }
 }
 
