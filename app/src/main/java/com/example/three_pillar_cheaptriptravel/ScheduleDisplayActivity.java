@@ -1,5 +1,6 @@
 package com.example.three_pillar_cheaptriptravel;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -144,6 +146,32 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
 
                 break;
             case 1:
+                final Long id = dialog.getArguments().getLong("id");
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year,month,dayOfMonth);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
+
+
+                        String dateString = simpleDateFormat.format(calendar.getTime());
+                        Event event = Event.getEvent(id.intValue());
+                        event.setDate(dateString);
+                        event.update(id.intValue());
+                        updateUI();
+
+
+
+                    }
+                },2018,4-1,30);
+                datePickerDialog.setTitle("Choose date");
+                datePickerDialog.show();
+
+
 
 
 
@@ -153,8 +181,8 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
                 updateUI();
                 break;
             case 3:
-                final Long id = dialog.getArguments().getLong("id");
-                Log.d(TAG, "onItemClick: id"+id);
+                final Long id2 = dialog.getArguments().getLong("id");
+
 
                 //EndTime
                 TimePickerDialog EndTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
@@ -167,7 +195,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
 
 
                         event.setEndTime(i+(i1/60.0));
-                        event.updateAll("id = ?", ""+id);
+                        event.updateAll("id = ?", ""+id2);
                         updateUI();
                     }
                 },13,0,true);
@@ -183,7 +211,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
                         Event event = new Event();
 
                         event.setStartTime(i+(i1/60.0));
-                        event.updateAll("id = ?", ""+id);
+                        event.updateAll("id = ?", ""+id2);
 
                     }
                 },12,0,true);
