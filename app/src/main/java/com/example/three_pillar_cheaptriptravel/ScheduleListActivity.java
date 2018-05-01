@@ -152,6 +152,9 @@ public class ScheduleListActivity extends AppCompatActivity {
 
                 break;
             case R.id.f2:
+                Intent intent = new Intent(ScheduleListActivity.this,TravelActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.settings:
                 List<Event> Events = DataSupport.findAll(Event.class);

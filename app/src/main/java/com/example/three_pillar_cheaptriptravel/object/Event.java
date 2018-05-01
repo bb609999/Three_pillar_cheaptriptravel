@@ -159,6 +159,30 @@ public class Event extends DataSupport implements Serializable{
 
     }
 
+    public Place getPreviousPlace(){
+        List<Event> eventList = DataSupport
+                .where("Schedule_id=? AND date=?", "" + Schedule_id,date)
+                .order("startTime asc")
+                .find(Event.class);
+
+        int position = 0;
+
+
+
+        for(int i=0;i<eventList.size();i++){
+            if(eventList.get(i).getId()==id){
+                position = i;
+            }
+        }
+
+        if(position==0){
+            return Place.getPlace(Schedule.getSchedule(Schedule_id).getHotel_id());
+        }
+
+        return eventList.get(1-1).getPlace();
+
+    }
+
     public boolean exceedOpeningHour(String OpeningHour){
 
         Place place = getPlace();

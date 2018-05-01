@@ -153,6 +153,22 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
     }
 
     @Override
+    public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
+        super.onEventLongPress(event, eventRect);
+        Event event1 = Event.getEvent((int)event.getId());
+
+        Log.d(TAG, "onEventLongPress: "+event1.getPreviousPlace().getPlaceName());
+        Log.d(TAG, "onEventLongPress: "+event1.getPlace().getPlaceName());
+
+
+        Intent intent = TravelActivity.newIntent(ScheduleDisplayActivity.this
+                ,event1.getPreviousPlace().getPlaceName(),
+                event1.getPlace().getPlaceName());
+
+        startActivity(intent);
+            }
+
+    @Override
     public void onItemClick(android.support.v4.app.DialogFragment dialog, int which) {
         switch (which) {
 

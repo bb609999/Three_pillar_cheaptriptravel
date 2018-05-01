@@ -63,7 +63,8 @@
         <activity android:name=".Story.DiaryShowScheduleActivity" />
         <activity android:name=".dialog.EventTimeArrangeDialog" />
         <activity android:name=".dialog.DayToCalculateDialog" />
-        <activity android:name=".object.ScheduleSettingActivity"></activity>
+        <activity android:name=".object.ScheduleSettingActivity" />
+        <activity android:name=".TravelActivity"></activity>
     </application>
 
 </manifest>
