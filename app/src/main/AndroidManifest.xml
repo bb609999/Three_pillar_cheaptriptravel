@@ -62,7 +62,8 @@
         <activity android:name=".EventCluster" />
         <activity android:name=".Story.DiaryShowScheduleActivity" />
         <activity android:name=".dialog.EventTimeArrangeDialog" />
-        <activity android:name=".dialog.DayToCalculateDialog"></activity>
+        <activity android:name=".dialog.DayToCalculateDialog" />
+        <activity android:name=".object.ScheduleSettingActivity"></activity>
     </application>
 
 </manifest>

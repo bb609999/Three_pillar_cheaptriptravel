@@ -9,6 +9,7 @@
     <mapping class ="com.example.three_pillar_cheaptriptravel.object.Place"></mapping>
     <mapping class ="com.example.three_pillar_cheaptriptravel.object.Schedule"></mapping>
     <mapping class ="com.example.three_pillar_cheaptriptravel.object.Stories"></mapping>
+    <mapping class ="com.example.three_pillar_cheaptriptravel.object.Travel"></mapping>
 
 </list>
 </litepal>

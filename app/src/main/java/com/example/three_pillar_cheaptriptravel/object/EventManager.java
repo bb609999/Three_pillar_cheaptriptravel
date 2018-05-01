@@ -14,9 +14,10 @@ import java.util.List;
 
 public class EventManager {
 
-    public static void arrangeEvent(List<Event> eventList){
+    public static void arrangeEvent(List<Event> eventList, int schedule_id){
 
         List<Double> DistanceList = new ArrayList<>();
+        Schedule schedule = Schedule.getSchedule(schedule_id);
 
         for(int i=0;i<eventList.size()-1;i++) {
             Place place_1 = eventList.get(i).getPlace();
@@ -27,7 +28,7 @@ public class EventManager {
             DistanceList.add(distance);
         }
 
-        Double time_pointer = 9.0;
+        Double time_pointer = schedule.getGetUpTime();
 
         for(int i=0;i<eventList.size();i++){
             double new_startTime =  time_pointer ;
@@ -98,7 +99,7 @@ public class EventManager {
 
 
 
-            EventManager.arrangeEvent(eventListWithSameDay);
+            EventManager.arrangeEvent(eventListWithSameDay,schedule_id);
 
         }
 
@@ -129,7 +130,7 @@ public class EventManager {
         List<Event> eventListWithSameDay = Event.getEventsByDate(schedule_id, dateString);
 
 
-        EventManager.arrangeEvent(eventListWithSameDay);
+        EventManager.arrangeEvent(eventListWithSameDay,schedule_id);
     }
 
 

@@ -23,6 +23,8 @@ import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.EventManager;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
+import com.example.three_pillar_cheaptriptravel.object.ScheduleSettingActivity;
+import com.example.three_pillar_cheaptriptravel.object.TimeFormat;
 import com.example.three_pillar_cheaptriptravel.search.PlaceSearchActivity;
 import com.example.three_pillar_cheaptriptravel.util.HttpUtil;
 
@@ -60,7 +62,10 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         updateUI();
+        setGetUpAndBackTime();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(schedule.getName());
@@ -74,6 +79,8 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
     }
 
 
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -81,6 +88,7 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
             case android.R.id.home:
                 finish();
                 break;
+
 
             case R.id.action_mangage_time:
 //                arrangeTimeAllDay();
@@ -116,6 +124,12 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
 
 //                calculatePath();
                 break;
+            case R.id.action_schedule_setting :
+                Intent setting = ScheduleSettingActivity.newIntent(this,schedule_id);
+                startActivity(setting);
+
+                break;
+
             default:
         }
         return true;
@@ -240,57 +254,6 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
 
         return hour_formatted + ":" + minute_formatted;
     }
-
-//    public void calculatePath() {
-//        String address = "https://bb609999.herokuapp.com/api?loc=";
-//
-//
-//        Schedule schedule = Schedule.getSchedule(schedule_id);
-//        List<Event> eventList = Event.getEventsByDate(schedule_id,dateString);
-//
-//        for(Event event:eventList) {
-//            Place place = event.getPlace();
-//            address += "" + place.getLat() + "," + place.getLng() + "|";
-//        }
-//
-//
-//        address = address.substring(0, address.length() - 1);
-//
-//
-//        Log.d("TAG", "onOptionsItemSelected: address" + address);
-//
-//        HttpUtil.sendOkHttpRequest(address, new okhttp3.Callback()
-//        {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, final Response response) throws IOException {
-//                final String responseData = response.body().string();
-//                Log.d("TAG", "onResponse: responseData: " + responseData);
-//
-//                //If result return
-//                if (responseData.equals("No Result")) {
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Toast.makeText(ScheduleDisplayActivity.this, "No Result", Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                } else {
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            startActivity(ShortestPath_Map_Activity.newIntent
-//                                    (ScheduleDisplayActivity.this,schedule_id,responseData));
-//                        }
-//
-//                    });
-//                }
-//            }
-//        });
-//    }
 
 
     public void goToScheduleDate(){
@@ -420,9 +383,49 @@ public class ScheduleDisplayActivity extends ScheduleDisplay
 
 
 
-            EventManager.arrangeEvent(eventListWithSameDay);
+            EventManager.arrangeEvent(eventListWithSameDay,schedule_id);
 
         }
+    }
+
+    private void setGetUpAndBackTime() {
+
+        if((schedule.getGetUpTime()!=0.00)&&(schedule.getBackTime()!=0.00)){
+            return;
+        }
+
+        TimePickerDialog endTimeDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                Schedule schedule = new Schedule();
+                schedule.setBackTime(TimeFormat.getTimeFromHM(i,i1));
+                schedule.update(schedule_id);
+
+            }
+        },22,0,true);
+
+        endTimeDialog.setTitle("When would you want to get back to hotel?");
+        endTimeDialog.show();
+
+
+        TimePickerDialog getUpTimeDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int i, int i1) {
+                Schedule schedule = new Schedule();
+                schedule.setGetUpTime(TimeFormat.getTimeFromHM(i,i1));
+                schedule.update(schedule_id);
+
+            }
+        },9,0,true);
+
+        getUpTimeDialog.setTitle("When would you start your daily trip (leaving hotel)?");
+        getUpTimeDialog.show();
+
+
+
+
+
+
     }
 
     @Override

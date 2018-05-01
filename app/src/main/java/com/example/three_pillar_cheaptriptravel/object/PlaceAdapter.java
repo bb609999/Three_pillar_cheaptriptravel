@@ -5,6 +5,7 @@ package com.example.three_pillar_cheaptriptravel.object;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.three_pillar_cheaptriptravel.R;
+import com.example.three_pillar_cheaptriptravel.place.PlaceDetailActivity;
 
 import java.util.List;
 
@@ -59,10 +62,8 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder>{
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
                 Place place = mPlaceList.get(position);
-                // intent.putExtra(placeActivity.place_NAME, place.getName());
-                // intent.putExtra(placeActivity.place_IMAGE_ID, place.getImageId());
-                //Intent intent = PlaceListActivity.newIntent(mContext,place.getId());
-                //.startActivity(intent);
+                Intent detail = PlaceDetailActivity.newIntent(mContext,place.getId());
+                mContext.startActivity(detail);
             }
         });
         return holder;
@@ -72,7 +73,14 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
         Place place = mPlaceList.get(position);
         holder.placeName.setText(place.getPlaceName());
-        //Glide.with(mContext).load(place.getImageId()).into(holder.placeImage);
+
+        if(place.getImgLink()!=null) {
+            Glide.with(mContext).load(place.getImgLink()).into(holder.placeImage);
+        }else{
+            Glide.with(mContext)
+                    .load("http://zyzz.appgame.com/wp-content/uploads/sites/116/2015/12/16-1024x1024.jpg")
+                    .into(holder.placeImage);
+        }
     }
 
     @Override

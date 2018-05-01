@@ -147,6 +147,10 @@ public class Place extends DataSupport {
 
     }
 
+    public static Place getPlace(int place_id){
+        return DataSupport.find(Place.class,place_id);
+    }
+
 
 
 

@@ -37,4 +37,6 @@ public class DateFormat {
        c.add(Calendar.DATE, numOfDay);  // number of days to add
        return new SimpleDateFormat("dd/MM/yyyy").format(c.getTime());
    }
+
+
 }

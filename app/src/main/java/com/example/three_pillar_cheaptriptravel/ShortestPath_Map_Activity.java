@@ -57,7 +57,6 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
     private TextView TotalDurationText;
 
-    private List<Place> placeList;
 
     private ItemTouchHelper mItemTouchHelper;
 
@@ -74,11 +73,11 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     private  String TAG = "TEST";
 
 
-    public static Intent newIntent(Context packageContext,int schedule_id,String dateSring, String json_response) {
+    public static Intent newIntent(Context packageContext,int schedule_id,String dateString, String json_response) {
         Intent intent = new Intent(packageContext, ShortestPath_Map_Activity.class);
         intent.putExtra("json_response", json_response);
         intent.putExtra("schedule_id", schedule_id);
-        intent.putExtra("dateString",dateSring);
+        intent.putExtra("dateString",dateString);
 
         return intent;
     }
@@ -106,29 +105,9 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
 
         String json_response = intent.getStringExtra("json_response");
         Log.d(TAG, "onCreate:TEST "+json_response);
-        try {
-            JSONObject jsonObject = new JSONObject(json_response);
-            route = jsonObject.getJSONArray("route");
-            duration = jsonObject.getJSONArray("duration");
 
-            latLngs = new LatLng[route.length()];
-            for(int i=0;i<route.length();i++){
+        createEventList(json_response);
 
-
-                Event event = old_eventList.get(route.optInt(i));
-                eventList.add(event);
-                Log.d(TAG, "onCreate: TEST"+(event==null));
-                Place place = event.getPlace();
-                latLngs[i] = place.getLatLng();
-
-            }
-
-
-        }catch (JSONException e){
-        }
-
-
-        //eventList = DataSupport.order("startTime asc").where("Schedule_id=?",""+schedule_id).find(Event.class);
         RecyclerView mRecyclerView = (RecyclerView)findViewById(R.id.event_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -276,6 +255,29 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
         //mCameraTextView.setText(mMap.getCameraPosition().toString());
     }
 
+    public void createEventList (String json_response){
+        try {
+            JSONObject jsonObject = new JSONObject(json_response);
+            route = jsonObject.getJSONArray("route");
+            duration = jsonObject.getJSONArray("duration");
+
+            latLngs = new LatLng[route.length()];
+            for(int i=0;i<route.length();i++){
+
+
+                Event event = old_eventList.get(route.optInt(i));
+                eventList.add(event);
+                Place place = event.getPlace();
+                latLngs[i] = place.getLatLng();
+
+            }
+
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
     public LatLng midPoint(double lat1,double lon1,double lat2,double lon2){
 
         double dLon = Math.toRadians(lon2 - lon1);
@@ -302,7 +304,7 @@ public class ShortestPath_Map_Activity extends AppCompatActivity implements OnSt
     public void simulateRoute(){
         String locations="";
         for(Event event:eventList){
-            Place place = DataSupport.where("id=?",""+event.getPlace_id()).findFirst(Place.class);
+            Place place = event.getPlace();
             locations += place.getLat()+","+place.getLng()+"|";
         }
             locations = locations.substring(0,locations.length()-1);

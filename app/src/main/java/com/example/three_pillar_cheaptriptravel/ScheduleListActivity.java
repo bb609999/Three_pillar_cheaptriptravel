@@ -26,6 +26,7 @@ import com.example.three_pillar_cheaptriptravel.object.Event;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 import com.example.three_pillar_cheaptriptravel.object.Schedule;
 import com.example.three_pillar_cheaptriptravel.object.ScheduleAdapter;
+import com.example.three_pillar_cheaptriptravel.util.ProcessJson;
 
 import org.litepal.crud.DataSupport;
 import org.litepal.tablemanager.Connector;
@@ -142,8 +143,11 @@ public class ScheduleListActivity extends AppCompatActivity {
                 createScheduleDialog.show(getSupportFragmentManager(), " CreateScheduleDialog");
                 break;
             case R.id.f1:
-                Schedule schedule = Schedule.getSchedule(1);
-                Log.d(TAG, "onOptionsItemSelected: "+schedule.getName());
+                try {
+                    ProcessJson.processPlaces(this);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
 
                 break;

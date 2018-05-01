@@ -23,7 +23,12 @@
 
     <item android:id="@+id/action_calculate_path"
         android:icon="@drawable/nav_location"
-        android:title="Cal"
+        android:title="Calculate"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/action_schedule_setting"
+        android:icon="@drawable/nav_location"
+        android:title="Schedule Setting"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_today"

@@ -6,7 +6,7 @@
       "address": "Lantau Island",
       "imgLink": "https://assets.rappler.com/9FD0F5C7DC4B4B719F2885DAD4A3544C/img/CA8187DBA3124818B49FFB39DCD481CA/1_Hong_Kong_Disneyland__968Wx600H.jpg",
       "lat": 22.312967,
-      "lnt": 114.041282,
+      "lng": 114.041282,
       "openingHour": [
         "1030-2015",
         "1030-2000",
@@ -14,7 +14,419 @@
         "1030-2000",
         "1030-2000",
         "1030-2000",
+
         "1030-2015"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 2,
+      "name": "Hong Kong Museum of Coastal Defence",
+      "address": "175 Tung Hei Road. Shau Kei Wan, Hong Kong",
+      "imgLink": "http://hk.coastaldefence.museum/index_files/frontpage.jpg",
+      "lat": 22.2826395,
+      "lng": 114.2348702,
+      "openingHour": [
+        "1030-1700",
+        "1030-1700",
+        "1030-1700",
+        "0000-0000",
+        "1030-1700",
+        "1030-1700",
+        "1030-1700"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 3,
+      "name": "1881 Heritage",
+      "address": "2A Canton Rd, Tsim Sha Tsui",
+      "imgLink": "http://www.discoverhongkong.com/ca/images/see-do/culture-heritage/large/1.4.5.1.1-1881-Heritage_03.jpg",
+      "lat": 22.2953632,
+      "lng": 114.1698351,
+      "openingHour": [
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 4,
+      "name": "Nan Lian Garden",
+      "address": "Tsim Sha Tsui",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5F0ywswRW6i0EY2a8OiwUqWAOMpi6TdKe_fPVNuHuLKwR61XP",
+      "lat": 22.3390419,
+      "lng": 114.2025643,
+      "openingHour": [
+        "0700-2100",
+        "0700-2100",
+        "0700-2100",
+        "0700-2100",
+        "0700-2100",
+        "0700-2100",
+        "0700-2100"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 5,
+      "name": "Hong Kong Maritime Museum",
+      "address": "Central Ferry Pier No. 8 ,Man Kwong Street, Central",
+      "imgLink": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Hong_Kong_Maritime_Museum_%28Hong_Kong%29.jpg/375px-Hong_Kong_Maritime_Museum_%28Hong_Kong%29.jpg",
+      "lat": 22.2866761,
+      "lng": 114.1620568,
+      "openingHour": [
+        "0930-1730",
+        "0930-1730",
+        "0930-1730",
+        "0930-1730",
+        "0930-1730",
+        "1000-1900",
+
+        "1000-1900"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 6,
+      "name": "Hong Kong International Airport",
+      "address": "1 Sky Plaza Rd, Chek Lap Kok",
+      "imgLink": "https://cdn.4travel.jp/img/thumbnails/imk/travelogue_album/10/91/08/650x_10910815.jpg?updated_at=1406399852",
+      "lat": 22.308889,
+      "lng": 113.914722,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 7,
+      "name": "Golden Bauhinia Square",
+      "address": "1 Expo Drive, Wan Chai",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUFrkPJ8NHcqm50ycmkEQPsJqpdtgVQ2kh5ZUFtjzaM4Vv7-YJ",
+      "lat": 22.284425,
+      "lng": 114.1695235,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 8,
+      "name": "Peak Tower",
+      "address": "128 Peak Road, The Peak",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvLbDmduFBPQcyPks3tRylgJw3elcA96UAQtxCMSjfSbAfyAtyxw",
+      "lat": 22.2712357,
+      "lng": 114.1455864,
+      "openingHour": [
+        "1000-2300",
+        "1000-2300",
+        "1000-2300",
+        "1000-2300",
+        "1000-2300",
+        "0800-2300",
+        "0800-2300"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 9,
+      "name": "Stanley Market",
+      "address": "Stanley New Street and Stanley Market Road, Stanley, Hong Kong Island",
+      "imgLink": "http://www.discoverhongkong.com/eng/images/shop/where-to-shop/large/3.2.3.18-Stanley-Market_03.jpg",
+      "lat": 22.2182526,
+      "lng": 114.2123769,
+      "openingHour": [
+        "1000-1900",
+        "1000-1900",
+        "1000-1900",
+        "1000-1900",
+        "1000-1900",
+        "1000-1900",
+
+        "1000-1900"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 10,
+      "name": "Peak Tram",
+      "address": "Central",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu5xjUJnLUrQzB1bcOnUCmaNXzij1iLrSmNYBkVqnzFPd_s7IL",
+      "lat": 22.2777381,
+      "lng": 114.1549281,
+      "openingHour": [
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000",
+        "0700-0000"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 11,
+      "name": "Times Square",
+      "address": "1 Matheson St, Causeway Bay",
+      "imgLink": "https://www.hongkongfp.com/wp-content/uploads/2017/02/Screen-Shot-2017-02-21-at-4.47.10-PM.jpg",
+      "lat": 22.278495,
+      "lng": 114.182338,
+      "openingHour": [
+        "1000-2200",
+        "1000-2200",
+        "1000-2200",
+        "1000-2200",
+        "1000-2200",
+        "1000-2200",
+
+        "1000-2200"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 12,
+      "name": "Po Lin (Precious Lotus) Monastery",
+      "address": "Ngong Ping Lantau Island",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkgJzYslpKO4WSZbPXX7CCnXjTjQyVXgYzrgGfZHj4vttlQgxf",
+      "lat": 22.2546913,
+      "lng": 113.9019693,
+      "openingHour": [
+        "0730-1800",
+        "0730-1800",
+        "0730-1800",
+        "0730-1800",
+        "0730-1800",
+        "0730-1800",
+        "0730-1800"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 13,
+      "name": "Kai Tak Cruise Terminal Park",
+      "address": "Kai Tak, Shing Fung Rd",
+      "imgLink": "https://www.hongkonghustle.com/wp-content/uploads/2014/01/kai-tak-park-cruise-terminal-roof-hk-kowloon-harbor-500x375.jpg",
+      "lat": 22.3059865,
+      "lng": 114.2134841,
+      "openingHour": [
+        "0700-2300",
+        "0700-2300",
+        "0700-2300",
+        "0700-2300",
+        "0700-2300",
+        "0700-2300",
+
+        "0700-2300"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 14,
+      "name": "Lan Kwai Fong",
+      "address": "Central",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbcdq8ENB48T4CU1--Mwr7LAX6-E-S_17XxENotPyAnYHyyC9wcA",
+      "lat": 22.2808373,
+      "lng": 114.1534825,
+      "openingHour": [
+        "1400-0600",
+        "1400-0600",
+        "1400-0600",
+        "1400-0600",
+        "1400-0600",
+        "1400-0600",
+        "1400-0600"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 15,
+      "name": "Mai Po Nature Reserve",
+      "address": "Tam Kon Chau Rd",
+      "imgLink": "http://awsassets.wwfhk.panda.org/img/maipopti_training04_44__chris_cheung___wwfhk__15624.jpg",
+      "lat": 22.4950569,
+      "lng": 114.0339342,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 16,
+      "name": "Hong Kong Gold Coast Piazza",
+      "address": "1 Castle Peak Road (Castle Peak Bay), So Kwun Wat",
+      "imgLink": "https://www.sino.com/Sino/media/Sino/ENG/Images/Our-Business/Retail/New-Territories/GC_banner-shopdirectory-20141009.jpg?width=924&height=610&ext=.jpg",
+      "lat": 22.3708897,
+      "lng": 113.9864641,
+      "openingHour": [
+        "0800-2300",
+        "0800-2300",
+        "0800-2300",
+        "0800-2300",
+        "0800-2300",
+        "0800-2300",
+
+        "0800-2300"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 17,
+      "name": "Hong Kong Museum of History",
+      "address": "100 Chatham Road South, Tsim Sha Tsui",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLPaNGIpj0vO4kX5aZZcxq5iwLLUVgmk7WIlw-7HnwrFq4akWK",
+      "lat": 22.3019374,
+      "lng": 114.1752477,
+      "openingHour": [
+        "1000-1800",
+        "1000-1800",
+        "1000-1800",
+        "1000-1800",
+        "1000-1800",
+        "1000-1900",
+
+        "1000-1900"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 18,
+      "name": "Hong Kong Museum of Art",
+      "address": "Tsim Sha Tsui",
+      "imgLink": "https://thumbnails.trvl-media.com/m7xQugeDMJyYMfiJWFGovT6xLoc=/768x432/images.trvl-media.com/media/content/shared/images/travelguides/destination/6059/Hong-Kong-Museum-Of-Art-46736.jpg",
+      "lat": 22.2934991,
+      "lng": 114.1721373,
+      "openingHour": [
+        "0900-1800",
+        "0900-1800",
+        "0900-1800",
+        "0900-1800",
+        "0900-1800",
+        "0000-0000",
+
+        "0900-1800"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 19,
+      "name": "Hong Kong Science Museum",
+      "address": "Number 2, Science Museum Rd, Tsim Sha Tsui East",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNXjJXDSvABz8JRiiK9FlvqjioQiWF8KWi-ywVjTfarygDGdag",
+      "lat": 22.3009905,
+      "lng": 114.1732299,
+      "openingHour": [
+        "1000-1900",
+        "1000-1900",
+        "1000-1900",
+        "0000-0000",
+        "1000-1900",
+        "1000-2100",
+        "1000-2100"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 20,
+      "name": "Noahs Ark Hotel and Resort",
+      "address": "3/F, 33 Pak Yan Rd, Ma Wan",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUO0V_csXHUEGGBMuDs7AvhH_TZZAH8J0lld_kMZLfI2NVx-eJ8w",
+      "lat": 22.348296,
+      "lng": 114.0594293,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 21,
+      "name": "The Kowloon Hotel",
+      "address": "19-21 Nathan Rd, Tsim Sha Tsui",
+      "imgLink": "https://www.southtravels.com/asia/hongkong/thekowloonhotel/gifs/hotelview.jpg",
+      "lat": 22.2955212,
+      "lng": 114.1718499,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 22,
+      "name": "The Peninsula Hong Kong",
+      "address": "Salisbury Rd, Tsim Sha Tsui",
+      "imgLink": "https://cdn2.gbot.me/photos/cW/e1/1289203615/Exterior-The_Peninsula_Hong_Kong-20000000001138669-500x375.jpg",
+      "lat": 22.2948161,
+      "lng": 114.1718879,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
       ],
       "description": {}
     }

@@ -1,18 +1,22 @@
 package com.example.three_pillar_cheaptriptravel.place;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.three_pillar_cheaptriptravel.R;
+import com.example.three_pillar_cheaptriptravel.dialog.AddPlaceToSchedule;
 import com.example.three_pillar_cheaptriptravel.object.Place;
 
 import org.json.JSONArray;
@@ -23,6 +27,13 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
     private Place place;
     private TextView place_openinghour;
+    private FloatingActionButton mFloatingActionButton;
+
+    public static Intent newIntent(Context packageContext, int place_id) {
+        Intent intent = new Intent(packageContext, PlaceDetailActivity.class);
+        intent.putExtra("place_id", place_id);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +41,7 @@ public class PlaceDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_place_detail);
 
         Intent intent =  getIntent();
-        int place_id = intent.getIntExtra("place_id",-1);
+        final int place_id = intent.getIntExtra("place_id",-1);
         place = DataSupport.where("id=?",""+place_id).findFirst(Place.class);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -46,15 +57,29 @@ public class PlaceDetailActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        ActionBar actionBar = getSupportActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         collapsingToolbarLayout.setTitle(place.getPlaceName());
-        Glide.with(this).load("https://blog.holimood.com/wp-content/uploads/2016/08/20160320043728_kWrnD.jpg").into(placeImageView);
 
+        if(place.getImgLink()!=null) {
+            Glide.with(this).load(place.getImgLink()).into(placeImageView);
+        }else{
+            Glide.with(this).load("https://blog.holimood.com/wp-content/uploads/2016/08/20160320043728_kWrnD.jpg").into(placeImageView);
+        }
 
         placeAddress.setText(place.getAddress());
+
+        mFloatingActionButton = (FloatingActionButton)findViewById(R.id.add_place_to_schedule);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AddPlaceToSchedule addPlaceToSchedule = AddPlaceToSchedule.newInstance(place_id);
+                addPlaceToSchedule.show(getSupportFragmentManager(), "AddPlaceToSchedule");
+
+            }
+        });
 
 
 
