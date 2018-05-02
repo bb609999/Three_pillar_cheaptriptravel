@@ -1,0 +1,13 @@
+<resources>
+    <string name="bga_pp_take_picture">Take photo</string>
+    <string name="bga_pp_not_support_take_photo">The current device does not support taking pictures</string>
+    <string name="bga_pp_not_support_crop">The current device does not support cropping pictures</string>
+    <string name="bga_pp_toast_photo_picker_max">Can only select %1$d photos</string>
+    <string name="bga_pp_all_image">All pictures</string>
+    <string name="bga_pp_confirm">confirm</string>
+    <string name="bga_pp_choose">select</string>
+    <string name="bga_pp_view_photo">view image</string>
+    <string name="bga_pp_download_img_failure">Failed to download picture</string>
+    <string name="bga_pp_save_img_failure">cannot save the photo, try again?</string>
+    <string name="bga_pp_save_img_success_folder">Picture saved to %s folder</string>
+</resources>
