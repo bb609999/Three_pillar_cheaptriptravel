@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.three_pillar_cheaptriptravel.Story.DiaryShowScheduleActivity;
 import com.example.three_pillar_cheaptriptravel.dialog.CreateScheduleDialog;
@@ -65,18 +63,19 @@ public class ScheduleListActivity extends AppCompatActivity {
         if(actionBar!= null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setTitle("Schedule");
         }
 
         //Navigation
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-        navView.setCheckedItem(R.id.nav_call);
+        navView.setCheckedItem(R.id.nav_schedule);
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 mDrawerLayout.closeDrawers();
 
-                if(item.getItemId()==R.id.nav_friends){
+                if(item.getItemId()==R.id.nav_place){
                     Intent intent = PlaceListActivity.newIntent(ScheduleListActivity.this);
                     startActivity(intent);
                 }else if (item.getItemId()==R.id.nav_gallery){
@@ -93,14 +92,10 @@ public class ScheduleListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Data deleted",Snackbar.LENGTH_SHORT)
-                        .setAction("Undo", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Toast.makeText(ScheduleListActivity.this, "Data Restored",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }).show();
+
+                CreateScheduleDialog createScheduleDialog = new CreateScheduleDialog();
+                createScheduleDialog.show(getSupportFragmentManager(), " CreateScheduleDialog");
+
             }
         });
 

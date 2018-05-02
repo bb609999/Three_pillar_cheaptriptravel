@@ -66,19 +66,20 @@ public class PlaceListActivity extends AppCompatActivity {
         if(actionBar!= null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+            actionBar.setTitle("Place");
         }
 
         //Navigation
         NavigationView navView = (NavigationView) findViewById(R.id.nav_view);
-        navView.setCheckedItem(R.id.nav_call);
+        navView.setCheckedItem(R.id.nav_place);
         navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 mDrawerLayout.closeDrawers();
 
-                if(item.getItemId()==R.id.nav_friends){
-                    Intent intent = PlaceListActivity.newIntent(PlaceListActivity.this);
+                if(item.getItemId()==R.id.nav_schedule){
+                    Intent intent = new Intent(PlaceListActivity.this,ScheduleListActivity.class);
                     startActivity(intent);
                 }else if (item.getItemId()==R.id.nav_gallery){
                     //Toast.makeText(ScheduleListActivity.this, "check gallery", Toast.LENGTH_SHORT).show();

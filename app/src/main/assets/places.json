@@ -429,6 +429,134 @@
         "0000-2359"
       ],
       "description": {}
+    },
+
+    {
+      "place_id": 23,
+      "name": "Dorsett Mongkok, Hong Kong",
+      "address": "88 Tai Kok Tsui Road, Tai Kok Tsui",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf9ZYSaMzIMEnvP_GN9WqwH--48S3J28NQcCyWim97vGZGWyuwNg",
+      "lat": 22.321273,
+      "lng": 114.1599143,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 24,
+      "name": "Panda Hotel",
+      "address": "3 Tsuen Wah Street, Tsuen Wan",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxJVRhPxImSWLEAU_e0NWiyqRBOsgffnIqUR8ZAfO5IYsV6x_bpg",
+      "lat": 22.368988,
+      "lng": 114.1186073,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 25,
+      "name": "Best Western Hotel Harbour View",
+      "address": "239 Queen's Road West, Sai Ying Pun",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjwFdUEqgqDcQXXBL3gw8w-Q53CmM8xaYWSzsobG0-txgcmKWs2w",
+      "lat": 22.286993,
+      "lng": 114.1413483,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 26,
+      "name": "Kimberley Hotel",
+      "address": "28 Kimberly Road, Tsim Sha Tsui",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzPBqrPvFuLGL4KbzGOgctj-l861ZcZUsAK1SsOnWr78msK58mHA",
+      "lat": 22.334366,
+      "lng": 114.1592856,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 27,
+      "name": "Rambler Hotel",
+      "address": "Tsing Yi Road, Tsing Yi, 1",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9uULWzsCX_-J0TXEFMetgQrzxkqefjLblUAqRgVNx_8IJxJ9b",
+      "lat": 22.3429846,
+      "lng": 114.1083446,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
+    },
+
+    {
+      "place_id": 28,
+      "name": "BP International",
+      "address": "No. 8 Austin Road, Tsim Sha Tsui, Hong Kong Scout Centre & Fort Dragon International",
+      "imgLink": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmBsSUIB3iW7QbyCHbOdgBCZ2R_Bft-jxZBtG7cJ0y3m5A6Zz0wg",
+      "lat": 22.3026476,
+      "lng": 114.1672236,
+      "openingHour": [
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+        "0000-2359",
+
+        "0000-2359"
+      ],
+      "description": {}
     }
+
+
+
+
+
+
   ]
 }
+
+
