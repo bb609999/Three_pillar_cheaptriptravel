@@ -20,14 +20,14 @@ tools:context="com.example.three_pillar_cheaptriptravel.Story.DiaryAddActivity">
         <CheckBox
             android:id="@+id/cb_moment_add_single_choice"
             style="@style/AutoWrap"
-            android:text="是否是单选"
+            android:text="single election"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
 
         <CheckBox
             android:id="@+id/cb_moment_add_take_photo"
             style="@style/AutoWrap"
-            android:text="是否开启拍照功能"
+            android:text="open the camera function"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
     </LinearLayout>
@@ -42,7 +42,7 @@ tools:context="com.example.three_pillar_cheaptriptravel.Story.DiaryAddActivity">
             android:id="@+id/cb_moment_add_editable"
             style="@style/AutoWrap"
             android:checked="true"
-            android:text="是否可编辑"
+            android:text="Edit"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
 
@@ -50,7 +50,7 @@ tools:context="com.example.three_pillar_cheaptriptravel.Story.DiaryAddActivity">
             android:id="@+id/cb_moment_add_plus"
             style="@style/AutoWrap"
             android:checked="true"
-            android:text="是否显示加号"
+            android:text="show the plus sign"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
 
@@ -58,7 +58,7 @@ tools:context="com.example.three_pillar_cheaptriptravel.Story.DiaryAddActivity">
             android:id="@+id/cb_moment_add_sortable"
             style="@style/AutoWrap"
             android:checked="true"
-            android:text="是否拖拽排序"
+            android:text="drag sort"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp" />
     </LinearLayout>
@@ -73,12 +73,12 @@ tools:context="com.example.three_pillar_cheaptriptravel.Story.DiaryAddActivity">
         <TextView
             android:id="@+id/tv_moment_add_choice_photo"
             style="@style/AutoWrapTv"
-            android:text="选择图片" />
+            android:text="Select Image" />
 
         <TextView
             android:id="@+id/tv_moment_add_publish"
             style="@style/AutoWrapTv"
-            android:text="发布" />
+            android:text="post" />
     </LinearLayout>
 
     <EditText
@@ -88,7 +88,7 @@ tools:context="com.example.three_pillar_cheaptriptravel.Story.DiaryAddActivity">
         android:layout_margin="10dp"
         android:background="@android:color/transparent"
         android:gravity="start"
-        android:hint="这一刻的想法..."
+        android:hint="This moment of thought..."
         android:lines="4"
         android:textColor="#474747"
         android:textColorHint="#C6C6C6" />

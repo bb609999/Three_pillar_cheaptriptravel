@@ -131,7 +131,7 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
 
     @Override
     protected void processLogic(Bundle savedInstanceState) {
-        setTitle("添加朋友圈");
+        setTitle("Add to friend circle");
 
         mEditableCb.setChecked(mPhotosSnpl.isEditable());
         mPlusCb.setChecked(mPhotosSnpl.isPlusEnable());
