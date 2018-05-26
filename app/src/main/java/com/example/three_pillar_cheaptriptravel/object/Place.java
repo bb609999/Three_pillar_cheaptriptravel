@@ -5,11 +5,13 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 8/3/2018.
  */
 
-public class Place extends DataSupport {
+public class Place extends DataSupport implements Serializable {
 
     private int id;
 

@@ -45,6 +45,7 @@ public class ProcessJson {
             place.setLat(placeInJson.optDouble("lat"));
             place.setLng(placeInJson.optDouble("lng"));
             place.setOpeningHour(placeInJson.opt("openingHour").toString());
+            place.setDescription(placeInJson.optString("description"));
             place.save();
 
         }

@@ -22,12 +22,14 @@ import com.example.three_pillar_cheaptriptravel.object.Place;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.litepal.crud.DataSupport;
+import org.w3c.dom.Text;
 
 public class PlaceDetailActivity extends AppCompatActivity {
 
     private Place place;
     private TextView place_openinghour;
     private FloatingActionButton mFloatingActionButton;
+    private TextView place_description;
 
     public static Intent newIntent(Context packageContext, int place_id) {
         Intent intent = new Intent(packageContext, PlaceDetailActivity.class);
@@ -81,6 +83,8 @@ public class PlaceDetailActivity extends AppCompatActivity {
             }
         });
 
+        place_description = (TextView)findViewById(R.id.place_description);
+        place_description.setText(place.getDescription());
 
 
 
