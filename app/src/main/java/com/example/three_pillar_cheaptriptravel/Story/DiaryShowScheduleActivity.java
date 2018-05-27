@@ -40,8 +40,8 @@ public class DiaryShowScheduleActivity extends AppCompatActivity {
         for (Stories stories1:scheduleid){
             schedule_id.add(stories1.getSchedule_id());
         }
-        Log.d("Show schedule name", "schedule_name:"+schedule_name);
-        Log.d("Show schedule id", "schedule_id:"+schedule_id);
+       // Log.d("Show schedule name", "schedule_name:"+schedule_name);
+        // Log.d("Show schedule id", "schedule_id:"+schedule_id);
 
         //final ArrayList<Integer> unique = new ArrayList<>();
         HashSet<Integer> hs = new HashSet<Integer>(schedule_id);

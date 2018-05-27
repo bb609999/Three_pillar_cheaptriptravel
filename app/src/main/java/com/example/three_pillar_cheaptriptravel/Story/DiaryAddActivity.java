@@ -38,35 +38,18 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
 
     private static final String EXTRA_MOMENT = "EXTRA_MOMENT";
 
-    // ==================================== 测试图片选择器 START ====================================
-    /**
-     * 是否是单选「测试接口用的」
-     */
-    private CheckBox mSingleChoiceCb;
-    /**
-     * 是否具有拍照功能「测试接口用的」
-     */
-    private CheckBox mTakePhotoCb;
-    // ==================================== 测试图片选择器 END ====================================
 
-    // ==================================== 测试拖拽排序九宫格图片控件 START ====================================
-    /**
-     * 是否可编辑
-     */
+    private CheckBox mSingleChoiceCb;
+
+    private CheckBox mTakePhotoCb;
+
     private CheckBox mEditableCb;
-    /**
-     * 是否显示九图控件的加号按钮「测试接口用的」
-     */
+
     private CheckBox mPlusCb;
-    /**
-     * 是否开启拖拽排序功能「测试接口用的」
-     */
+
     private CheckBox mSortableCb;
-    /**
-     * 拖拽排序九宫格控件
-     */
+
     private BGASortableNinePhotoLayout mPhotosSnpl;
-    // ==================================== 测试拖拽排序九宫格图片控件 END ====================================
 
     private EditText mContentEt;
 
@@ -125,7 +108,6 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
             }
         });
 
-        // 设置拖拽排序控件的代理
         mPhotosSnpl.setDelegate(this);
     }
 
@@ -144,10 +126,10 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
         } else if (v.getId() == R.id.tv_moment_add_publish) {
             String content = mContentEt.getText().toString().trim();
             if (content.length() == 0 && mPhotosSnpl.getItemCount() == 0) {
-                Toast.makeText(this, "必须填写这一刻的想法&选择照片！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "you must fill in your currently thinking & choose the photo！", Toast.LENGTH_SHORT).show();
                 return;
             }else if (content.length() != 0 && mPhotosSnpl.getItemCount() == 0){
-                Toast.makeText(this, "必须选择照片！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "must choose a photo！", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -155,19 +137,6 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
             Log.d("comment", mContentEt.getText().toString().trim());
             //get image path
             Log.d("imageoutput", mPhotosSnpl.getData().toString());
-
-
-
-
-
-            /*
-            for (int i = 0; i<mPhotosSnpl.getData().toArray().length; i++){
-                Log.d("imageput", mPhotosSnpl.getData().get(i));
-                String imgvalue = mPhotosSnpl.getData().get(i);
-                displayImage(imgvalue);
-            }
-            */
-
 
             Stories stories = new Stories();
             Intent intent = getIntent();
@@ -218,7 +187,7 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
     public static String convertIconToString(Bitmap bitmap){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();// outputstream
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] appicon = baos.toByteArray();// 转为byte数组
+        byte[] appicon = baos.toByteArray();
         return Base64.encodeToString(appicon, Base64.DEFAULT);
     }
     @Override
@@ -234,38 +203,37 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
     @Override
     public void onClickNinePhotoItem(BGASortableNinePhotoLayout sortableNinePhotoLayout, View view, int position, String model, ArrayList<String> models) {
         Intent photoPickerPreviewIntent = new BGAPhotoPickerPreviewActivity.IntentBuilder(this)
-                .previewPhotos(models) // 当前预览的图片路径集合
-                .selectedPhotos(models) // 当前已选中的图片路径集合
-                .maxChooseCount(mPhotosSnpl.getMaxItemCount()) // 图片选择张数的最大值
-                .currentPosition(position) // 当前预览图片的索引
-                .isFromTakePhoto(false) // 是否是拍完照后跳转过来
+                .previewPhotos(models)
+                .selectedPhotos(models)
+                .maxChooseCount(mPhotosSnpl.getMaxItemCount())
+                .currentPosition(position)
+                .isFromTakePhoto(false)
                 .build();
         startActivityForResult(photoPickerPreviewIntent, RC_PHOTO_PREVIEW);
     }
 
     @Override
     public void onNinePhotoItemExchanged(BGASortableNinePhotoLayout sortableNinePhotoLayout, int fromPosition, int toPosition, ArrayList<String> models) {
-        Toast.makeText(this, "排序发生变化", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "change the order", Toast.LENGTH_SHORT).show();
     }
 
     @AfterPermissionGranted(PRC_PHOTO_PICKER)
     private void choicePhotoWrapper() {
         String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         if (EasyPermissions.hasPermissions(this, perms)) {
-            // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话就没有拍照功能
             File takePhotoDir = new File(Environment.getExternalStorageDirectory(), "3PillarTakePhoto");
 
             Intent photoPickerIntent = new BGAPhotoPickerActivity.IntentBuilder(this)
-                    .cameraFileDir(mTakePhotoCb.isChecked() ? takePhotoDir : null) // 拍照后照片的存放目录，改成你自己拍照后要存放照片的目录。如果不传递该参数的话则不开启图库里的拍照功能
-                    .maxChooseCount(mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount()) // 图片选择张数的最大值
-                    .selectedPhotos(null) // 当前已选中的图片路径集合
-                    .pauseOnScroll(false) // 滚动列表时是否暂停加载图片
+                    .cameraFileDir(mTakePhotoCb.isChecked() ? takePhotoDir : null)
+                    .maxChooseCount(mPhotosSnpl.getMaxItemCount() - mPhotosSnpl.getItemCount())
+                    .selectedPhotos(null)
+                    .pauseOnScroll(false)
                     .build();
             startActivityForResult(photoPickerIntent, RC_CHOOSE_PHOTO);
 
 
         } else {
-            EasyPermissions.requestPermissions(this, "图片选择需要以下权限:\n\n1.访问设备上的照片\n\n2.拍照", PRC_PHOTO_PICKER, perms);
+            EasyPermissions.requestPermissions(this, "photo preview need your permission:\n\n1.access photo from device\n\n2.take photo", PRC_PHOTO_PICKER, perms);
         }
     }
 
@@ -282,7 +250,7 @@ public class DiaryAddActivity extends BGAPPToolbarActivity implements EasyPermis
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         if (requestCode == PRC_PHOTO_PICKER) {
-            Toast.makeText(this, "您拒绝了「图片选择」所需要的相关权限!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "you refused to allow 'select photo' permission!", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -118,7 +118,6 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
     public void onClick(View v) {
         if(v.getId() == R.id.gallery_list_del_all){
             //delete photo
-
             DataSupport.deleteAll(Stories.class,"schedule_id=?", ""+schedule_id);
             images.clear();
             text.clear();
@@ -148,19 +147,19 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
         if (EasyPermissions.hasPermissions(this, perms)) {
             File downloadDir = new File(Environment.getExternalStorageDirectory(), "3PillarDownload");
             BGAPhotoPreviewActivity.IntentBuilder photoPreviewIntentBuilder = new BGAPhotoPreviewActivity.IntentBuilder(this)
-                    .saveImgDir(downloadDir); // 保存图片的目录，如果传 null，则没有保存图片功能
+                    .saveImgDir(downloadDir);
 
             if (mCurrentClickNpl.getItemCount() == 1) {
-                // 预览单张图片
+
                 photoPreviewIntentBuilder.previewPhoto(mCurrentClickNpl.getCurrentClickItem());
             } else if (mCurrentClickNpl.getItemCount() > 1) {
-                // 预览多张图片
+
                 photoPreviewIntentBuilder.previewPhotos(mCurrentClickNpl.getData())
-                        .currentPosition(mCurrentClickNpl.getCurrentClickItemPosition()); // 当前预览图片的索引
+                        .currentPosition(mCurrentClickNpl.getCurrentClickItemPosition());
             }
             startActivity(photoPreviewIntentBuilder.build());
         } else {
-            EasyPermissions.requestPermissions(this, "图片预览需要以下权限:\n\n1.访问设备上的照片", PRC_PHOTO_PREVIEW, perms);
+            EasyPermissions.requestPermissions(this, "photo preview need your permission:\n\n1.to access the photo", PRC_PHOTO_PREVIEW, perms);
         }
     }
 
@@ -177,7 +176,7 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         if (requestCode == PRC_PHOTO_PREVIEW) {
-            Toast.makeText(this, "您拒绝了「图片预览」所需要的相关权限!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "you refused to allow 'photo preivew' permission!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -190,12 +189,12 @@ public class DiaryGalleryActivity extends BGAPPToolbarActivity implements EasyPe
     //edit the diary
     @Override
     public void onRVItemClick(ViewGroup viewGroup, View view, int position) {
-        Toast.makeText(this, "点击了item " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "click item " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onRVItemLongClick(ViewGroup viewGroup, View view, int position) {
-        Toast.makeText(this, "长按了item " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "long click item " + position, Toast.LENGTH_SHORT).show();
         return true;
     }
 
